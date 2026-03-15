@@ -417,9 +417,7 @@ test("host bridge detects controller disconnect via heartbeat timeout", async ()
   controllerBridge.announceReady();
 
   // Symulujemy utratę sieci — niszczymy bez wysyłania controller-disconnected
-  // przez zamknięcie kanału bezpośrednio (tymczasowe obejście dopóki _dropWithoutDisconnect nie istnieje)
-  // Używamy destroy() — test sprawdza czy heartbeat TEŻ działa, nie tylko disconnect message
-  controllerBridge.destroy();
+  (controllerBridge as any)._dropWithoutDisconnect();
 
   // Czekamy na heartbeat timeout (ponad pingTimeoutMs)
   await new Promise((resolve) => setTimeout(resolve, 200));
@@ -449,7 +447,7 @@ test("controller bridge re-pairs after host heartbeat timeout clears the slot", 
     deviceId: "device-hb2",
   });
   controller1.announceReady();
-  controller1.destroy();
+  (controller1 as any)._dropWithoutDisconnect();
 
   await new Promise((resolve) => setTimeout(resolve, 200));
 
