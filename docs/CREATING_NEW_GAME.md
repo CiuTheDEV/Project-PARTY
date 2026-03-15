@@ -15,7 +15,7 @@ Nowa gra ma:
 1. Utwórz nowy katalog `games/<game-id>/`.
 2. Dodaj `package.json`, `tsconfig.json` i `src/index.ts`.
 3. Przygotuj `meta`, `settings` i `createRuntime`.
-4. Zarejestruj grę w launcherze / katalogu.
+4. Zarejestruj grę w launcherze i registry.
 5. Dodaj testy dla metadata, settings i runtime.
 6. Zweryfikuj, że gra nie wymaga platformowych wyjątków tylko dla siebie.
 
@@ -25,7 +25,7 @@ Każda nowa gra musi zachować ten sam layout UI dla:
 - menu głównego gry,
 - setupu gry.
 
-Wzorzec referencyjny to aktualny układ znany z Kalambur i Tajniaków.
+Wzorzec referencyjny to aktualny shared game UI shell znany z Kalambur i Tajniaków.
 
 To, co ma być spójne:
 - ogólny layout,
@@ -67,11 +67,170 @@ games/<game-id>/
 Nie wszystkie foldery są obowiązkowe.
 Dodawaj tylko to, czego realnie potrzebuje dana gra.
 
-## Co sprawdzić przed PR
+## Minimalny działający przykład
 
-- Czy gra eksportuje poprawny `defineGame(...)`?
-- Czy metadata i settings są kompletne?
-- Czy menu główne i setup zachowują wspólny layout platformy?
-- Czy paleta gry jest indywidualna, ale nadal spójna z jakością Project Party?
-- Czy gameplay nie wycieka do `apps/*` ani `packages/*` bez realnej potrzeby?
-- Czy testy obejmują przynajmniej kontrakt integracyjny i kluczową logikę gry?
+Punkt startowy dla `games/<game-id>/src/index.ts`:
+
+```ts
+import { defineGame } from "@project-party/game-sdk";
+
+import "./styles.css";
+import { myGameMeta } from "./meta";
+import { createMyGameRuntime } from "./runtime/createRuntime";
+import { myGameSettings } from "./settings";
+
+export default defineGame({
+  id: "my-game",
+  version: "0.1.0",
+  meta: myGameMeta,
+  capabilities: {
+    deviceProfiles: ["host-plus-phones"],
+    supportedRoles: ["host", "player", "controller", "viewer"],
+    supportsRemotePlay: true,
+  },
+  settings: myGameSettings,
+  createRuntime: createMyGameRuntime,
+});
+```
+
+W praktyce sprawdź istniejące przykłady:
+- `games/kalambury/src/index.ts`
+- `games/tajniacy/src/index.ts`
+
+## Rejestracja gry w launcherze
+
+Po dodaniu modułu gry trzeba go podpiąć do webowego registry.
+
+### `apps/web/src/lib/gameRegistry.ts`
+
+Dodaj import i wpis do `gameRegistry`:
+
+```ts
+import kalambury from "@project-party/game-kalambury";
+import tajniacy from "@project-party/game-tajniacy";
+import myGame from "@project-party/game-my-game";
+
+export const gameRegistry = {
+  kalambury,
+  tajniacy,
+  "my-game": myGame,
+} as const;
+```
+
+### `apps/web/src/App.tsx`
+
+Jeśli gra ma mieć dedykowany skrót routingu, dodaj trasę:
+
+```tsx
+<Route
+  path="/my-game"
+  element={<GameLaunchPage gameIdOverride="my-game" />}
+/>
+```
+
+Trasy generyczne już istnieją i obsługują:
+- `/games/:gameId`
+- `/games/:gameId/launch`
+- `/games/:gameId/controller/:sessionCode`
+
+## Wspólny layout: szczegóły implementacyjne
+
+Shared game UI shell nie oznacza kopiowania konkretnego pliku 1:1, tylko zachowanie tej samej struktury wejścia do gry.
+
+### Main menu
+
+Referencje:
+- `games/kalambury/src/host/MenuScreen.tsx`
+- odpowiedni ekran wejściowy w Tajniakach, jeśli dana gra używa analogicznego flow
+
+Spójne elementy:
+- sekcja hero z nazwą gry i krótkim opisem,
+- główne CTA wejścia do konfiguracji lub startu,
+- sekcje pomocnicze typu zasady / tryby / informacje,
+- układ sekcji i czytelna hierarchia.
+
+### Setup screen
+
+Referencje:
+- `games/kalambury/src/host/SetupScreen.tsx`
+- `games/tajniacy/src/host/SetupScreen.tsx`
+
+Spójne elementy:
+- układ sekcji ustawień,
+- hierarchia grup opcji,
+- pozycja CTA startu / powrotu,
+- wspólny rytm przewijania i czytelność formularza.
+
+To, co może być indywidualne:
+- pola formularza,
+- nazwy trybów,
+- opisy i pomocnicze teksty,
+- ilustracje i akcenty kolorystyczne.
+
+## Checklist przed PR
+
+### Kod
+
+- Czy gra eksportuje poprawny `defineGame(...)` w `src/index.ts`?
+- Czy metadata zawiera wszystkie wymagane pola?
+- Czy settings są zdefiniowane i gotowe do użycia przez launcher?
+- Czy `createRuntime` jest podłączone do właściwego entrypointu?
+- Czy gra została dodana do `apps/web/src/lib/gameRegistry.ts`?
+
+### UI / UX
+
+- Czy menu główne używa wspólnego shared game UI shell?
+- Czy setup screen zachowuje wspólną hierarchię sekcji?
+- Czy CTA są w tych samych oczekiwanych miejscach?
+- Czy paleta jest indywidualna dla gry, ale układ pozostaje spójny z platformą?
+
+### Testy
+
+- Czy istnieje test eksportu / kontraktu dla `src/index.ts`?
+- Czy są testy metadata i settings?
+- Czy jest przynajmniej podstawowy test runtime lub helperów gry?
+
+### Architektura
+
+- Czy gameplay został w `games/<game-id>/`?
+- Czy gra nie wypchnęła logiki do `apps/*` lub `packages/*` bez realnej potrzeby?
+- Czy runtime używa wyłącznie kontraktu z `@project-party/game-runtime` / `@project-party/game-sdk`?
+
+### Dokumentacja
+
+- Czy `docs/CREATING_NEW_GAME.md` nadal opisuje aktualny flow?
+- Czy definition of done dla nowej gry jest spełnione?
+
+## Częste problemy
+
+### "Module not found: @project-party/game-my-game"
+
+- Sprawdź `package.json` w `games/<game-id>/`.
+- Upewnij się, że nazwa pakietu ma poprawny workspace prefix.
+- Uruchom `pnpm install`.
+
+### "Game not showing in catalog"
+
+- Sprawdź, czy gra została dodana do `apps/web/src/lib/gameRegistry.ts`.
+- Sprawdź, czy odpowiednie metadata nie są ukryte po stronie hubu.
+
+### "Runtime nie startuje"
+
+- Sprawdź, czy `createRuntime` zwraca obiekt z poprawnym `teardown`, jeśli gra tego wymaga.
+- Zobacz logi w konsoli przeglądarki.
+- Porównaj entrypoint z `games/kalambury/src/index.ts` albo `games/tajniacy/src/index.ts`.
+
+## Suggested next steps
+
+Po stworzeniu minimalnej viable game:
+1. Dodaj sensowny `README.md` w katalogu gry.
+2. Rozbuduj testy.
+3. Dopracuj copy i onboarding.
+4. Dodaj indywidualne grafiki i własną paletę.
+5. Zweryfikuj UX na desktopie i mobile.
+
+## Reference games
+
+Aktualne gry referencyjne:
+- `games/kalambury/` - pełniejszy wzorzec modułu z host/controller/setup
+- `games/tajniacy/` - drugi wzorzec integracji gry z platformą
