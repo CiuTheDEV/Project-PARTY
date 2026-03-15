@@ -431,3 +431,41 @@ test("host bridge detects controller disconnect via heartbeat timeout", async ()
   assert.equal(pairingStates[0].connected, true);
   assert.equal(pairingStates[pairingStates.length - 1].connected, false);
 });
+
+test("controller bridge re-pairs after host heartbeat timeout clears the slot", async () => {
+  FakeBroadcastChannel.reset();
+
+  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+
+  const hostBridge = createKalamburyPresenterHostBridge("HB02", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    pingIntervalMs: 50,
+    pingTimeoutMs: 80,
+    onPairingChange: (state) => pairingStates.push(state),
+  });
+
+  const controller1 = createKalamburyPresenterControllerBridge("HB02", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "device-hb2",
+  });
+  controller1.announceReady();
+  controller1.destroy();
+
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  const controller2 = createKalamburyPresenterControllerBridge("HB02", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "device-hb3",
+  });
+  controller2.announceReady();
+  await new Promise((resolve) => setTimeout(resolve, 20));
+
+  hostBridge.destroy();
+  controller2.destroy();
+
+  assert.deepEqual(pairingStates, [
+    { connected: true, pairedDeviceId: "device-hb2" },
+    { connected: false, pairedDeviceId: null },
+    { connected: true, pairedDeviceId: "device-hb3" },
+  ]);
+});
