@@ -33,6 +33,8 @@ pnpm --filter @project-party/game-my-game test
 
 Potem wróć do szczegółów poniżej.
 
+Jeśli nowa gra ma mieć remote transport albo production flow oparty o Cloudflare Workers + Durable Objects, przeczytaj też `docs/CLOUDFLARE_GAME_DEPLOY.md`.
+
 ## Checklist krok po kroku
 
 1. Utwórz nowy katalog `games/<game-id>/`.

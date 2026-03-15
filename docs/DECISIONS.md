@@ -2,6 +2,15 @@
 
 Tracks key project decisions.
 
+Operational source of truth lives in:
+- `docs/PROJECT_CONTEXT.md`
+- `docs/REPO_ARCHITECTURE.md`
+- `docs/TECH_STACK.md`
+- `docs/GAME_MODULE_STANDARD.md`
+- `docs/RUNTIME_CONTRACT.md`
+
+Treat `docs/plans/` and `docs/PRD/` as historical context, not the primary operational docs.
+
 ## 2026-03-13
 
 ### Decision

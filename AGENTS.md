@@ -14,6 +14,19 @@ Przed dotknięciem kodu przeczytaj w tej kolejności:
 
 Czytaj dodatkowe pliki tylko wtedy, gdy zadanie tego wymaga.
 
+Jeśli zadanie dotyczy:
+- dodawania nowej gry z remote transportem,
+- Cloudflare Workers,
+- Durable Objects,
+- deployu gry na production,
+
+przeczytaj dodatkowo `docs/CLOUDFLARE_GAME_DEPLOY.md`.
+
+Traktuj jako archiwum, a nie source of truth:
+- `docs/plans/`
+- `docs/PRD/`
+- mockupy i stare artefakty wizualne w `docs/mockups/` oraz `docs/MOCUPS/`
+
 ## Zasady nienegocjowalne
 
 - Traktuj Project Party jako **hub + autonomiczne moduły gier**.

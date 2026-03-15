@@ -44,6 +44,7 @@ Najważniejsze aktywne dokumenty:
 - `docs/CODE_BOUNDARIES.md` - safe / risky / sensitive obszary zmian
 - `docs/CODEX_WORKFLOW.md` - workflow pracy w repo
 - `docs/CREATING_NEW_GAME.md` - onboarding dla nowej gry
+- `docs/CLOUDFLARE_GAME_DEPLOY.md` - jak prowadzić grę przez Workers, Durable Objects i remote transport
 - `docs/TESTING.md` - praktyczna ściąga testów i komend
 - `docs/TROUBLESHOOTING.md` - najczęstsze problemy i checklisty naprawcze
 - `docs/UI_RULES.md` - wspólny shell UI i zasady wizualne
@@ -51,12 +52,14 @@ Najważniejsze aktywne dokumenty:
 Historia decyzji i planów:
 
 - `docs/plans/` - design docs, implementation plans i notatki z poprzednich iteracji
+- `docs/PRD/` - historyczne dokumenty produktowe i eksploracyjne, nie bieżący source of truth
 
 ## Szybkie ścieżki startowe
 
 Jeśli pracujesz nad:
 
 - nową grą: zacznij od `docs/CREATING_NEW_GAME.md`
+- nową grą z remote transportem / Cloudflare: dołóż `docs/CLOUDFLARE_GAME_DEPLOY.md`
 - kontraktem gry: zacznij od `docs/GAME_MODULE_STANDARD.md`
 - granicami architektury: przeczytaj `docs/PROJECT_CONTEXT.md`, `docs/REPO_ARCHITECTURE.md`, `docs/CODE_BOUNDARIES.md`
 - wspólnym UI: przeczytaj `docs/UI_RULES.md`

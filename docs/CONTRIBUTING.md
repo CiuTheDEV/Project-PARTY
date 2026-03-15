@@ -13,8 +13,15 @@ Przeczytaj w tej kolejności:
 
 Potem dobierz dokumenty do scope:
 - `docs/CREATING_NEW_GAME.md` - jeśli dodajesz nową grę
+- `docs/CLOUDFLARE_GAME_DEPLOY.md` - jeśli gra potrzebuje Workers / Durable Objects / remote transportu
 - `docs/UI_RULES.md` - jeśli zmieniasz UI albo layout
 - `docs/CODE_BOUNDARIES.md` - jeśli dotykasz shared / platform / kontraktów
+
+Materiały historyczne:
+- `docs/plans/`
+- `docs/PRD/`
+
+czytaj tylko wtedy, gdy zadanie wymaga kontekstu historycznego. Nie traktuj ich jako bieżącego source of truth.
 
 ## Working Style
 
