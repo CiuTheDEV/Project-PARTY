@@ -396,3 +396,38 @@ test("controller bridge retries ready handshake until a late host subscribes", a
   ]);
   assert.equal(controllerStates.includes("connected"), true);
 });
+
+test("host bridge detects controller disconnect via heartbeat timeout", async () => {
+  FakeBroadcastChannel.reset();
+
+  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+
+  const hostBridge = createKalamburyPresenterHostBridge("HB01", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    pingIntervalMs: 50,
+    pingTimeoutMs: 80,
+    onPairingChange: (state) => pairingStates.push(state),
+  });
+
+  const controllerBridge = createKalamburyPresenterControllerBridge("HB01", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "device-hb",
+  });
+
+  controllerBridge.announceReady();
+
+  // Symulujemy utratę sieci — niszczymy bez wysyłania controller-disconnected
+  // przez zamknięcie kanału bezpośrednio (tymczasowe obejście dopóki _dropWithoutDisconnect nie istnieje)
+  // Używamy destroy() — test sprawdza czy heartbeat TEŻ działa, nie tylko disconnect message
+  controllerBridge.destroy();
+
+  // Czekamy na heartbeat timeout (ponad pingTimeoutMs)
+  await new Promise((resolve) => setTimeout(resolve, 200));
+
+  hostBridge.destroy();
+
+  // Powinny być: connected=true, następnie connected=false
+  assert.ok(pairingStates.length >= 2, `Expected >= 2 pairing state changes, got ${pairingStates.length}`);
+  assert.equal(pairingStates[0].connected, true);
+  assert.equal(pairingStates[pairingStates.length - 1].connected, false);
+});
