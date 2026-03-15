@@ -10,6 +10,29 @@ Nowa gra ma:
 - zachować spójny UX wejścia do gry,
 - nie wymagać specjalnego traktowania przez hub.
 
+## Quick Start (TL;DR)
+
+Jeśli chcesz jak najszybciej postawić nowy moduł gry:
+
+```powershell
+# 1. Utwórz katalog gry
+mkdir games/my-game
+
+# 2. Dodaj package.json, tsconfig.json i src/index.ts
+
+# 3. Podłącz meta, settings i createRuntime
+
+# 4. Dodaj grę do apps/web/src/lib/gameRegistry.ts
+
+# 5. Opcjonalnie dodaj skrót trasy w apps/web/src/App.tsx
+
+# 6. Uruchom instalację i testy
+pnpm install
+pnpm --filter @project-party/game-my-game test
+```
+
+Potem wróć do szczegółów poniżej.
+
 ## Checklist krok po kroku
 
 1. Utwórz nowy katalog `games/<game-id>/`.
@@ -51,21 +74,51 @@ To, co pozostaje po stronie gry:
 ```text
 games/<game-id>/
 |- src/
-|  |- index.ts
-|  |- meta.ts
-|  |- settings.ts
+|  |- index.ts               # eksport defineGame()
+|  |- meta.ts                # metadata gry
+|  |- settings.ts            # schema konfiguracji
 |  |- runtime/
-|  |- host/
-|  |- controller/
-|  |- shared/
-|  `- assets/
-|- package.json
+|  |  `- createRuntime.ts    # runtime entrypoint
+|  |- host/                  # ekrany hosta / TV / desktop
+|  |- controller/            # ekrany telefonu, jeśli gra ich potrzebuje
+|  |- shared/                # helpery i logika współdzielona wewnątrz gry
+|  `- assets/                # grafiki, ilustracje, ikony
+|- package.json              # workspace package gry
 |- tsconfig.json
 `- README.md
 ```
 
 Nie wszystkie foldery są obowiązkowe.
 Dodawaj tylko to, czego realnie potrzebuje dana gra.
+
+## Przykładowy package.json
+
+Punkt startowy dla `games/<game-id>/package.json`:
+
+```json
+{
+  "name": "@project-party/game-my-game",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@project-party/game-sdk": "workspace:*",
+    "@project-party/game-runtime": "workspace:*",
+    "@project-party/types": "workspace:*",
+    "react": "^19.0.0"
+  },
+  "scripts": {
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts src/runtime/*.test.ts",
+    "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "lint": "node ../../scripts/run-tool.mjs biome check .",
+    "build": "node ../../scripts/run-tool.mjs tsc --noEmit"
+  }
+}
+```
+
+Dostosuj zależności i skrypty do realnej struktury gry, ale trzymaj się istniejących konwencji workspace.
 
 ## Minimalny działający przykład
 
@@ -200,6 +253,38 @@ To, co może być indywidualne:
 
 - Czy `docs/CREATING_NEW_GAME.md` nadal opisuje aktualny flow?
 - Czy definition of done dla nowej gry jest spełnione?
+
+## Testowanie nowej gry
+
+### Podstawowe testy kontraktu
+
+Punkt startowy dla `games/<game-id>/src/index.test.ts`:
+
+```ts
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import gameDefinition from "./index";
+
+test("game exports a valid defineGame contract", () => {
+  assert.ok(gameDefinition.id);
+  assert.ok(gameDefinition.version);
+  assert.ok(gameDefinition.meta);
+  assert.ok(gameDefinition.capabilities);
+  assert.ok(gameDefinition.settings);
+  assert.equal(typeof gameDefinition.createRuntime, "function");
+});
+```
+
+### Uruchomienie testów
+
+```powershell
+# Tylko ta gra
+pnpm --filter @project-party/game-my-game test
+
+# Typecheck
+pnpm --filter @project-party/game-my-game typecheck
+```
 
 ## Częste problemy
 
