@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 
 import {
+  type KalamburyPresenterChannel,
   type KalamburyPresenterPhrasePayload,
   type KalamburyPresenterPreviewState,
   createKalamburyPresenterControllerBridge,
@@ -12,6 +13,7 @@ const PRESENTER_DEVICE_ID_STORAGE_KEY =
 type KalamburyControllerAppProps = {
   sessionCode?: string;
   playerName?: string;
+  transportChannel?: KalamburyPresenterChannel;
 };
 
 function getPresenterDeviceId() {
@@ -32,6 +34,7 @@ function getPresenterDeviceId() {
 export function KalamburyControllerApp({
   sessionCode,
   playerName,
+  transportChannel,
 }: KalamburyControllerAppProps) {
   const controllerBridgeRef = useRef<ReturnType<
     typeof createKalamburyPresenterControllerBridge
@@ -58,6 +61,7 @@ export function KalamburyControllerApp({
     }
 
     const bridge = createKalamburyPresenterControllerBridge(sessionCode, {
+      channel: transportChannel,
       deviceId: getPresenterDeviceId(),
       onPhraseChange: (payload) => {
         setPrivatePhrase(payload);
@@ -91,7 +95,7 @@ export function KalamburyControllerApp({
         controllerBridgeRef.current = null;
       }
     };
-  }, [sessionCode]);
+  }, [sessionCode, transportChannel]);
 
   useEffect(() => {
     if (previewState !== "preview") {

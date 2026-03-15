@@ -9,6 +9,7 @@ import {
   isKalamburyHubModePlayable,
 } from "../manifest/hub-content";
 import type { KalamburySetupPayload } from "../runtime/state-machine";
+import type { KalamburyPresenterChannel } from "../shared/presenter-bridge";
 import { KalamburySymbolIcon } from "../shared/SymbolIcon";
 import { getKalamburySetupModeContent } from "../shared/setup-content";
 import type { KalamburyStorageLike } from "../shared/setup-storage";
@@ -18,12 +19,14 @@ import { SetupScreen } from "./SetupScreen";
 type KalamburyHostAppProps = {
   initialModeId?: KalamburyHubMode["id"];
   sessionCode?: string;
+  transportChannel?: KalamburyPresenterChannel;
   storage?: KalamburyStorageLike | null;
 };
 
 export function KalamburyHostApp({
   initialModeId,
   sessionCode,
+  transportChannel,
   storage = null,
 }: KalamburyHostAppProps) {
   const hubContent = getKalamburyHubContent();
@@ -97,6 +100,7 @@ export function KalamburyHostApp({
       <PlayScreen
         setupPayload={currentSetupPayload}
         sessionCode={sessionCode}
+        transportChannel={transportChannel}
         onBackToHub={() => setActiveScreen("hub")}
       />
     );

@@ -77,6 +77,11 @@ To oznacza:
 - web layer może być serwowana przez osobnego Cloudflare Workera, bez zmiany kontraktu gry,
 - kontrakt runtime pozostaje stabilny nawet jeśli infrastruktura transportu zmienia się między local i production.
 
+W praktyce platforma może utrzymywać:
+- snapshot sesji z listą uczestników,
+- event log sesji dla runtime transportu,
+- fallback local/dev bez wymagania pełnego remote infra przy każdej iteracji.
+
 ## Co runtime contract robi
 
 - daje wspólny język startu gry,

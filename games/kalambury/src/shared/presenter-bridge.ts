@@ -18,7 +18,7 @@ export type KalamburyPresenterPreviewState =
   | "preview"
   | "hidden-live";
 
-type KalamburyPresenterMessage =
+export type KalamburyPresenterMessage =
   | { type: "controller-ready"; deviceId: string }
   | { type: "controller-disconnected"; deviceId: string }
   | { type: "controller-reveal-request"; deviceId: string }
@@ -41,8 +41,19 @@ type BroadcastChannelLike = {
 
 type BroadcastChannelConstructor = new (name: string) => BroadcastChannelLike;
 
+export type KalamburyPresenterChannel = {
+  postMessage: (
+    message: KalamburyPresenterMessage,
+  ) => void | Promise<void>;
+  subscribe: (
+    handler: (message: KalamburyPresenterMessage) => void,
+  ) => () => void;
+  close?: () => void;
+};
+
 type HostBridgeOptions = {
   BroadcastChannelImpl?: BroadcastChannelConstructor;
+  channel?: KalamburyPresenterChannel;
   initialPairedDeviceId?: string | null;
   onPairingChange?: (state: KalamburyPresenterPairState) => void;
   onRevealRequest?: (state: { deviceId: string }) => void;
@@ -51,6 +62,7 @@ type HostBridgeOptions = {
 
 type ControllerBridgeOptions = {
   BroadcastChannelImpl?: BroadcastChannelConstructor;
+  channel?: KalamburyPresenterChannel;
   deviceId?: string;
   onPhraseChange?: (payload: KalamburyPresenterPhrasePayload | null) => void;
   onPreviewStateChange?: (state: KalamburyPresenterPreviewState) => void;
@@ -77,7 +89,9 @@ function getChannelName(sessionCode: string) {
   return `project-party.kalambury.presenter.${sessionCode.toUpperCase()}`;
 }
 
-function isPresenterMessage(value: unknown): value is KalamburyPresenterMessage {
+export function isPresenterMessage(
+  value: unknown,
+): value is KalamburyPresenterMessage {
   if (!value || typeof value !== "object") {
     return false;
   }
@@ -97,6 +111,39 @@ function createChannel(
   return new Channel(getChannelName(sessionCode));
 }
 
+function createPresenterChannel(
+  sessionCode: string,
+  BroadcastChannelImpl?: BroadcastChannelConstructor,
+): KalamburyPresenterChannel | null {
+  const channel = createChannel(sessionCode, BroadcastChannelImpl);
+
+  if (!channel) {
+    return null;
+  }
+
+  return {
+    postMessage(message) {
+      channel.postMessage(message);
+    },
+    subscribe(handler) {
+      channel.onmessage = (event) => {
+        if (!isPresenterMessage(event.data)) {
+          return;
+        }
+
+        handler(event.data);
+      };
+
+      return () => {
+        channel.onmessage = null;
+      };
+    },
+    close() {
+      channel.close();
+    },
+  };
+}
+
 function createDeviceId() {
   return `presenter-${Math.random().toString(36).slice(2, 10)}`;
 }
@@ -105,70 +152,70 @@ export function createKalamburyPresenterHostBridge(
   sessionCode: string,
   options: HostBridgeOptions = {},
 ) {
-  const channel = createChannel(sessionCode, options.BroadcastChannelImpl);
+  const channel =
+    options.channel ??
+    createPresenterChannel(sessionCode, options.BroadcastChannelImpl);
+  const shouldCloseChannel = !options.channel;
   let pairedDeviceId = options.initialPairedDeviceId ?? null;
+  let unsubscribe = () => undefined;
 
   function emitPairingChange(connected: boolean) {
     options.onPairingChange?.({ connected, pairedDeviceId });
   }
 
   if (channel) {
-    channel.onmessage = (event) => {
-      if (!isPresenterMessage(event.data)) {
-        return;
-      }
-
-      if (event.data.type === "controller-ready") {
+    unsubscribe = channel.subscribe((message) => {
+      if (message.type === "controller-ready") {
         if (!pairedDeviceId) {
-          pairedDeviceId = event.data.deviceId;
-          channel.postMessage({
+          pairedDeviceId = message.deviceId;
+          void channel.postMessage({
             type: "host-paired",
-            deviceId: event.data.deviceId,
+            deviceId: message.deviceId,
           } satisfies KalamburyPresenterMessage);
           emitPairingChange(true);
           return;
         }
 
-        if (pairedDeviceId === event.data.deviceId) {
-          channel.postMessage({
+        if (pairedDeviceId === message.deviceId) {
+          void channel.postMessage({
             type: "host-paired",
-            deviceId: event.data.deviceId,
+            deviceId: message.deviceId,
           } satisfies KalamburyPresenterMessage);
           emitPairingChange(true);
           return;
         }
 
-        channel.postMessage({
+        void channel.postMessage({
           type: "host-rejected",
-          deviceId: event.data.deviceId,
+          deviceId: message.deviceId,
         } satisfies KalamburyPresenterMessage);
       }
 
       if (
-        event.data.type === "controller-disconnected" &&
-        pairedDeviceId === event.data.deviceId
+        message.type === "controller-disconnected" &&
+        pairedDeviceId === message.deviceId
       ) {
         pairedDeviceId = null;
         emitPairingChange(false);
       }
 
       if (
-        event.data.type === "controller-reveal-request" &&
-        pairedDeviceId === event.data.deviceId
+        message.type === "controller-reveal-request" &&
+        pairedDeviceId === message.deviceId
       ) {
-        options.onRevealRequest?.({ deviceId: event.data.deviceId });
+        options.onRevealRequest?.({ deviceId: message.deviceId });
       }
 
       if (
-        event.data.type === "controller-reroll-request" &&
-        pairedDeviceId === event.data.deviceId
+        message.type === "controller-reroll-request" &&
+        pairedDeviceId === message.deviceId
       ) {
-        options.onRerollRequest?.({ deviceId: event.data.deviceId });
+        options.onRerollRequest?.({ deviceId: message.deviceId });
       }
-    };
+    });
 
     if (pairedDeviceId) {
-      channel.postMessage({
+      void channel.postMessage({
         type: "host-probe",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
@@ -181,14 +228,14 @@ export function createKalamburyPresenterHostBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "presenter-phrase",
         deviceId: pairedDeviceId,
         ...payload,
       } satisfies KalamburyPresenterMessage);
     },
     clearPhrase() {
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "presenter-clear",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
@@ -198,7 +245,7 @@ export function createKalamburyPresenterHostBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "host-preview-start",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
@@ -208,7 +255,7 @@ export function createKalamburyPresenterHostBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "host-preview-finish",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
@@ -218,18 +265,23 @@ export function createKalamburyPresenterHostBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "host-preview-reset",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
     },
     disconnectPresenterDevice() {
       pairedDeviceId = null;
-      channel?.postMessage({ type: "host-reset" } satisfies KalamburyPresenterMessage);
+      void channel?.postMessage({
+        type: "host-reset",
+      } satisfies KalamburyPresenterMessage);
       emitPairingChange(false);
     },
     destroy() {
-      channel?.close();
+      unsubscribe();
+      if (shouldCloseChannel) {
+        channel?.close?.();
+      }
     },
   };
 }
@@ -238,96 +290,87 @@ export function createKalamburyPresenterControllerBridge(
   sessionCode: string,
   options: ControllerBridgeOptions = {},
 ) {
-  const channel = createChannel(sessionCode, options.BroadcastChannelImpl);
+  const channel =
+    options.channel ??
+    createPresenterChannel(sessionCode, options.BroadcastChannelImpl);
+  const shouldCloseChannel = !options.channel;
   const deviceId = options.deviceId ?? createDeviceId();
   let isDestroyed = false;
+  let unsubscribe = () => undefined;
 
   function postReady() {
     if (isDestroyed) {
       return;
     }
 
-    channel?.postMessage({
+    void channel?.postMessage({
       type: "controller-ready",
       deviceId,
     } satisfies KalamburyPresenterMessage);
   }
 
   if (channel) {
-    channel.onmessage = (event) => {
-      if (!isPresenterMessage(event.data)) {
-        return;
-      }
-
-      if (
-        event.data.type === "host-probe" &&
-        event.data.deviceId === deviceId
-      ) {
+    unsubscribe = channel.subscribe((message) => {
+      if (message.type === "host-probe" && message.deviceId === deviceId) {
         postReady();
       }
 
-      if (
-        event.data.type === "host-paired" &&
-        event.data.deviceId === deviceId
-      ) {
+      if (message.type === "host-paired" && message.deviceId === deviceId) {
         options.onConnectionStateChange?.("connected");
       }
 
-      if (
-        event.data.type === "host-rejected" &&
-        event.data.deviceId === deviceId
-      ) {
+      if (message.type === "host-rejected" && message.deviceId === deviceId) {
         options.onConnectionStateChange?.("rejected");
       }
 
-      if (event.data.type === "host-reset") {
+      if (message.type === "host-reset") {
         options.onConnectionStateChange?.("pending");
         options.onPreviewStateChange?.("pending-reveal");
         options.onPhraseChange?.(null);
       }
 
       if (
-        event.data.type === "presenter-clear" &&
-        (!event.data.deviceId || event.data.deviceId === deviceId)
+        message.type === "presenter-clear" &&
+        (!message.deviceId || message.deviceId === deviceId)
       ) {
         options.onPhraseChange?.(null);
       }
 
       if (
-        event.data.type === "host-preview-start" &&
-        event.data.deviceId === deviceId
+        message.type === "host-preview-start" &&
+        message.deviceId === deviceId
       ) {
         options.onPreviewStateChange?.("preview");
       }
 
       if (
-        event.data.type === "host-preview-finish" &&
-        event.data.deviceId === deviceId
+        message.type === "host-preview-finish" &&
+        message.deviceId === deviceId
       ) {
         options.onPreviewStateChange?.("hidden-live");
       }
 
       if (
-        event.data.type === "host-preview-reset" &&
-        event.data.deviceId === deviceId
+        message.type === "host-preview-reset" &&
+        message.deviceId === deviceId
       ) {
         options.onPreviewStateChange?.("pending-reveal");
       }
 
       if (
-        event.data.type === "presenter-phrase" &&
-        event.data.deviceId === deviceId
+        message.type === "presenter-phrase" &&
+        message.deviceId === deviceId
       ) {
         options.onPhraseChange?.({
-          phrase: event.data.phrase,
-          categoryLabel: event.data.categoryLabel,
-          wordCount: event.data.wordCount,
-          presenterName: event.data.presenterName,
-          phraseChangeAllowed: event.data.phraseChangeAllowed,
-          phraseChangeRemaining: event.data.phraseChangeRemaining,
+          phrase: message.phrase,
+          categoryLabel: message.categoryLabel,
+          wordCount: message.wordCount,
+          presenterName: message.presenterName,
+          phraseChangeAllowed: message.phraseChangeAllowed,
+          phraseChangeRemaining: message.phraseChangeRemaining,
         });
       }
-    };
+    });
   }
 
   return {
@@ -345,7 +388,7 @@ export function createKalamburyPresenterControllerBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "controller-reveal-request",
         deviceId,
       } satisfies KalamburyPresenterMessage);
@@ -355,7 +398,7 @@ export function createKalamburyPresenterControllerBridge(
         return;
       }
 
-      channel?.postMessage({
+      void channel?.postMessage({
         type: "controller-reroll-request",
         deviceId,
       } satisfies KalamburyPresenterMessage);
@@ -366,11 +409,14 @@ export function createKalamburyPresenterControllerBridge(
       }
 
       isDestroyed = true;
-      channel?.postMessage({
+      unsubscribe();
+      void channel?.postMessage({
         type: "controller-disconnected",
         deviceId,
       } satisfies KalamburyPresenterMessage);
-      channel?.close();
+      if (shouldCloseChannel) {
+        channel?.close?.();
+      }
     },
   };
 }

@@ -5,7 +5,12 @@ import {
 } from "@project-party/shared";
 
 import { createSession } from "./index.ts";
-import { getSessionByCode, joinSession } from "./session-store.ts";
+import {
+  getSessionByCode,
+  getSessionEventsAfter,
+  joinSession,
+  publishSessionEvent,
+} from "./session-store.ts";
 import type { WorkerEnv } from "./cloudflare-entry.ts";
 
 export async function handleRequest(
@@ -43,19 +48,6 @@ export async function handleRequest(
     return Response.json(session, { status: 201 });
   }
 
-  if (request.method === "GET" && url.pathname.startsWith("/api/sessions/")) {
-    const sessionCode = normalizeSessionCode(
-      url.pathname.replace("/api/sessions/", ""),
-    );
-    const session = await getSessionByCode(sessionCode, env);
-
-    if (!session) {
-      return Response.json({ error: "Session not found" }, { status: 404 });
-    }
-
-    return Response.json(session);
-  }
-
   if (request.method === "POST" && url.pathname === "/api/sessions/join") {
     const body = (await request.json()) as {
       sessionCode: string;
@@ -71,6 +63,61 @@ export async function handleRequest(
     }
 
     return Response.json(joined);
+  }
+
+  if (
+    request.method === "GET" &&
+    url.pathname.startsWith("/api/sessions/") &&
+    url.pathname.endsWith("/events")
+  ) {
+    const sessionCode = normalizeSessionCode(
+      url.pathname.replace("/api/sessions/", "").replace("/events", ""),
+    );
+    const after = Number(url.searchParams.get("after") ?? "0");
+    const events = await getSessionEventsAfter(sessionCode, after, env);
+
+    if (!events) {
+      return Response.json({ error: "Session not found" }, { status: 404 });
+    }
+
+    return Response.json(events);
+  }
+
+  if (
+    request.method === "POST" &&
+    url.pathname.startsWith("/api/sessions/") &&
+    url.pathname.endsWith("/events")
+  ) {
+    const sessionCode = normalizeSessionCode(
+      url.pathname.replace("/api/sessions/", "").replace("/events", ""),
+    );
+    const body = (await request.json()) as {
+      id?: string;
+      event: string;
+      payload?: unknown;
+      sourceClientId: string;
+      createdAt?: string;
+    };
+    const eventRecord = await publishSessionEvent(sessionCode, body, env);
+
+    if (!eventRecord) {
+      return Response.json({ error: "Session not found" }, { status: 404 });
+    }
+
+    return Response.json(eventRecord, { status: 201 });
+  }
+
+  if (request.method === "GET" && url.pathname.startsWith("/api/sessions/")) {
+    const sessionCode = normalizeSessionCode(
+      url.pathname.replace("/api/sessions/", ""),
+    );
+    const session = await getSessionByCode(sessionCode, env);
+
+    if (!session) {
+      return Response.json({ error: "Session not found" }, { status: 404 });
+    }
+
+    return Response.json(session);
   }
 
   return Response.json({ error: "Not found" }, { status: 404 });

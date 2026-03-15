@@ -27,7 +27,9 @@ export type {
   SessionCreateResponse,
   SessionJoinRequest,
   SessionJoinResponse,
+  SessionParticipant,
   SessionRecord,
+  SessionTransportEvent,
 } from "./session.ts";
 export type {
   CatalogGame,

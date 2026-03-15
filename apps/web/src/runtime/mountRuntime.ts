@@ -4,6 +4,7 @@ import type {
   RuntimePlayer,
 } from "@project-party/game-runtime";
 import type { PlayerRole, RuntimeDevice } from "@project-party/types";
+import { createSessionTransport } from "./session-transport.ts";
 
 type RuntimeSession = {
   sessionId: string;
@@ -34,6 +35,9 @@ export function mountGameRuntime(
     get: <T>(_key: string) => null as T | null,
     set: <T>(_key: string, _value: T) => undefined,
   };
+  const sessionTransport = createSessionTransport({
+    sessionCode: input.session.sessionCode,
+  });
   const runtime = input.definition.createRuntime({
     sessionId: input.session.sessionId,
     sessionCode: input.session.sessionCode,
@@ -43,10 +47,11 @@ export function mountGameRuntime(
     config: input.session.config,
     players: input.players,
     transport: {
-      send: (event, payload) => {
+      send: async (event, payload) => {
         input.onTransport?.(event, payload);
+        await sessionTransport.send(event, payload);
       },
-      on: () => () => undefined,
+      on: (event, handler) => sessionTransport.on(event, handler),
     },
     storage: {
       get: <T>(key: string) => storage.get<T>(key),
@@ -66,6 +71,7 @@ export function mountGameRuntime(
     },
     async destroy() {
       await runtime.destroy?.();
+      sessionTransport.destroy();
       input.unmount();
     },
   };

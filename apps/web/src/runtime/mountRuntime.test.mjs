@@ -8,6 +8,20 @@ test("mountGameRuntime creates runtime with storage, transport, and ui bindings"
   const transportEvents = [];
   let destroyCalls = 0;
   const store = new Map();
+  globalThis.fetch = async (input, init) => {
+    if (init?.method === "POST") {
+      const body = init.body ? JSON.parse(String(init.body)) : {};
+      return new Response(JSON.stringify({ ...body, offset: 1 }), {
+        status: 201,
+        headers: { "content-type": "application/json" },
+      });
+    }
+
+    return new Response(JSON.stringify({ events: [], nextOffset: 0 }), {
+      status: 200,
+      headers: { "content-type": "application/json" },
+    });
+  };
 
   const runtime = mountGameRuntime({
     definition: {

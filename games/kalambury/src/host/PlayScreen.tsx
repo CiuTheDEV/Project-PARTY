@@ -20,6 +20,7 @@ import {
   startKalamburyTurn,
 } from "../runtime/state-machine";
 import {
+  type KalamburyPresenterChannel,
   type KalamburyPresenterPairState,
   createKalamburyPresenterHostBridge,
 } from "../shared/presenter-bridge";
@@ -27,6 +28,7 @@ import {
 type PlayScreenProps = {
   setupPayload: KalamburySetupPayload;
   sessionCode?: string;
+  transportChannel?: KalamburyPresenterChannel;
   onBackToHub: () => void;
 };
 
@@ -296,6 +298,7 @@ function getDrawCardStyle(
 export function PlayScreen({
   setupPayload,
   sessionCode,
+  transportChannel,
   onBackToHub,
 }: PlayScreenProps) {
   const [playState, setPlayState] = useState<KalamburyPlayState | null>(() =>
@@ -412,6 +415,7 @@ export function PlayScreen({
     }
 
     const bridge = createKalamburyPresenterHostBridge(sessionCode, {
+      channel: transportChannel,
       initialPairedDeviceId: setupPayload.presenterDevice?.pairedDeviceId ?? null,
       onPairingChange: setPresenterPairState,
       onRevealRequest: () => {
@@ -452,6 +456,7 @@ export function PlayScreen({
     setupPayload.presenterDevice?.enabled,
     setupPayload.presenterDevice?.pairedDeviceId,
     setupPayload,
+    transportChannel,
   ]);
 
   useEffect(() => {

@@ -4,6 +4,8 @@ import type {
   SessionCreateResponse,
   SessionJoinRequest,
   SessionJoinResponse,
+  SessionRecord,
+  SessionTransportEvent,
 } from "@project-party/types";
 
 export async function fetchCatalogGamesViaApi(): Promise<CatalogGame[]> {
@@ -46,24 +48,14 @@ export async function createSessionViaApi(
   return (await response.json()) as SessionCreateResponse;
 }
 
-export async function fetchSessionViaApi(sessionCode: string): Promise<
-  SessionCreateResponse & {
-    gameId: string;
-    config: Record<string, unknown>;
-    createdAt: string;
-  }
-> {
+export async function fetchSessionViaApi(sessionCode: string): Promise<SessionRecord> {
   const response = await fetch(`/api/sessions/${sessionCode}`);
 
   if (!response.ok) {
     throw new Error(`Failed to fetch session: ${response.status}`);
   }
 
-  return (await response.json()) as SessionCreateResponse & {
-    gameId: string;
-    config: Record<string, unknown>;
-    createdAt: string;
-  };
+  return (await response.json()) as SessionRecord;
 }
 
 export async function joinSessionViaApi(
@@ -82,4 +74,50 @@ export async function joinSessionViaApi(
   }
 
   return (await response.json()) as SessionJoinResponse;
+}
+
+export async function publishSessionEventViaApi(
+  sessionCode: string,
+  payload: {
+    id?: string;
+    event: string;
+    payload?: unknown;
+    sourceClientId: string;
+    createdAt?: string;
+  },
+): Promise<SessionTransportEvent> {
+  const response = await fetch(`/api/sessions/${sessionCode}/events`, {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to publish session event: ${response.status}`);
+  }
+
+  return (await response.json()) as SessionTransportEvent;
+}
+
+export async function fetchSessionEventsViaApi(
+  sessionCode: string,
+  afterOffset: number,
+): Promise<{
+  events: SessionTransportEvent[];
+  nextOffset: number;
+}> {
+  const response = await fetch(
+    `/api/sessions/${sessionCode}/events?after=${afterOffset}`,
+  );
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch session events: ${response.status}`);
+  }
+
+  return (await response.json()) as {
+    events: SessionTransportEvent[];
+    nextOffset: number;
+  };
 }
