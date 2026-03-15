@@ -31,6 +31,62 @@ That usually means consistency in:
 - overlay treatment,
 - and overall polish.
 
+## Shared Game UI Shell
+
+The `main menu` and `setup screen` of each game should use a shared game UI shell.
+
+This is a platform-level UI rule.
+It does not mean that every game must have identical content or identical implementation.
+
+What should stay consistent across games:
+- screen hierarchy,
+- section rhythm,
+- CTA priority,
+- spacing logic,
+- visual density,
+- and the overall sense that the player is still inside the same Project Party product.
+
+What may vary by game:
+- copy,
+- settings fields,
+- supporting illustrations,
+- iconography details,
+- and color palette / theme tokens.
+
+The visual reference point is the current entry flow quality established by Kalambury and Tajniacy.
+Treat them as implementation references, not as files to copy 1:1.
+
+## Suggested Main Menu Anatomy
+
+The exact content depends on the game, but a strong `main menu` usually includes:
+- a hero area with the game name, short pitch, and visual identity,
+- a primary CTA leading into setup or start,
+- a compact area for key info such as player format, device expectations, or match style,
+- optional secondary blocks such as rules, modes, or quick explanation,
+- a layout that reads clearly from top to bottom without feeling like a dashboard.
+
+Good defaults:
+- make the primary action obvious immediately,
+- avoid burying the core action under decorative content,
+- keep supporting information scannable,
+- use the color palette to reinforce identity, not to fight readability.
+
+## Suggested Setup Screen Anatomy
+
+The exact fields depend on the game, but a strong `setup screen` usually includes:
+- a clear page header with context and purpose,
+- grouped settings sections,
+- a stable visual hierarchy between important and optional options,
+- a clear start CTA,
+- and a predictable way to go back or revise choices.
+
+Good defaults:
+- group related options together,
+- avoid long unstructured forms,
+- keep the most important settings near the top,
+- make the final launch action visually decisive,
+- preserve readability on both desktop and mobile.
+
 ## Game Freedom
 
 Gameplay screens may vary significantly between games.
@@ -41,6 +97,7 @@ Shared identity should be strongest in:
 - game cards,
 - filters/search,
 - game entry menus,
+- game setup screens,
 - common controls,
 - and cross-game shared components.
 
