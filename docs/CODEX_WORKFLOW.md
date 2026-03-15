@@ -74,6 +74,52 @@ pnpm playwright:debug:launch
 
 Jeśli dopisujesz komendy do dokumentacji, bazuj na realnych skryptach z `package.json`, a nie na przykładowych komendach z internetu.
 
+## Przykładowe workflow
+
+### Workflow: dodanie nowej gry
+
+1. Przeczytaj `docs/CREATING_NEW_GAME.md`.
+2. Utwórz `games/<game-id>/` i dodaj entrypoint `src/index.ts`.
+3. Dodaj grę do `apps/web/src/lib/gameRegistry.ts`.
+4. W razie potrzeby dodaj shortcut route w `apps/web/src/App.tsx`.
+5. Uruchom:
+
+```powershell
+pnpm install
+pnpm --filter @project-party/game-my-game test
+pnpm --filter @project-party/web test
+```
+
+### Workflow: poprawka w platformie
+
+Typowe pliki wejścia:
+- `apps/web/src/App.tsx`
+- `apps/web/src/pages/GameLaunchPage.tsx`
+- `apps/web/src/lib/gameRegistry.ts`
+- `apps/worker/src/http.ts`
+
+Typowa walidacja:
+
+```powershell
+pnpm --filter @project-party/web test
+pnpm --filter @project-party/worker test
+```
+
+### Workflow: zmiana w shared package
+
+Najpierw zadaj sobie pytanie: czy to naprawdę jest wspólne dla więcej niż jednej gry lub platformy?
+
+Jeśli tak, sprawdź istniejące testy:
+- `packages/shared/src/catalog.test.ts`
+- `packages/shared/src/session.test.ts`
+
+Potem uruchom:
+
+```powershell
+pnpm test
+pnpm typecheck
+```
+
 ## Zasady implementacyjne
 
 - Preferuj micro-buildy.

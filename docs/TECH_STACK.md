@@ -48,14 +48,30 @@ Repo powinno testować trzy warstwy:
 - testy dla `apps/web` obejmują routing, launcher, runtime integration i helpery platformowe,
 - testy dla `apps/worker` obejmują HTTP API, session lifecycle i lekkie kontrakty backendowe.
 
+Przykłady z repo:
+- `apps/web/src/platform/catalog.test.mjs`
+- `apps/web/src/runtime/mountRuntime.test.mjs`
+- `apps/web/src/game-launch-parity.test.mjs`
+- `apps/worker/src/http.test.ts`
+
 ### Shared packages
 - `packages/*` powinny mieć testy tylko tam, gdzie logika jest naprawdę współdzielona,
 - nie przenoś semantyki jednej gry do shared tylko po to, aby "mieć wspólne testy".
+
+Przykłady z repo:
+- `packages/shared/src/catalog.test.ts`
+- `packages/shared/src/session.test.ts`
 
 ### Game modules
 - każda gra testuje własne metadata, settings, runtime state i helpery specyficzne dla gry,
 - testy game module powinny skupiać się na kontrakcie integracyjnym oraz na logice samej gry,
 - wspólny layout wejścia do gry nie zastępuje testów gameplayu.
+
+Przykłady z repo:
+- `games/kalambury/src/meta.test.ts`
+- `games/kalambury/src/runtime/state-machine.test.ts`
+- `games/kalambury/src/host/setup-parity.test.js`
+- `games/kalambury/src/shared/setup-storage.test.ts`
 
 ## Running tests
 
@@ -67,6 +83,33 @@ pnpm --filter @project-party/web test
 pnpm --filter @project-party/worker test
 pnpm --filter @project-party/game-kalambury test
 pnpm --filter @project-party/game-tajniacy test
+```
+
+### Przykładowe scenariusze testowe
+
+Tylko platforma web:
+
+```powershell
+pnpm --filter @project-party/web test
+```
+
+Tylko worker:
+
+```powershell
+pnpm --filter @project-party/worker test
+```
+
+Tylko jedna gra:
+
+```powershell
+pnpm --filter @project-party/game-kalambury test
+```
+
+Całe repo po zmianie wspólnego kontraktu:
+
+```powershell
+pnpm test
+pnpm typecheck
 ```
 
 E2E / smoke flow:

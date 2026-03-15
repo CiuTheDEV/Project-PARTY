@@ -1,46 +1,63 @@
 # REPO_MAP.md
 
-Szybka mapa aktywnego repo Project Party po migracji huba i Kalamburow.
+Szybka mapa aktywnego repo Project Party.
 
 ## Root
 
-- [`/home/mateo/projects/project-party/AGENTS.md`](/home/mateo/projects/project-party/AGENTS.md) — zasady pracy agentów i workflow migracyjnego
-- [`/home/mateo/projects/project-party/README.md`](/home/mateo/projects/project-party/README.md) — szybki opis repo i punkt startowy
-- [`/home/mateo/projects/project-party/docs`](/home/mateo/projects/project-party/docs) — aktywna dokumentacja architektoniczna, produktowa i workflow
-- [`/home/mateo/projects/project-party/apps`](/home/mateo/projects/project-party/apps) — aplikacje platformowe
-- [`/home/mateo/projects/project-party/games`](/home/mateo/projects/project-party/games) — autonomiczne moduły gier
-- [`/home/mateo/projects/project-party/packages`](/home/mateo/projects/project-party/packages) — realnie współdzielone biblioteki
-- [`/home/mateo/projects/project-party/_legacy/old-repo`](/home/mateo/projects/project-party/_legacy/old-repo) — archiwum referencyjne, nie aktywna część produktu
+- `AGENTS.md` - zasady pracy agentów i kolejność czytania dokumentacji
+- `README.md` - szybki opis repo i punkt startowy
+- `docs/` - aktywna dokumentacja architektoniczna, produktowa i workflow
+- `apps/` - aplikacje platformowe
+- `games/` - autonomiczne moduły gier
+- `packages/` - współdzielone biblioteki
+- `scripts/` - helpery uruchamiania toolingu i testów
+- `tests/` - testy i helpery repo-level
 
 ## apps/
 
-- [`/home/mateo/projects/project-party/apps/web`](/home/mateo/projects/project-party/apps/web) — hub, routing platformy, join flow, entrypoint runtime gier
-- [`/home/mateo/projects/project-party/apps/worker`](/home/mateo/projects/project-party/apps/worker) — katalog gier, create-session, join flow, session lookup
+- `apps/web/` - hub, routing platformy, game details, launch flow, controller runtime
+- `apps/worker/` - API katalogu gier, sesje, join flow, session lookup
 
 ## games/
 
-- [`/home/mateo/projects/project-party/games/kalambury`](/home/mateo/projects/project-party/games/kalambury) — w pełni wydzielony moduł referencyjny gry
-- [`/home/mateo/projects/project-party/games/tajniacy`](/home/mateo/projects/project-party/games/tajniacy) — placeholder kolejnej gry
+- `games/kalambury/` - referencyjny moduł gry z host/controller/setup/runtime
+- `games/tajniacy/` - drugi moduł gry z odmiennym contentem i wspólnym shell-em wejścia
 
 ## packages/
 
-- [`/home/mateo/projects/project-party/packages/types`](/home/mateo/projects/project-party/packages/types) — wspólne typy domenowe
-- [`/home/mateo/projects/project-party/packages/shared`](/home/mateo/projects/project-party/packages/shared) — lekkie helpery bez semantyki jednej gry
-- [`/home/mateo/projects/project-party/packages/ui`](/home/mateo/projects/project-party/packages/ui) — współdzielone komponenty UI
-- [`/home/mateo/projects/project-party/packages/design-system`](/home/mateo/projects/project-party/packages/design-system) — tokeny i podstawy design systemu
-- [`/home/mateo/projects/project-party/packages/game-runtime`](/home/mateo/projects/project-party/packages/game-runtime) — runtime contract gry
-- [`/home/mateo/projects/project-party/packages/game-sdk`](/home/mateo/projects/project-party/packages/game-sdk) — helpery do definiowania modułów gier
+- `packages/types/` - wspólne typy domenowe
+- `packages/shared/` - lekkie helpery bez semantyki jednej gry
+- `packages/ui/` - współdzielone komponenty UI
+- `packages/design-system/` - tokeny i podstawy design systemu
+- `packages/game-runtime/` - runtime contract gry
+- `packages/game-sdk/` - helpery do definiowania modułów gier
 
 ## docs/
 
 Najważniejsze aktywne dokumenty:
 
-- [`/home/mateo/projects/project-party/docs/PROJECT_CONTEXT.md`](/home/mateo/projects/project-party/docs/PROJECT_CONTEXT.md)
-- [`/home/mateo/projects/project-party/docs/REPO_ARCHITECTURE.md`](/home/mateo/projects/project-party/docs/REPO_ARCHITECTURE.md)
-- [`/home/mateo/projects/project-party/docs/TECH_STACK.md`](/home/mateo/projects/project-party/docs/TECH_STACK.md)
-- [`/home/mateo/projects/project-party/docs/GAME_MODULE_STANDARD.md`](/home/mateo/projects/project-party/docs/GAME_MODULE_STANDARD.md)
-- [`/home/mateo/projects/project-party/docs/RUNTIME_CONTRACT.md`](/home/mateo/projects/project-party/docs/RUNTIME_CONTRACT.md)
-- [`/home/mateo/projects/project-party/docs/CODE_BOUNDARIES.md`](/home/mateo/projects/project-party/docs/CODE_BOUNDARIES.md)
-- [`/home/mateo/projects/project-party/docs/CODEX_WORKFLOW.md`](/home/mateo/projects/project-party/docs/CODEX_WORKFLOW.md)
+- `docs/PROJECT_CONTEXT.md` - czym jest Project Party i gdzie przebiegają granice produktu
+- `docs/REPO_ARCHITECTURE.md` - warstwy repo i odpowiedzialności
+- `docs/TECH_STACK.md` - stack, strategia testów, przykłady uruchomień
+- `docs/GAME_MODULE_STANDARD.md` - kontrakt modułu gry
+- `docs/RUNTIME_CONTRACT.md` - wspólny mechanizm uruchamiania runtime
+- `docs/CODE_BOUNDARIES.md` - safe / risky / sensitive obszary zmian
+- `docs/CODEX_WORKFLOW.md` - workflow pracy w repo
+- `docs/CREATING_NEW_GAME.md` - onboarding dla nowej gry
+- `docs/TESTING.md` - praktyczna ściąga testów i komend
+- `docs/TROUBLESHOOTING.md` - najczęstsze problemy i checklisty naprawcze
+- `docs/UI_RULES.md` - wspólny shell UI i zasady wizualne
 
-Historyczne materiały planistyczne i parity notes zostają w [`/home/mateo/projects/project-party/docs/plans`](/home/mateo/projects/project-party/docs/plans) jako archiwum decyzji i przebiegu migracji.
+Historia decyzji i planów:
+
+- `docs/plans/` - design docs, implementation plans i notatki z poprzednich iteracji
+
+## Szybkie ścieżki startowe
+
+Jeśli pracujesz nad:
+
+- nową grą: zacznij od `docs/CREATING_NEW_GAME.md`
+- kontraktem gry: zacznij od `docs/GAME_MODULE_STANDARD.md`
+- granicami architektury: przeczytaj `docs/PROJECT_CONTEXT.md`, `docs/REPO_ARCHITECTURE.md`, `docs/CODE_BOUNDARIES.md`
+- wspólnym UI: przeczytaj `docs/UI_RULES.md`
+- workflow Codexa: przeczytaj `docs/CODEX_WORKFLOW.md`
