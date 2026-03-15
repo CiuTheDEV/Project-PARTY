@@ -8064,3 +8064,30 @@
   min-height: 56px;
   font-size: clamp(1rem, 1.5vw, 1.3rem);
 }
+
+.kalambury-presenter-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 1.1rem;
+}
+
+.kalambury-presenter-status--connected {
+  background: rgba(56, 232, 100, 0.15);
+  color: rgba(56, 232, 100, 0.9);
+}
+
+.kalambury-presenter-status--disconnected {
+  background: rgba(232, 56, 80, 0.15);
+  color: rgba(232, 56, 80, 0.9);
+  animation: kalambury-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes kalambury-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
