@@ -20,10 +20,12 @@ Stack ma być:
 - TypeScript
 - Vite
 - React Router
+- deploy na Cloudflare Pages
 
 ### Backend / session infra (`apps/worker`)
 - Cloudflare Workers
 - Hono
+- Durable Objects dla stateful session coordination i realtime w produkcji
 
 ### Współdzielony kod
 - TypeScript packages w `packages/*`
@@ -39,6 +41,22 @@ Stack ma być:
 ### Testy
 - testy jednostkowe i integracyjne na poziomie workspace'ów
 - Playwright dla krytycznych flow platformy i wejścia do gry
+
+## Session i realtime model
+
+Docelowo produkcja opiera się o Cloudflare Workers + Durable Objects.
+
+To oznacza:
+- API sesji działa w `apps/worker`,
+- stan współdzielony sesji może być utrzymywany przez Durable Objects,
+- realtime i koordynacja uczestników nie muszą być trzymane w stateless HTTP.
+
+Jednocześnie lokalny development nie powinien zależeć wyłącznie od Durable Objects.
+
+Dlatego:
+- `BroadcastChannel` pozostaje do lokalnych testów i dev flow,
+- lokalny transport może być prostszy niż produkcyjny,
+- runtime contract nie może zakładać tylko jednego backend transportu.
 
 ## Strategia testów
 
@@ -118,15 +136,19 @@ E2E / smoke flow:
 
 ## Dlaczego ten stack
 
-### React + Vite
-Daje szybki development i nie wciska na siłę jednego modelu aplikacji serwerowej.
+### React + Vite + Pages
+Daje szybki development po stronie frontendu i prosty deploy na edge-hosting Cloudflare bez mieszania hostingu UI z backendowym session infra.
 
-### Cloudflare Workers
-Na MVP daje tani backend pod:
+### Workers + Durable Objects
+Na MVP i dalszy rozwój daje sensowny backend pod:
 - tworzenie sesji,
 - join codes,
 - lekkie API,
-- realtime / durable patterns w przyszłości.
+- realtime / session coordination,
+- stan per sesja lub per pokój tam, gdzie jest to potrzebne.
+
+### BroadcastChannel w local/dev
+Pozwala zachować szybki lokalny development i testowanie bez uzależniania każdej iteracji od pełnego środowiska produkcyjnego Cloudflare.
 
 ### pnpm + turbo
 Daje porządek przy:
@@ -142,4 +164,5 @@ Stack nie może wymuszać jednej prawdy gameplayowej.
 To znaczy:
 - framework platformy nie może narzucić struktury każdej grze,
 - backend nie może zakładać jednego modelu roli,
-- runtime nie może zakładać, że każda gra ma hosta i kontrolery.
+- runtime nie może zakładać, że każda gra ma hosta i kontrolery,
+- Durable Objects nie mogą wymusić jednego modelu rozgrywki wszystkim grom.
