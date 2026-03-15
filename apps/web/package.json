@@ -1,0 +1,29 @@
+{
+  "name": "@project-party/web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node ../../scripts/run-tool.mjs vite",
+    "build": "node ../../scripts/run-tool.mjs vite build",
+    "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "lint": "node ../../scripts/run-tool.mjs biome check src vite.config.ts",
+    "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.mjs src/platform/*.test.mjs src/api/*.test.mjs src/runtime/*.test.mjs"
+  },
+  "dependencies": {
+    "@project-party/design-system": "workspace:*",
+    "@project-party/game-runtime": "workspace:*",
+    "@project-party/shared": "workspace:*",
+    "@project-party/ui": "workspace:*",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.3.0",
+    "@project-party/game-tajniacy": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.4",
+    "vite": "^6.2.0"
+  }
+}

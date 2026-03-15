@@ -1,0 +1,421 @@
+﻿<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kalambury Presentation Variants</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg-1: #09060f;
+        --bg-2: #130c1c;
+        --panel: rgba(14, 10, 22, 0.96);
+        --panel-2: rgba(18, 13, 28, 0.96);
+        --border: rgba(228, 114, 255, 0.16);
+        --border-strong: rgba(228, 114, 255, 0.3);
+        --text: #f7f4fb;
+        --text-soft: #b9afcb;
+        --chip: rgba(31, 24, 44, 0.95);
+        --pink: #ff3f96;
+        --violet: #ab8bff;
+        --cyan: #44e4ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Segoe UI", "Plus Jakarta Sans", sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 50% 0%, rgba(171, 139, 255, 0.18), transparent 32%),
+          radial-gradient(circle at 0% 30%, rgba(68, 228, 255, 0.08), transparent 24%),
+          linear-gradient(180deg, var(--bg-2), var(--bg-1) 72%);
+      }
+
+      .page {
+        display: grid;
+        gap: 44px;
+        padding: 36px;
+      }
+
+      .variant {
+        position: relative;
+        width: 1820px;
+        height: 920px;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 32px;
+        background: linear-gradient(180deg, rgba(10, 8, 17, 0.96), rgba(6, 5, 11, 0.98));
+        box-shadow: 0 40px 120px rgba(0, 0, 0, 0.45);
+      }
+
+      .variant::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(255, 79, 216, 0.1), transparent 36%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 18%);
+        pointer-events: none;
+      }
+
+      .topbar {
+        position: absolute;
+        inset: 20px 28px auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 64px;
+        padding: 0 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 22px;
+        background: rgba(12, 10, 19, 0.9);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 40px;
+        padding: 0 18px;
+        border: 1px solid rgba(171, 139, 255, 0.32);
+        border-radius: 999px;
+        color: #e7dcff;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .settings {
+        min-height: 44px;
+        padding: 0 18px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        background: rgba(21, 16, 31, 0.9);
+        color: var(--text);
+        font-size: 18px;
+        font-weight: 700;
+      }
+
+      .scene {
+        position: absolute;
+        inset: 108px 28px 28px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 30px;
+        background: linear-gradient(180deg, rgba(10, 8, 18, 0.98), rgba(7, 5, 13, 0.98));
+      }
+
+      .scene-inner {
+        position: absolute;
+        inset: 46px 42px;
+      }
+
+      .turn {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        color: #b9a8f7;
+        font-size: 30px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .presenter-card {
+        display: grid;
+        align-content: space-between;
+        padding: 34px 30px 24px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 30px;
+        background:
+          radial-gradient(circle at 50% 18%, rgba(171, 139, 255, 0.18), transparent 26%),
+          linear-gradient(180deg, rgba(27, 20, 41, 0.96), rgba(12, 10, 21, 0.98));
+      }
+
+      .presenter-label {
+        color: #ab99ec;
+        font-size: 34px;
+        font-weight: 900;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      .avatar {
+        display: grid;
+        place-items: center;
+        width: 154px;
+        height: 154px;
+        margin: 0 auto;
+        font-size: 106px;
+      }
+
+      .nameplate {
+        display: grid;
+        place-items: center;
+        min-height: 112px;
+        border: 2px solid rgba(255, 63, 150, 0.62);
+        border-radius: 24px;
+        background: rgba(8, 7, 17, 0.82);
+        font-size: 54px;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .status-card,
+      .meta-panel,
+      .timeline-panel {
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(171, 139, 255, 0.08), transparent 36%),
+          linear-gradient(180deg, rgba(18, 12, 29, 0.96), rgba(10, 8, 17, 0.98));
+      }
+
+      .headline {
+        margin: 0;
+        font-size: 66px;
+        font-weight: 900;
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+      }
+
+      .subcopy {
+        margin: 0;
+        color: var(--text-soft);
+        font-size: 28px;
+        line-height: 1.45;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+      }
+
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 54px;
+        padding: 0 24px;
+        border: 1px solid rgba(171, 139, 255, 0.2);
+        border-radius: 18px;
+        background: var(--chip);
+        color: #f0ecff;
+        font-size: 22px;
+        font-weight: 800;
+      }
+
+      .eyebrow {
+        color: #a191de;
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .step {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+
+      .step-index {
+        display: grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 999px;
+        background: rgba(255, 63, 150, 0.18);
+        color: #ff8cc4;
+        font-weight: 900;
+      }
+
+      .step strong {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 6px;
+      }
+
+      .step span {
+        color: var(--text-soft);
+        font-size: 22px;
+        line-height: 1.4;
+      }
+
+      .hint-bar {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        min-height: 74px;
+        padding: 0 24px;
+        border: 1px solid rgba(68, 228, 255, 0.18);
+        border-radius: 22px;
+        background: rgba(15, 22, 29, 0.52);
+      }
+
+      .hint-dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 999px;
+        background: var(--cyan);
+        box-shadow: 0 0 14px rgba(68, 228, 255, 0.65);
+      }
+
+      .hint-bar span {
+        color: #dff8ff;
+        font-size: 22px;
+        font-weight: 700;
+      }
+
+      .variant-1 .scene-inner {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 34px;
+        padding-top: 56px;
+      }
+
+      .variant-1 .presenter-card {
+        height: 600px;
+      }
+
+      .variant-1 .right-col {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        gap: 26px;
+      }
+
+      .variant-1 .status-card {
+        display: grid;
+        gap: 24px;
+        align-content: center;
+        padding: 36px 48px;
+        min-height: 320px;
+      }
+
+      .variant-2 .scene-inner {
+        padding-top: 58px;
+      }
+
+      .variant-2 .billboard {
+        display: grid;
+        justify-items: center;
+        gap: 26px;
+        width: min(100%, 1180px);
+        margin: 0 auto;
+        padding: 80px 80px 46px;
+        border: 1px solid var(--border-strong);
+        border-radius: 34px;
+        background:
+          radial-gradient(circle at 50% 0%, rgba(171, 139, 255, 0.12), transparent 32%),
+          linear-gradient(180deg, rgba(16, 11, 27, 0.98), rgba(8, 7, 15, 0.98));
+      }
+
+      .variant-2 .billboard .headline {
+        text-align: center;
+      }
+
+      .variant-2 .billboard .subcopy {
+        max-width: 940px;
+        text-align: center;
+      }
+
+      .variant-2 .footer-row {
+        position: absolute;
+        left: 42px;
+        right: 42px;
+        bottom: 40px;
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 34px;
+        align-items: end;
+      }
+
+      .variant-2 .presenter-card {
+        height: 280px;
+      }
+
+      .variant-2 .footer-meta {
+        display: flex;
+        justify-content: center;
+        gap: 14px;
+      }
+
+      .variant-3 .scene-inner {
+        display: grid;
+        grid-template-columns: 420px 1fr;
+        gap: 36px;
+        padding-top: 56px;
+      }
+
+      .variant-3 .presenter-card {
+        height: 600px;
+      }
+
+      .variant-3 .right-col {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        gap: 24px;
+      }
+
+      .variant-3 .timeline-panel {
+        display: grid;
+        gap: 24px;
+        padding: 34px 42px;
+      }
+
+      .variant-3 .meta-panel {
+        display: flex;
+        gap: 14px;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <section class="variant variant-3">
+        <header class="topbar">
+          <div class="badge">Prezentacja</div>
+          <button class="settings">Ustawienia</button>
+        </header>
+        <div class="scene">
+          <div class="scene-inner">
+            <article class="presenter-card">
+              <div class="presenter-label">Prezentuje</div>
+              <div class="avatar">đź™‚</div>
+              <div class="nameplate">Ewka</div>
+            </article>
+            <div class="right-col">
+              <div class="turn">Tura 1/3</div>
+              <section class="timeline-panel">
+                <div class="eyebrow">Kolejny krok</div>
+                <h1 class="headline">Prezenter odslania karte na telefonie</h1>
+                <div class="step">
+                  <div class="step-index">1</div>
+                  <div>
+                    <strong>Odkrycie karty</strong>
+                    <span>Telefon wywoluje reveal dopiero po swiadomym kliknieciu.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-index">2</div>
+                  <div>
+                    <strong>10 s na zapoznanie</strong>
+                    <span>Prezenter czyta haslo i ewentualnie zmienia je przed startem.</span>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-index">3</div>
+                  <div>
+                    <strong>Automatyczny start tury</strong>
+                    <span>Po 10 sekundach host przechodzi dalej bez dodatkowego klikania.</span>
+                  </div>
+                </div>
+              </section>    </main>
+  </body>
+</html>

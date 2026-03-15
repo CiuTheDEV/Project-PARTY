@@ -1,0 +1,8066 @@
+.app-shell--kalambury-setup {
+  --kalambury-setup-magenta: #ff4fd8;
+  --kalambury-setup-cyan: #38e8ff;
+  --kalambury-setup-amber: #ffb347;
+}
+
+.hero--kalambury-setup {
+  display: grid;
+  gap: 18px;
+  width: min(920px, 100%);
+  padding: 24px;
+  border-radius: 32px;
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 79, 216, 0.14),
+      transparent 30%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.04),
+      rgba(255, 255, 255, 0.02)
+    ), rgba(8, 8, 12, 0.84);
+}
+
+.kalambury-setup__header,
+.kalambury-setup__panel,
+.kalambury-setup__footer,
+.kalambury-setup-modal__panel {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(20px);
+}
+
+.kalambury-setup__header,
+.kalambury-setup__panel {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+  border-radius: 26px;
+}
+
+.kalambury-setup__header h1,
+.kalambury-setup__section-head h2,
+.kalambury-setup-modal__header h2 {
+  margin: 0;
+  color: var(--text-high);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: -0.04em;
+}
+
+.kalambury-setup__header h1 {
+  font-size: clamp(2.5rem, 6vw, 4.1rem);
+}
+
+.kalambury-setup__header .lead,
+.kalambury-setup__section-head p,
+.kalambury-presenter-toggle p,
+.kalambury-setup__empty-state {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+.kalambury-setup__section-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kalambury-setup__section-head h2 {
+  font-size: 1.35rem;
+}
+
+.kalambury-setup__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 58px;
+  min-height: 34px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.74);
+  font-weight: 700;
+}
+
+.kalambury-setup__players-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.kalambury-player-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  min-height: 176px;
+  padding: 18px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    ), rgba(14, 14, 20, 0.92);
+}
+
+.kalambury-player-card__remove {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.74);
+  font-size: 1rem;
+}
+
+.kalambury-player-card__remove:disabled {
+  opacity: 0.4;
+}
+
+.kalambury-player-card__avatar {
+  display: grid;
+  place-items: center;
+  width: 78px;
+  height: 78px;
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 179, 71, 0.24),
+    rgba(255, 79, 216, 0.18)
+  );
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.kalambury-player-card__name {
+  margin: 0;
+  min-width: 110px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 8, 12, 0.72);
+  color: var(--text-high);
+  font-weight: 700;
+  text-align: center;
+}
+
+.kalambury-player-card--add {
+  align-content: center;
+  justify-items: center;
+  border-style: dashed;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.kalambury-player-card__plus {
+  font-size: 3rem;
+  line-height: 1;
+}
+
+.kalambury-mode-trigger,
+.kalambury-secondary-action,
+.kalambury-footer-button,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms
+    ease, color 180ms ease;
+}
+
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  min-height: 56px;
+  border: 1px solid rgba(255, 79, 216, 0.42);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 79, 216, 0.22),
+    rgba(56, 232, 255, 0.14)
+  );
+  color: var(--text-high);
+}
+
+.kalambury-mode-trigger {
+  width: 100%;
+  font-size: 1.15rem;
+}
+
+.kalambury-mode-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kalambury-mode-summary {
+  display: grid;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.kalambury-mode-summary p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kalambury-mode-summary strong {
+  color: var(--text-high);
+  font-size: 1rem;
+}
+
+.kalambury-presenter-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.kalambury-presenter-toggle strong {
+  color: var(--text-high);
+  font-size: 1.05rem;
+}
+
+.kalambury-switch {
+  gap: 12px;
+  min-width: 172px;
+  min-height: 50px;
+  padding: 0 10px 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 16, 0.82);
+  color: rgba(255, 255, 255, 0.86);
+}
+
+.kalambury-switch--active {
+  border-color: rgba(56, 232, 255, 0.32);
+  background: rgba(56, 232, 255, 0.12);
+}
+
+.kalambury-switch__thumb {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kalambury-category-chip {
+  min-height: 56px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  background: rgba(10, 10, 16, 0.82);
+  color: rgba(255, 255, 255, 0.9);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.kalambury-category-chip--selected {
+  border-color: rgba(255, 79, 216, 0.56);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 79, 216, 0.18),
+    rgba(56, 232, 255, 0.12)
+  );
+  box-shadow: 0 0 20px rgba(255, 79, 216, 0.12);
+}
+
+.kalambury-category-meta {
+  display: grid;
+  gap: 10px;
+}
+
+.kalambury-category-meta__title {
+  color: var(--text-high);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+.kalambury-category-tags,
+.kalambury-category-actions,
+.kalambury-setup-modal__actions,
+.kalambury-modal-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.kalambury-category-tag,
+.kalambury-secondary-action,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-footer-button--ghost {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kalambury-category-tag {
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.kalambury-modal-option--active {
+  border-color: rgba(255, 79, 216, 0.52);
+  background: rgba(255, 79, 216, 0.14);
+}
+
+.kalambury-setup__footer {
+  position: sticky;
+  bottom: 12px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.38fr) minmax(0, 0.62fr);
+  gap: 14px;
+  padding: 16px;
+  border-radius: 26px;
+}
+
+.kalambury-footer-button {
+  min-height: 60px;
+  font-size: 1.05rem;
+}
+
+.kalambury-footer-button--primary:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+  box-shadow: none;
+}
+
+.kalambury-setup-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(3, 4, 9, 0.72);
+  backdrop-filter: blur(12px);
+}
+
+.kalambury-setup-modal__panel {
+  display: grid;
+  gap: 18px;
+  width: min(100%, 620px);
+  padding: 24px;
+  border-radius: 28px;
+}
+
+.kalambury-setup-modal__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: start;
+}
+
+.kalambury-modal-group {
+  display: grid;
+  gap: 12px;
+}
+
+.kalambury-modal-group__label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kalambury-mode-trigger:hover,
+.kalambury-secondary-action:hover,
+.kalambury-footer-button:hover:not(:disabled),
+.kalambury-modal-option:hover,
+.kalambury-modal-close:hover,
+.kalambury-switch:hover,
+.kalambury-category-chip:hover,
+.kalambury-player-card--add:hover,
+.kalambury-player-card__remove:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .kalambury-mode-trigger,
+  .kalambury-secondary-action,
+  .kalambury-footer-button,
+  .kalambury-modal-option,
+  .kalambury-modal-close,
+  .kalambury-switch,
+  .kalambury-category-chip,
+  .kalambury-player-card--add,
+  .kalambury-player-card__remove {
+    transition: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .kalambury-setup__players-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kalambury-categories-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 767px) {
+  .kalambury-mode-summary-grid,
+  .kalambury-presenter-toggle,
+  .kalambury-setup-modal__header,
+  .kalambury-setup__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-switch,
+  .kalambury-footer-button,
+  .kalambury-modal-close,
+  .kalambury-mode-trigger {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero--kalambury-setup {
+    padding: 18px;
+    border-radius: 26px;
+  }
+
+  .kalambury-setup__header,
+  .kalambury-setup__panel,
+  .kalambury-setup__footer,
+  .kalambury-setup-modal__panel {
+    padding: 18px;
+    border-radius: 22px;
+  }
+
+  .kalambury-player-card {
+    min-height: 156px;
+    padding: 16px 14px;
+  }
+
+  .kalambury-player-card__avatar {
+    width: 70px;
+    height: 70px;
+    font-size: 1.2rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+.kalambury-setup__header {
+  gap: 10px;
+}
+
+.kalambury-addon-card {
+  display: grid;
+  gap: 14px;
+  padding: 18px 20px;
+  border-radius: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.kalambury-addon-card--minimal {
+  gap: 0;
+  padding: 0;
+}
+
+.kalambury-addon-card__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 16px;
+  align-items: center;
+}
+
+.kalambury-addon-card__title {
+  margin: 0;
+}
+
+.kalambury-addon-card__controls {
+  display: grid;
+  justify-items: end;
+  gap: 12px;
+}
+
+.kalambury-addon-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 94, 94, 0.26);
+  background: rgba(255, 94, 94, 0.14);
+  color: rgba(255, 205, 205, 0.98);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.kalambury-addon-card__button {
+  min-width: 190px;
+}
+
+.kalambury-controller-shell {
+  min-height: 100dvh;
+  padding: 20px 16px 28px;
+  color: #f7f8fa;
+  background: radial-gradient(
+      circle at 48% 0%,
+      rgba(236, 72, 153, 0.18),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 92% 88%,
+      rgba(34, 211, 238, 0.14),
+      transparent 22%
+    ),
+    linear-gradient(180deg, rgba(6, 5, 12, 0.98), rgba(3, 3, 8, 1));
+}
+
+.kalambury-controller-layout,
+.kalambury-controller-rejected {
+  width: min(100%, 980px);
+  margin: 0 auto;
+  display: grid;
+  gap: 18px;
+}
+
+.kalambury-controller-layout {
+  align-content: center;
+  min-height: calc(100dvh - 48px);
+}
+
+.kalambury-controller-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kalambury-controller-presenter {
+  display: grid;
+  gap: 8px;
+}
+
+.kalambury-controller-presenter__eyebrow,
+.kalambury-controller-card__eyebrow {
+  color: rgba(255, 182, 231, 0.88);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.kalambury-controller-presenter__name {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2rem, 4vw, 3.1rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.kalambury-controller-status {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 232, 255, 0.22);
+  background: rgba(56, 232, 255, 0.12);
+  color: #f8fafc;
+  font-size: 0.84rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.kalambury-controller-status--preview {
+  border-color: rgba(255, 79, 216, 0.24);
+  background: rgba(255, 79, 216, 0.14);
+}
+
+.kalambury-controller-status--live {
+  border-color: rgba(167, 139, 250, 0.24);
+  background: rgba(167, 139, 250, 0.14);
+}
+
+.kalambury-controller-status--rejected {
+  border-color: rgba(249, 115, 22, 0.28);
+  background: rgba(249, 115, 22, 0.14);
+}
+
+.kalambury-controller-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(220px, 0.72fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.kalambury-controller-card__face {
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  min-height: min(58dvh, 420px);
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(
+      circle at top,
+      rgba(168, 85, 247, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(180deg, rgba(18, 18, 30, 0.98), rgba(7, 8, 14, 0.98));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.34);
+}
+
+.kalambury-controller-card__face--revealed {
+  border-color: rgba(255, 79, 216, 0.24);
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 79, 216, 0.18),
+      transparent 30%
+    ),
+    linear-gradient(180deg, rgba(53, 15, 40, 0.96), rgba(20, 9, 21, 0.98));
+}
+
+.kalambury-controller-card__backmark {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.kalambury-controller-card__phrase {
+  text-align: center;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4.2rem);
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.kalambury-controller-card__countdown {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(3.4rem, 8vw, 5.6rem);
+  font-weight: 800;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+  color: rgba(199, 181, 255, 0.94);
+}
+
+.kalambury-controller-card__actions {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+}
+
+.kalambury-controller-button {
+  min-height: 56px;
+  padding: 0 22px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff7fb;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.kalambury-controller-button--primary {
+  border-color: rgba(255, 79, 216, 0.26);
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.96), rgba(219, 39, 119, 0.94));
+  box-shadow: 0 18px 36px rgba(236, 72, 153, 0.22);
+}
+
+.kalambury-controller-button:disabled {
+  opacity: 0.5;
+  box-shadow: none;
+}
+
+.kalambury-controller-rejected {
+  align-content: center;
+  min-height: calc(100dvh - 48px);
+  justify-items: center;
+  text-align: center;
+}
+
+.kalambury-controller-rejected h1 {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+}
+
+.kalambury-controller-rejected p {
+  max-width: 34rem;
+  margin: 0;
+  color: rgba(226, 232, 240, 0.86);
+  line-height: 1.65;
+}
+
+@media (orientation: portrait), (max-width: 820px) {
+  .kalambury-controller-card {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-controller-card__face {
+    min-height: min(46dvh, 340px);
+    padding: 22px;
+    gap: 12px;
+  }
+
+  .kalambury-controller-card__actions {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-controller-presenter__name {
+    font-size: clamp(1.7rem, 7vw, 2.6rem);
+  }
+
+  .kalambury-controller-card__phrase {
+    font-size: clamp(2rem, 9vw, 3rem);
+  }
+
+  .kalambury-controller-card__backmark {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+  }
+
+  .kalambury-controller-card__countdown {
+    font-size: clamp(3rem, 16vw, 4.8rem);
+  }
+}
+
+@media (max-width: 640px) {
+  .kalambury-controller-header {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+
+  .kalambury-controller-status {
+    width: fit-content;
+  }
+}
+
+.kalambury-addon-status--connected {
+  border-color: rgba(68, 212, 123, 0.3);
+  background: rgba(68, 212, 123, 0.16);
+  color: rgba(214, 255, 226, 0.98);
+}
+
+.kalambury-section-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+}
+
+.kalambury-section-toggle h2,
+.kalambury-section-toggle p {
+  margin: 0;
+}
+
+.kalambury-section-toggle p {
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.kalambury-section-toggle__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-high);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.kalambury-setup__panel--categories {
+  gap: 18px;
+}
+
+@media (max-width: 767px) {
+  .kalambury-addon-card__header {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-addon-card__controls {
+    justify-items: stretch;
+  }
+
+  .kalambury-addon-card__button {
+    width: 100%;
+  }
+}
+.kalambury-setup__feedback {
+  margin: 0;
+  color: rgba(199, 240, 255, 0.9);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.kalambury-setup-modal__panel--mode,
+.kalambury-setup-modal__panel--player {
+  width: min(100%, 980px);
+  padding: 28px;
+  border-radius: 30px;
+  background: linear-gradient(
+    180deg,
+    rgba(38, 36, 42, 0.96),
+    rgba(26, 25, 31, 0.98)
+  );
+  border: 1px solid rgba(255, 54, 163, 0.26);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+}
+
+.kalambury-setup-modal__titlebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 6px;
+}
+
+.kalambury-setup-modal__titlebar h2 {
+  margin: 0;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1.04;
+  color: #ff5bbd;
+}
+
+.kalambury-mode-layout {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 16px;
+  min-height: 520px;
+}
+
+.kalambury-mode-sidebar {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.kalambury-mode-nav {
+  min-height: 58px;
+  padding: 0 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.86);
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.kalambury-mode-nav--active {
+  border-color: rgba(255, 79, 216, 0.45);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 48, 153, 0.18),
+    rgba(83, 231, 255, 0.08)
+  );
+  box-shadow: inset 3px 0 0 rgba(255, 79, 216, 0.92);
+}
+
+.kalambury-mode-content {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 16px;
+  padding: 0 0 4px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 22, 28, 0.78);
+}
+
+.kalambury-mode-content__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 20px 12px;
+  border-bottom: 1px solid rgba(255, 79, 216, 0.35);
+}
+
+.kalambury-mode-content__header strong {
+  font-size: 1.35rem;
+}
+
+.kalambury-mode-content__header span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.kalambury-mode-stack {
+  display: grid;
+  align-content: start;
+  gap: 14px;
+  padding: 0 16px 16px;
+}
+
+.kalambury-settings-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-settings-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kalambury-settings-card__label {
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.kalambury-settings-card__value {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 68px;
+  min-height: 48px;
+  padding: 0 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 79, 216, 0.34);
+  background: rgba(17, 17, 22, 0.74);
+  color: var(--text-high);
+}
+
+.kalambury-settings-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.kalambury-chip-rail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.kalambury-inline-chip {
+  min-height: 42px;
+  min-width: 42px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: rgba(12, 14, 18, 0.72);
+  color: rgba(255, 255, 255, 0.76);
+  font-weight: 700;
+}
+
+.kalambury-inline-chip--active {
+  border-color: rgba(255, 79, 216, 0.48);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 48, 153, 0.18),
+    rgba(255, 48, 153, 0.08)
+  );
+  color: rgba(255, 255, 255, 0.98);
+}
+
+.kalambury-settings-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: inherit;
+  text-align: left;
+}
+
+.kalambury-settings-row--active {
+  border-color: rgba(255, 79, 216, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.kalambury-settings-row__copy {
+  display: grid;
+  gap: 4px;
+}
+
+.kalambury-settings-row__copy strong {
+  font-size: 1.05rem;
+}
+
+.kalambury-settings-row__copy small {
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.kalambury-setup-modal__actions--full {
+  grid-template-columns: minmax(0, 0.5fr) minmax(0, 0.5fr);
+}
+
+.kalambury-secondary-action--large,
+.kalambury-footer-button--large {
+  min-height: 72px;
+  font-size: 1rem;
+}
+
+.kalambury-player-modal-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+  gap: 24px;
+}
+
+.kalambury-player-preview-panel,
+.kalambury-avatar-picker-panel {
+  display: grid;
+  align-content: start;
+  gap: 16px;
+}
+
+.kalambury-player-preview-panel__label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.56);
+  font-size: 0.95rem;
+}
+
+.kalambury-player-preview-panel__avatar {
+  display: grid;
+  place-items: center;
+  width: min(100%, 180px);
+  aspect-ratio: 1;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 22, 28, 0.88);
+  font-size: 4.25rem;
+}
+
+.kalambury-player-preview-panel__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.64);
+}
+
+.kalambury-player-preview-panel__field {
+  display: grid;
+  gap: 8px;
+}
+
+.kalambury-player-name-input {
+  min-height: 56px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(183, 89, 255, 0.55);
+  background: rgba(5, 7, 11, 0.92);
+  color: var(--text-high);
+  font-size: 1.1rem;
+}
+
+.kalambury-player-name-input::placeholder {
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.kalambury-player-gender-panel {
+  display: grid;
+  gap: 10px;
+}
+
+.kalambury-player-gender-options {
+  display: flex;
+  gap: 12px;
+}
+
+.kalambury-gender-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 0 18px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 14, 18, 0.82);
+  color: rgba(255, 255, 255, 0.84);
+  font-weight: 700;
+}
+
+.kalambury-gender-chip--active {
+  border-color: rgba(255, 79, 216, 0.42);
+  background: rgba(255, 79, 216, 0.14);
+}
+
+.kalambury-avatar-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kalambury-avatar-tab {
+  min-height: 56px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 10, 14, 0.9);
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+.kalambury-avatar-tab--active {
+  border-color: rgba(255, 79, 216, 0.54);
+  background: rgba(255, 79, 216, 0.14);
+}
+
+.kalambury-avatar-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  max-height: 420px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.kalambury-avatar-tile {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(8, 10, 14, 0.92);
+  font-size: 2rem;
+}
+
+.kalambury-avatar-tile--active {
+  border-color: rgba(255, 79, 216, 0.52);
+  background: rgba(255, 79, 216, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(83, 231, 255, 0.12);
+}
+
+@media (max-width: 900px) {
+  .kalambury-mode-layout,
+  .kalambury-player-modal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-mode-content {
+    min-height: 0;
+  }
+
+  .kalambury-avatar-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .kalambury-setup-modal__panel--mode,
+  .kalambury-setup-modal__panel--player {
+    padding: 20px;
+    border-radius: 24px;
+  }
+
+  .kalambury-mode-nav,
+  .kalambury-avatar-tab,
+  .kalambury-secondary-action--large,
+  .kalambury-footer-button--large {
+    min-height: 52px;
+  }
+
+  .kalambury-avatar-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .kalambury-player-gender-options,
+  .kalambury-setup-modal__actions--full {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+}
+
+.app-shell--kalambury-play {
+  display: grid;
+  place-items: start center;
+  min-height: 100dvh;
+  padding: 10px 0 12px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.hero--kalambury-play {
+  display: grid;
+  gap: 24px;
+  width: min(100%, 980px);
+  padding: 28px;
+  border-radius: 32px;
+}
+
+.kalambury-play__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+}
+
+.kalambury-play__header h1 {
+  margin: 0;
+}
+
+.kalambury-play__event-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(255, 79, 216, 0.14);
+  border: 1px solid rgba(255, 79, 216, 0.3);
+  color: rgba(255, 255, 255, 0.94);
+  font-weight: 700;
+}
+
+.kalambury-play__stage {
+  display: grid;
+  gap: 18px;
+}
+
+.kalambury-play__presenter-card,
+.kalambury-play__panel {
+  display: grid;
+  gap: 16px;
+  padding: 22px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(17, 19, 24, 0.84);
+}
+
+.kalambury-play__presenter-card {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+}
+
+.kalambury-play__presenter-avatar {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 24px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 79, 216, 0.22),
+    rgba(83, 231, 255, 0.14)
+  );
+  font-size: 2.5rem;
+}
+
+.kalambury-play__label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.58);
+  font-size: 0.85rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kalambury-play__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.5;
+}
+
+.kalambury-play__panel h3,
+.kalambury-play__presenter-card h2 {
+  margin: 0;
+}
+
+.kalambury-play__panel--act,
+.kalambury-play__panel--intro,
+.kalambury-play__panel--finished {
+  justify-items: start;
+}
+
+.kalambury-play__timer {
+  font-size: clamp(3rem, 9vw, 6rem);
+  line-height: 0.95;
+  font-weight: 900;
+}
+
+.kalambury-play__score-grid,
+.kalambury-play__leaderboard {
+  display: grid;
+  gap: 12px;
+}
+
+.kalambury-play__score-card,
+.kalambury-play__leaderboard-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-play__score-player,
+.kalambury-play__score-actions,
+.kalambury-play__leaderboard-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kalambury-play__score-actions {
+  justify-content: flex-end;
+}
+
+.kalambury-play__footer-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  .hero--kalambury-play {
+    padding: 18px;
+  }
+
+  .kalambury-play__header,
+  .kalambury-play__presenter-card,
+  .kalambury-play__footer-actions,
+  .kalambury-play__score-card,
+  .kalambury-play__leaderboard-row {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-play__score-actions {
+    justify-content: flex-start;
+  }
+}
+
+.hero--kalambury-playwide {
+  width: min(100%, 1820px);
+  min-height: calc(100dvh - 22px);
+  height: auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  align-content: start;
+  padding: 10px 18px 14px;
+  gap: 18px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kalambury-playtopbar {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+}
+
+.kalambury-stage-pill {
+  grid-column: 2;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 34px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kalambury-playtopbar__settings {
+  grid-column: 3;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(56, 58, 66, 0.72),
+    rgba(31, 33, 40, 0.92)
+  );
+  color: transparent;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.24);
+  position: relative;
+}
+
+.kalambury-playtopbar__settings::before,
+.kalambury-playtopbar__settings::after {
+  content: "";
+  position: absolute;
+}
+
+.kalambury-playtopbar__settings::before {
+  inset: 17px;
+  border-radius: 999px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+}
+
+.kalambury-playtopbar__settings::after {
+  inset: 14px;
+  border-radius: 999px;
+  background: radial-gradient(
+      circle,
+      transparent 0 55%,
+      rgba(255, 255, 255, 0.9) 56% 61%,
+      transparent 62%
+    ),
+    conic-gradient(
+      from 0deg,
+      rgba(255, 255, 255, 0.9) 0deg 12deg,
+      transparent 12deg 48deg,
+      rgba(255, 255, 255, 0.9) 48deg 60deg,
+      transparent 60deg 108deg,
+      rgba(255, 255, 255, 0.9) 108deg 120deg,
+      transparent 120deg 168deg,
+      rgba(255, 255, 255, 0.9) 168deg 180deg,
+      transparent 180deg 228deg,
+      rgba(255, 255, 255, 0.9) 228deg 240deg,
+      transparent 240deg 288deg,
+      rgba(255, 255, 255, 0.9) 288deg 300deg,
+      transparent 300deg 348deg,
+      rgba(255, 255, 255, 0.9) 348deg 360deg
+    );
+  opacity: 0.92;
+}
+
+.kalambury-stage-shell {
+  display: grid;
+  min-height: 0;
+  padding: 18px 18px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    135deg,
+    rgba(93, 23, 46, 0.48),
+    rgba(51, 34, 65, 0.42)
+  );
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.36);
+}
+
+.kalambury-stage-canvas {
+  display: grid;
+  place-items: center;
+  min-height: clamp(320px, calc(100dvh - 280px), 710px);
+  padding: 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(49, 24, 36, 0.35),
+    rgba(43, 28, 52, 0.26)
+  );
+}
+
+.kalambury-stage-panel {
+  width: min(100%, 980px);
+}
+
+.kalambury-stage-panel--draw,
+.kalambury-stage-panel--prepare,
+.kalambury-stage-panel--act,
+.kalambury-stage-panel--score,
+.kalambury-stage-panel--finished {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+}
+
+.kalambury-stage-panel--order {
+  width: min(100%, 980px);
+}
+
+.kalambury-card-stack {
+  position: relative;
+  width: 240px;
+  height: 260px;
+}
+
+.kalambury-card-stack__card {
+  position: absolute;
+  inset: 0;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(180deg, rgba(22, 17, 38, 0.98), rgba(8, 8, 16, 1));
+  box-shadow: 0 22px 34px rgba(0, 0, 0, 0.34);
+}
+
+.kalambury-card-stack__card--back {
+  transform: translate(-18px, 10px) rotate(-8deg);
+  opacity: 0.58;
+}
+
+.kalambury-card-stack__card--mid {
+  transform: translate(14px, -8px) rotate(7deg);
+  opacity: 0.72;
+}
+
+.kalambury-card-stack__card--front {
+  display: grid;
+  place-items: end center;
+  padding-bottom: 26px;
+}
+
+.kalambury-card-stack__card--front span {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  opacity: 0.5;
+}
+
+.kalambury-order-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kalambury-order-card,
+.kalambury-presenter-hero,
+.kalambury-act-phrasebox,
+.kalambury-leaderboard-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(108, 40, 65, 0.36),
+    rgba(49, 34, 62, 0.28)
+  );
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.3);
+}
+
+.kalambury-order-card {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  justify-items: center;
+  min-height: clamp(280px, calc(100dvh - 260px), 560px);
+  padding: 36px 24px 18px;
+  border-color: rgba(255, 255, 255, 0.14);
+  background: radial-gradient(
+      circle at 50% 14%,
+      rgba(141, 79, 255, 0.12),
+      transparent 28%
+    ), linear-gradient(180deg, rgba(24, 18, 38, 0.97), rgba(8, 8, 16, 0.99));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 44px
+    rgba(0, 0, 0, 0.34);
+}
+
+.kalambury-order-card__index {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 79, 216, 0.62);
+  background: rgba(52, 44, 64, 0.86);
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.kalambury-order-card__avatar {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  font-size: clamp(4rem, 8vw, 6rem);
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-order-card__name,
+.kalambury-presenter-hero__name {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  width: 100%;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(14, 12, 24, 0.96),
+    rgba(8, 8, 15, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 10px 24px
+    rgba(0, 0, 0, 0.26);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(1.5rem, 3.2vw, 2.25rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kalambury-stage-counter {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kalambury-presenter-hero {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  width: min(100%, 480px);
+  min-height: clamp(320px, calc(100dvh - 360px), 620px);
+  padding: 28px 18px 18px;
+}
+
+.kalambury-stage-panel--prepare .kalambury-presenter-hero {
+  width: 100%;
+  min-height: clamp(360px, calc(100dvh - 320px), 620px);
+}
+
+.kalambury-stage-panel--act-host .kalambury-presenter-hero {
+  width: 100%;
+  min-height: clamp(360px, calc(100dvh - 320px), 620px);
+}
+
+.kalambury-presenter-hero__label {
+  color: #ff4fd8;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.kalambury-presenter-hero__avatar {
+  display: grid;
+  place-items: center;
+  flex: 1;
+  width: 100%;
+  min-height: clamp(150px, calc(100dvh - 520px), 260px);
+  font-size: clamp(5rem, 10vw, 8rem);
+}
+
+.kalambury-act-head {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(100%, 860px);
+}
+
+.kalambury-act-presenter {
+  display: block;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+  text-transform: uppercase;
+}
+
+.kalambury-act-phrasebox {
+  display: grid;
+  gap: 10px;
+  width: min(100%, 860px);
+  padding: 28px;
+  text-align: center;
+}
+
+.kalambury-act-phrasebox h2 {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(3rem, 7vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.kalambury-act-phrasebox strong {
+  font-size: 1.4rem;
+}
+
+.kalambury-score-question {
+  display: grid;
+  gap: 18px;
+  width: min(100%, 860px);
+  text-align: center;
+}
+
+.kalambury-score-question h2,
+.kalambury-finished-head h2 {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2.4rem, 5vw, 3.8rem);
+  letter-spacing: -0.04em;
+}
+
+.kalambury-score-outcome-row {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.kalambury-outcome-chip,
+.kalambury-guesser-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 56px;
+  padding: 0 22px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
+.kalambury-outcome-chip--active,
+.kalambury-guesser-chip--active {
+  border-color: rgba(255, 79, 216, 0.48);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 79, 216, 0.18),
+    rgba(56, 232, 255, 0.1)
+  );
+}
+
+.kalambury-guesser-picker {
+  display: grid;
+  gap: 16px;
+  width: min(100%, 920px);
+}
+
+.kalambury-guesser-picker__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.kalambury-guesser-chip {
+  justify-content: start;
+  min-height: 70px;
+}
+
+.kalambury-stage-footer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.kalambury-stage-footer--stacked {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+}
+
+.kalambury-stage-footer--split {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.kalambury-stage-footer__summary {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px 28px;
+  color: rgba(255, 255, 255, 0.78);
+  font-weight: 700;
+}
+
+.kalambury-stage-footer__cta {
+  width: min(100%, 980px);
+}
+
+.kalambury-footer-button {
+  min-width: 280px;
+}
+
+.kalambury-finished-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+  width: min(100%, 860px);
+}
+
+.kalambury-leaderboard-grid {
+  display: grid;
+  width: min(100%, 860px);
+  gap: 14px;
+}
+
+.kalambury-leaderboard-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 84px;
+  padding: 0 22px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.kalambury-leaderboard-card span:first-child {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.kalambury-stage-panel--score,
+.kalambury-stage-panel--finished {
+  width: min(100%, 980px);
+}
+
+@media (max-width: 1200px) {
+  .kalambury-stage-canvas {
+    min-height: 640px;
+  }
+
+  .kalambury-order-card {
+    min-height: 460px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero--kalambury-playwide {
+    width: min(100%, calc(100vw - 24px));
+    padding: 8px 0 12px;
+  }
+
+  .kalambury-stage-shell {
+    padding: 16px;
+  }
+
+  .kalambury-stage-canvas {
+    min-height: 540px;
+    padding: 16px;
+  }
+
+  .kalambury-order-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-order-card,
+  .kalambury-presenter-hero {
+    min-height: 420px;
+  }
+
+  .kalambury-stage-footer--split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .kalambury-playtopbar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .kalambury-stage-pill {
+    grid-column: 1;
+    justify-self: start;
+  }
+
+  .kalambury-playtopbar__settings {
+    grid-column: 2;
+    width: 50px;
+    height: 50px;
+  }
+
+  .kalambury-stage-shell {
+    border-radius: 24px;
+  }
+
+  .kalambury-stage-canvas {
+    min-height: 460px;
+    border-radius: 20px;
+  }
+
+  .kalambury-stage-counter {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+
+  .kalambury-act-head,
+  .kalambury-finished-head {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .kalambury-score-outcome-row,
+  .kalambury-stage-footer__summary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kalambury-stage-footer__cta,
+  .kalambury-footer-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .kalambury-guesser-picker__grid,
+  .kalambury-leaderboard-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero--kalambury-playwide {
+    padding: 14px 0 18px;
+  }
+
+  .kalambury-stage-shell {
+    padding: 12px;
+  }
+
+  .kalambury-stage-canvas {
+    min-height: auto;
+    padding: 12px;
+  }
+
+  .kalambury-card-stack {
+    width: 180px;
+    height: 200px;
+  }
+
+  .kalambury-order-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+
+  .kalambury-order-card {
+    min-height: 280px;
+    padding: 22px 12px 12px;
+  }
+
+  .kalambury-order-card__index {
+    width: 34px;
+    height: 34px;
+    font-size: 1.05rem;
+  }
+
+  .kalambury-order-card__avatar {
+    font-size: 3.25rem;
+  }
+
+  .kalambury-order-card__name,
+  .kalambury-presenter-hero__name {
+    min-height: 52px;
+    font-size: 1.1rem;
+  }
+
+  .kalambury-presenter-hero {
+    width: min(100%, 320px);
+    min-height: 420px;
+    gap: 16px;
+    padding: 20px 14px 14px;
+  }
+
+  .kalambury-presenter-hero__label {
+    font-size: 1.5rem;
+  }
+
+  .kalambury-presenter-hero__avatar {
+    min-height: 180px;
+    font-size: 5rem;
+  }
+
+  .kalambury-play__timer {
+    font-size: 4rem;
+  }
+
+  .kalambury-act-phrasebox {
+    padding: 18px;
+  }
+
+  .kalambury-act-phrasebox h2 {
+    font-size: 2.4rem;
+  }
+
+  .kalambury-footer-button,
+  .kalambury-stage-footer__cta {
+    min-height: 54px;
+  }
+}
+
+.kalambury-stage-panel--prepare,
+.kalambury-stage-panel--act-host,
+.kalambury-stage-panel--verdict,
+.kalambury-stage-panel--summary {
+  display: grid;
+  justify-items: center;
+  gap: 22px;
+  width: min(100%, 1180px);
+}
+
+.kalambury-prepare-presenter-column {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+}
+
+.kalambury-stage-counter--prepare {
+  justify-self: center;
+  align-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 64px;
+  padding: 0 26px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 120, 194, 0.2);
+  background: linear-gradient(180deg, rgba(17, 14, 29, 0.94), rgba(10, 8, 18, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@media (min-width: 1100px) {
+  .kalambury-stage-panel--prepare {
+    grid-template-columns: minmax(320px, 420px) minmax(720px, 900px);
+    justify-content: center;
+    align-items: stretch;
+    column-gap: 28px;
+  }
+
+  .kalambury-stage-panel--prepare .kalambury-prepare-presenter-column {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: stretch;
+  }
+
+  .kalambury-stage-panel--prepare .kalambury-host-status {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: stretch;
+    align-self: stretch;
+  }
+
+  .kalambury-stage-panel--act-host {
+    grid-template-columns: minmax(320px, 420px) minmax(720px, 900px);
+    justify-content: center;
+    align-items: stretch;
+    column-gap: 28px;
+  }
+
+  .kalambury-stage-panel--act-host .kalambury-prepare-presenter-column {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: stretch;
+  }
+
+  .kalambury-stage-panel--act-host .kalambury-host-status {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: stretch;
+    align-self: stretch;
+  }
+}
+
+.kalambury-host-status {
+  display: grid;
+  gap: 8px;
+  width: min(100%, 760px);
+  text-align: center;
+}
+
+.kalambury-host-status--prepare {
+  width: 100%;
+  min-height: 100%;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  padding: 34px 42px;
+}
+
+.kalambury-host-status--timed {
+  grid-template-rows: auto clamp(220px, 34vh, 420px) minmax(52px, auto);
+  align-content: stretch;
+  justify-items: center;
+}
+
+.kalambury-host-status__copy--prepare {
+  display: grid;
+  gap: 18px;
+  align-content: center;
+  justify-items: center;
+  margin-top: 0;
+}
+
+.kalambury-host-status--prepare-preview {
+  gap: 24px;
+}
+
+.kalambury-host-status__copy--prepare h2,
+.kalambury-host-status--prepare-preview h2 {
+  font-size: clamp(1.9rem, 2.8vw, 2.7rem);
+}
+
+.kalambury-host-status__copy--prepare p,
+.kalambury-host-status--prepare-preview p {
+  max-width: 40rem;
+}
+
+.kalambury-host-status h2,
+.kalambury-summary-head h2,
+.kalambury-verdict-shell h2,
+.kalambury-act-stage-copy h2 {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.4rem);
+  letter-spacing: -0.04em;
+}
+
+.kalambury-host-status p,
+.kalambury-host-copy,
+.kalambury-summary-head p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.55;
+}
+
+.kalambury-hint-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+}
+
+.kalambury-hint-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 58px;
+  padding: 0 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 12, 24, 0.68);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.kalambury-presenter-hero--compact {
+  width: min(100%, 360px);
+  min-height: 300px;
+  gap: 12px;
+}
+
+.kalambury-presenter-hero--compact .kalambury-presenter-hero__label {
+  font-size: 1.2rem;
+}
+
+.kalambury-presenter-hero--compact .kalambury-presenter-hero__avatar {
+  min-height: 132px;
+  font-size: clamp(4rem, 8vw, 5.6rem);
+}
+
+.kalambury-stage-panel--act-host {
+  justify-items: center;
+  gap: 18px;
+}
+
+.kalambury-host-status--act {
+  gap: 24px;
+  min-height: 100%;
+}
+
+.kalambury-play__timer.kalambury-play__timer--act {
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: clamp(220px, 34vh, 420px);
+  font-size: clamp(8.2rem, 19vw, 14rem);
+  line-height: 0.82;
+  letter-spacing: -0.09em;
+}
+
+.kalambury-hint-chips--act {
+  justify-content: center;
+}
+
+.kalambury-host-status__footer {
+  display: grid;
+  align-self: stretch;
+  align-content: end;
+  justify-items: center;
+  min-height: 52px;
+  width: 100%;
+  gap: 14px;
+}
+
+.kalambury-host-status__copy--reconnect {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.kalambury-footer-button--danger {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 109, 79, 0.96),
+    rgba(255, 79, 79, 0.92)
+  );
+  border-color: rgba(255, 109, 79, 0.36);
+}
+
+.kalambury-stage-panel--verdict {
+  align-content: start;
+}
+
+.kalambury-verdict-shell {
+  display: grid;
+  justify-items: center;
+  gap: 20px;
+  width: min(100%, 1120px);
+  min-height: clamp(240px, calc(100dvh - 390px), 420px);
+  padding: 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(108, 40, 65, 0.24),
+    rgba(49, 34, 62, 0.18)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.kalambury-verdict-shell--missed,
+.kalambury-verdict-shell--guessed {
+  justify-content: center;
+}
+
+.kalambury-verdict-choice-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: min(100%, 760px);
+}
+
+.kalambury-verdict-choice,
+.kalambury-verdict-player-card {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(35, 26, 42, 0.92),
+    rgba(20, 16, 28, 0.96)
+  );
+  color: var(--text-high);
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-verdict-choice {
+  min-height: 84px;
+  border-radius: 22px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.kalambury-verdict-player-grid {
+  display: grid;
+  width: min(100%, 1320px);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+.kalambury-verdict-player-card {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  min-height: 108px;
+  padding: 18px 22px;
+  border-radius: 26px;
+  text-align: left;
+}
+
+.kalambury-verdict-player-card--active {
+  border-color: rgba(255, 79, 216, 0.52);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 79, 216, 0.16),
+    rgba(56, 232, 255, 0.08)
+  );
+}
+
+.kalambury-verdict-player-card__avatar {
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 3rem;
+}
+
+.kalambury-verdict-player-card__name,
+.kalambury-verdict-player-card__score {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.kalambury-verdict-player-card__name {
+  font-size: 1.8rem;
+}
+
+.kalambury-verdict-player-card__score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 72px;
+  min-height: 54px;
+  padding: 0 18px;
+  border-radius: 20px;
+  background: rgba(32, 12, 28, 0.68);
+  color: #ff4fd8;
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.kalambury-verdict-strip__bonus {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 700;
+}
+
+.kalambury-verdict-strip__bonus strong {
+  color: #ff4fd8;
+}
+
+.kalambury-verdict-strip__plus {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  min-height: 42px;
+  border-radius: 18px;
+  background: rgba(18, 12, 24, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+}
+
+.kalambury-stage-footer--verdict-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+}
+
+.kalambury-verdict-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  min-width: max-content;
+  justify-self: end;
+}
+
+.kalambury-stage-panel--summary {
+  position: relative;
+  overflow: hidden;
+  justify-items: center;
+  gap: 22px;
+}
+
+.kalambury-summary-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kalambury-summary-confetti__piece,
+.kalambury-summary-confetti__emoji {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  animation: kalambury-confetti-float 4.8s ease-in-out infinite;
+}
+
+.kalambury-summary-confetti__piece {
+  width: 12px;
+  height: 8px;
+  border-radius: 999px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 211, 94, 0.95),
+    rgba(255, 168, 28, 0.82)
+  );
+}
+
+.kalambury-summary-confetti__emoji {
+  font-size: 2.8rem;
+  filter: drop-shadow(0 8px 20px rgba(0, 0, 0, 0.28));
+}
+
+.kalambury-summary-head {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.kalambury-summary-head strong {
+  color: #ff4fd8;
+}
+
+.kalambury-summary-rankings {
+  display: grid;
+  width: min(100%, 1040px);
+  gap: 18px;
+}
+
+.kalambury-summary-rank {
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  min-height: clamp(88px, calc(100dvh - 650px), 128px);
+  padding: 0 28px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(
+    180deg,
+    rgba(108, 40, 65, 0.3),
+    rgba(49, 34, 62, 0.24)
+  );
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.3);
+}
+
+.kalambury-summary-rank--winner {
+  border-color: rgba(255, 194, 66, 0.48);
+  box-shadow: 0 26px 52px rgba(0, 0, 0, 0.34), 0 0 0 1px
+    rgba(255, 194, 66, 0.14) inset;
+}
+
+.kalambury-summary-rank__position,
+.kalambury-summary-rank__score,
+.kalambury-summary-rank__name {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.kalambury-summary-rank__position {
+  font-size: 3rem;
+  font-weight: 800;
+  color: rgba(255, 228, 122, 0.96);
+}
+
+.kalambury-summary-rank__avatar {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 3.25rem;
+}
+
+.kalambury-summary-rank__name {
+  min-height: 56px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 22px;
+  border-radius: 20px;
+  background: rgba(26, 14, 30, 0.72);
+  font-size: 2.2rem;
+}
+
+.kalambury-summary-rank__score {
+  color: #ff4fd8;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+@keyframes kalambury-confetti-float {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+    opacity: 0.88;
+  }
+  50% {
+    transform: translate3d(0, 18px, 0) rotate(16deg);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 900px) {
+  .kalambury-verdict-choice-row,
+  .kalambury-summary-rank {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-summary-rank {
+    min-height: 0;
+    padding: 18px;
+    justify-items: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .kalambury-host-status h2,
+  .kalambury-summary-head h2,
+  .kalambury-verdict-shell h2,
+  .kalambury-act-stage-copy h2 {
+    font-size: clamp(1.7rem, 9vw, 2.5rem);
+  }
+
+  .kalambury-hint-chips,
+  .kalambury-verdict-choice-row,
+  .kalambury-verdict-player-grid,
+  .kalambury-verdict-strip__bonus {
+    grid-template-columns: 1fr;
+    flex-direction: column;
+  }
+
+  .kalambury-verdict-player-card {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .kalambury-presenter-hero--compact {
+    width: min(100%, 280px);
+    min-height: 260px;
+  }
+
+  .kalambury-summary-rank__position,
+  .kalambury-summary-rank__score {
+    font-size: 2.4rem;
+  }
+
+  .kalambury-summary-rank__name {
+    font-size: 1.6rem;
+  }
+}
+
+@media (max-height: 820px) {
+  .hero--kalambury-playwide {
+    min-height: auto;
+    padding: 8px 18px 12px;
+    gap: 14px;
+  }
+
+  .kalambury-stage-shell {
+    padding: 14px;
+  }
+
+  .kalambury-stage-canvas {
+    min-height: clamp(280px, calc(100dvh - 250px), 520px);
+    padding: 18px;
+  }
+
+  .kalambury-stage-counter {
+    font-size: 1.45rem;
+  }
+
+  .kalambury-host-status h2,
+  .kalambury-summary-head h2,
+  .kalambury-verdict-shell h2,
+  .kalambury-act-stage-copy h2 {
+    font-size: clamp(1.85rem, 3vw, 2.6rem);
+  }
+
+  .kalambury-presenter-hero {
+    gap: 16px;
+    min-height: 300px;
+    padding: 20px 16px 16px;
+  }
+
+  .kalambury-presenter-hero__label {
+    font-size: 1.45rem;
+  }
+
+  .kalambury-presenter-hero__avatar {
+    min-height: 130px;
+    font-size: clamp(4rem, 8vw, 6rem);
+  }
+
+  .kalambury-hint-chip {
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: 1rem;
+  }
+
+  .kalambury-play__timer {
+    font-size: clamp(3.25rem, 8vw, 5rem);
+  }
+
+  .kalambury-verdict-shell {
+    gap: 16px;
+    min-height: 220px;
+    padding: 20px;
+  }
+
+  .kalambury-stage-footer--verdict-layout {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .kalambury-verdict-strip__bonus {
+    gap: 12px;
+    font-size: 0.95rem;
+  }
+
+  .kalambury-verdict-strip__plus {
+    min-width: 44px;
+    min-height: 36px;
+    font-size: 1.1rem;
+  }
+
+  .kalambury-verdict-choice {
+    min-height: 72px;
+  }
+
+  .kalambury-verdict-player-card {
+    min-height: 84px;
+    padding: 14px 16px;
+  }
+
+  .kalambury-verdict-player-card__avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 2.4rem;
+  }
+
+  .kalambury-verdict-player-card__name {
+    font-size: 1.45rem;
+  }
+
+  .kalambury-verdict-player-card__score {
+    min-width: 60px;
+    min-height: 46px;
+    font-size: 1.55rem;
+  }
+
+  .kalambury-summary-rank {
+    gap: 14px;
+    padding: 0 20px;
+  }
+
+  .kalambury-summary-rank__position,
+  .kalambury-summary-rank__score {
+    font-size: 2.2rem;
+  }
+
+  .kalambury-summary-rank__avatar {
+    width: 72px;
+    height: 72px;
+    font-size: 2.6rem;
+  }
+
+  .kalambury-summary-rank__name {
+    min-height: 46px;
+    padding: 0 18px;
+    font-size: 1.55rem;
+  }
+}
+
+.kal-hub-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 1880px);
+  height: 100%;
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: linear-gradient(
+    180deg,
+    rgba(37, 11, 27, 0.98),
+    rgba(26, 7, 20, 0.98)
+  );
+  border: 1px solid rgba(255, 88, 196, 0.14);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.42);
+}
+
+.app-shell--kalambury-hub-shell {
+  min-height: 100dvh;
+  height: 100dvh;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.kal-hub-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 32px;
+  border-bottom: 1px solid rgba(255, 88, 196, 0.14);
+  background: rgba(34, 9, 25, 0.72);
+  backdrop-filter: blur(16px);
+}
+
+.kal-hub-brand,
+.kal-hub-topbar__actions,
+.kal-hub-mode-card__meta,
+.kal-hub-mode-card__meta-row,
+.kal-hub-launch-panel__actions,
+.kal-hub-footer,
+.kal-hub-footer__stats,
+.kal-hub-footer__meta {
+  display: flex;
+  align-items: center;
+}
+
+.kal-hub-brand {
+  gap: 14px;
+}
+
+.kal-hub-brand__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #ff4fd8, #ff2ca8);
+  box-shadow: 0 0 24px rgba(255, 79, 216, 0.28);
+}
+
+.kal-hub-brand__text,
+.kal-hub-main__intro h1,
+.kal-hub-mode-card__body h2,
+.kal-hub-launch-panel h2 {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: -0.04em;
+}
+
+.kal-hub-brand__text {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.kal-hub-topbar__actions {
+  gap: 18px;
+}
+
+.kal-hub-login-button {
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-high);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms
+    ease;
+}
+
+.kal-hub-login-button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 88, 196, 0.4);
+  background: rgba(255, 88, 196, 0.16);
+}
+
+.kal-hub-icon-button,
+.kal-hub-carousel-button,
+.kalambury-setup__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text-high);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms
+    ease;
+}
+
+.kal-hub-icon-button {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.kal-hub-icon-button:hover,
+.kal-hub-carousel-button:hover,
+.kalambury-setup__close:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 88, 196, 0.42);
+  background: rgba(255, 88, 196, 0.16);
+}
+
+.kal-hub-sidebar__eyebrow,
+.kal-hub-launch-panel__eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: #ff69c5;
+}
+
+.kal-hub-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  min-height: 0;
+}
+
+.kal-hub-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 24px;
+  padding: 24px 18px 20px;
+  border-right: 1px solid rgba(255, 88, 196, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 9, 25, 0.96),
+    rgba(56, 16, 41, 0.82)
+  );
+}
+
+.kal-hub-sidebar__section {
+  display: grid;
+  gap: 14px;
+}
+
+.kal-hub-sidebar__exit {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kal-hub-sidebar__exit-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 0 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: rgba(255, 228, 239, 0.84);
+  background: rgba(255, 255, 255, 0.03);
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms
+    ease, box-shadow 180ms ease, color 180ms ease;
+}
+
+.kal-hub-sidebar__exit-link:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  color: #ffffff;
+}
+
+.kal-hub-sidebar__nav {
+  display: grid;
+  gap: 8px;
+}
+
+.kal-hub-sidebar__subnav {
+  display: grid;
+  gap: 8px;
+  padding-left: 12px;
+}
+
+.kal-hub-sidebar__subitem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 14px;
+  color: rgba(255, 214, 234, 0.82);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.kal-hub-sidebar__subitem:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.kal-hub-sidebar__item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 54px;
+  padding: 0 16px;
+  border-radius: 18px;
+  border: 1px solid transparent;
+  color: rgba(255, 255, 255, 0.88);
+  background: transparent;
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms
+    ease, box-shadow 180ms ease;
+}
+
+.kal-hub-sidebar__item:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.kal-hub-sidebar__item--active {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 47, 175, 0.96),
+    rgba(255, 88, 196, 0.88)
+  );
+  box-shadow: 0 0 30px rgba(255, 79, 216, 0.28);
+}
+
+.kal-hub-main {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "intro"
+    "cards"
+    "launch";
+  align-content: start;
+  align-items: start;
+  gap: 10px;
+  padding: 16px 20px 12px;
+  overflow: auto;
+}
+
+.kal-hub-main__intro {
+  grid-area: intro;
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.kal-hub-main__intro h1 {
+  margin: 0 0 10px;
+  font-size: clamp(2.6rem, 4.4vw, 4rem);
+  line-height: 0.96;
+}
+
+.kal-hub-main__intro p,
+.kal-hub-mode-card__body p,
+.kal-hub-launch-panel p {
+  color: rgba(255, 212, 232, 0.86);
+  font-size: 0.84rem;
+  line-height: 1.4;
+}
+
+.kal-hub-selector-status {
+  display: grid;
+  justify-items: end;
+  gap: 10px;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.kal-hub-selector-status__dots {
+  display: flex;
+  gap: 8px;
+}
+
+.kal-hub-selector-status__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.kal-hub-selector-status__dot--active {
+  background: #ff59c0;
+  box-shadow: 0 0 16px rgba(255, 89, 192, 0.42);
+}
+
+.kal-hub-card-rail {
+  grid-area: cards;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+}
+
+.kal-hub-carousel-button {
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+}
+
+.kal-hub-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.kal-hub-mode-card {
+  display: grid;
+  min-height: 276px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 88, 196, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  overflow: hidden;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms
+    ease;
+}
+
+.kal-hub-mode-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 88, 196, 0.34);
+}
+
+.kal-hub-mode-card--selected {
+  border-width: 2px;
+  border-color: rgba(255, 79, 216, 0.56);
+  box-shadow: 0 0 34px rgba(255, 79, 216, 0.14);
+}
+
+.kal-hub-mode-card__hero {
+  position: relative;
+  min-height: 114px;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 6, 13, 0.94),
+    rgba(27, 10, 21, 0.76)
+  );
+}
+
+.kal-hub-mode-card__hero img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0.86;
+}
+
+.kal-hub-mode-card__hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.12),
+    rgba(26, 9, 21, 0.86)
+  );
+}
+
+.kal-hub-mode-card__badge-row {
+  position: absolute;
+  inset: 14px 14px auto;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.kal-hub-mode-card__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.kal-hub-mode-card__badge--featured {
+  background: #ff2fa8;
+  color: #fff;
+}
+
+.kal-hub-mode-card__badge--muted {
+  border: 1px solid rgba(255, 88, 196, 0.22);
+  background: rgba(20, 10, 19, 0.72);
+}
+
+.kal-hub-mode-card__body {
+  display: grid;
+  gap: 10px;
+  padding: 12px 14px 12px;
+}
+
+.kal-hub-mode-card__body h2,
+.kal-hub-launch-panel h2 {
+  margin: 0 0 4px;
+  font-size: clamp(1.05rem, 1.5vw, 1.35rem);
+}
+
+.kal-hub-mode-card__meta-row {
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: auto;
+}
+
+.kal-hub-mode-card__meta {
+  gap: 8px;
+  font-size: 0.94rem;
+  font-weight: 700;
+}
+
+.kal-hub-mode-card__meta .material-symbols-outlined {
+  color: #ff59c0;
+}
+
+.kal-hub-mode-card__select,
+.kal-hub-launch-button,
+.kalambury-setup__close {
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 14px;
+  font-weight: 700;
+}
+
+.kal-hub-mode-card__select {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-high);
+}
+
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button {
+  border: none;
+  background: linear-gradient(135deg, #ff2fa8, #ff69c5);
+  color: #fff;
+  box-shadow: 0 0 30px rgba(255, 79, 216, 0.24);
+}
+
+.kal-hub-mode-card__select:disabled,
+.kal-hub-launch-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  box-shadow: none;
+}
+
+.kal-hub-launch-panel {
+  grid-area: launch;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px 18px;
+  min-height: 0;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 88, 196, 0.18);
+  background: linear-gradient(
+    135deg,
+    rgba(58, 17, 41, 0.86),
+    rgba(29, 10, 24, 0.92)
+  );
+}
+
+.kal-hub-launch-panel > :first-child {
+  min-width: 0;
+}
+
+.kal-hub-launch-panel__actions {
+  gap: 10px;
+  width: auto;
+  justify-content: flex-end;
+  align-self: center;
+  flex-wrap: wrap;
+}
+
+.kal-hub-launch-panel__meta {
+  white-space: nowrap;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.kal-hub-footer {
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 28px;
+  border-top: 1px solid rgba(255, 88, 196, 0.14);
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.kal-hub-footer__stats,
+.kal-hub-footer__meta {
+  flex-wrap: wrap;
+  gap: 18px;
+}
+
+.kal-hub-footer strong {
+  color: #fff;
+}
+
+.kal-hub-setup-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 95;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(8, 3, 9, 0.72);
+  backdrop-filter: blur(14px);
+}
+
+.kal-hub-setup-overlay__panel {
+  width: min(100%, 1180px);
+  height: auto;
+  min-height: 0;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  margin: auto;
+  padding: 0;
+  border-radius: 30px;
+}
+
+.app-shell.app-shell--embedded {
+  min-height: auto;
+  height: auto;
+  padding: 0;
+}
+
+.app-shell.app-shell--embedded::before,
+.app-shell.app-shell--embedded .ambient-orb {
+  display: none;
+}
+
+.app-shell.app-shell--embedded .hero--kalambury-setup {
+  width: 100%;
+}
+
+.kalambury-setup__header {
+  position: relative;
+}
+
+.kalambury-setup__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+@media (max-width: 1220px) {
+  .kal-hub-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kal-hub-sidebar {
+    flex-direction: row;
+    align-items: stretch;
+    overflow: auto;
+  }
+
+  .kal-hub-sidebar__section {
+    min-width: 260px;
+  }
+}
+
+@media (max-width: 980px) {
+  .kal-hub-topbar,
+  .kal-hub-main__intro,
+  .kal-hub-launch-panel,
+  .kal-hub-footer {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kal-hub-main {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "intro"
+      "cards"
+      "launch";
+  }
+
+  .kal-hub-topbar__actions,
+  .kal-hub-launch-panel__actions {
+    justify-content: space-between;
+  }
+
+  .kal-hub-card-rail {
+    grid-template-columns: 1fr;
+  }
+
+  .kal-hub-carousel-button {
+    display: none;
+  }
+
+  .kal-hub-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .kal-hub-launch-panel {
+    min-height: 0;
+  }
+}
+
+@media (max-width: 720px) {
+  .kal-hub-topbar,
+  .kal-hub-main,
+  .kal-hub-footer {
+    padding-inline: 18px;
+  }
+
+  .kal-hub-brand__text {
+    font-size: 1.5rem;
+  }
+
+  .kal-hub-main__intro h1 {
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+  }
+
+  .kal-hub-sidebar {
+    padding: 18px;
+  }
+
+  .kal-hub-topbar__actions,
+  .kal-hub-mode-card__meta-row,
+  .kal-hub-launch-panel__actions,
+  .kal-hub-footer__stats,
+  .kal-hub-footer__meta {
+    flex-wrap: wrap;
+  }
+
+  .kalambury-setup__close {
+    position: static;
+    margin-top: 12px;
+  }
+}
+
+@media (max-height: 840px) {
+  .kal-hub-topbar {
+    padding-block: 12px;
+  }
+
+  .kal-hub-layout {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+
+  .kal-hub-sidebar {
+    gap: 18px;
+    padding: 18px 14px 16px;
+  }
+
+  .kal-hub-sidebar__item {
+    min-height: 48px;
+  }
+
+  .kal-hub-main {
+    gap: 10px;
+    padding: 12px 16px 10px;
+  }
+
+  .kal-hub-main__intro h1 {
+    margin-bottom: 8px;
+    font-size: clamp(2.2rem, 3.6vw, 3.1rem);
+  }
+
+  .kal-hub-mode-card {
+    min-height: 248px;
+  }
+
+  .kal-hub-mode-card__hero {
+    min-height: 96px;
+  }
+
+  .kal-hub-mode-card__body {
+    padding: 10px 12px 10px;
+  }
+
+  .kal-hub-launch-panel {
+    gap: 8px 12px;
+    padding: 8px 12px;
+  }
+
+  .kal-hub-launch-panel h2 {
+    margin-bottom: 2px;
+    font-size: clamp(1rem, 1.45vw, 1.2rem);
+  }
+}
+
+@media (max-height: 980px) {
+  .kal-hub-topbar {
+    padding-block: 12px;
+  }
+
+  .kal-hub-layout {
+    grid-template-columns: 250px minmax(0, 1fr);
+  }
+
+  .kal-hub-sidebar {
+    gap: 18px;
+    padding: 18px 14px 16px;
+  }
+
+  .kal-hub-sidebar__item {
+    min-height: 48px;
+  }
+
+  .kal-hub-main {
+    gap: 10px;
+    padding: 12px 16px 10px;
+  }
+
+  .kal-hub-main__intro {
+    gap: 14px;
+  }
+
+  .kal-hub-main__intro h1 {
+    margin-bottom: 6px;
+    font-size: clamp(2rem, 3.4vw, 2.8rem);
+  }
+
+  .kal-hub-main__intro p {
+    font-size: 0.8rem;
+    line-height: 1.35;
+  }
+
+  .kal-hub-card-rail {
+    gap: 10px;
+  }
+
+  .kal-hub-cards {
+    gap: 10px;
+  }
+
+  .kal-hub-mode-card {
+    min-height: 232px;
+  }
+
+  .kal-hub-mode-card__hero {
+    min-height: 88px;
+  }
+
+  .kal-hub-mode-card__body {
+    gap: 8px;
+    padding: 10px 10px 9px;
+  }
+
+  .kal-hub-mode-card__body h2 {
+    margin-bottom: 4px;
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+  }
+
+  .kal-hub-mode-card__body p {
+    font-size: 0.78rem;
+    line-height: 1.3;
+  }
+
+  .kal-hub-mode-card__meta {
+    font-size: 0.8rem;
+  }
+
+  .kal-hub-mode-card__select,
+  .kal-hub-launch-button {
+    min-height: 36px;
+    padding-inline: 12px;
+  }
+
+  .kal-hub-launch-panel {
+    gap: 8px 12px;
+    padding: 8px 10px;
+  }
+
+  .kal-hub-launch-panel h2 {
+    margin-bottom: 2px;
+    font-size: clamp(1rem, 1.45vw, 1.2rem);
+  }
+
+  .kal-hub-launch-panel p,
+  .kal-hub-launch-panel__meta {
+    font-size: 0.76rem;
+    line-height: 1.25;
+  }
+}
+
+/* Kalambury UI polish pass: Neon Stage + Lounge */
+.app-shell--kalambury-hub,
+.app-shell--kalambury-setup,
+.app-shell--kalambury-play {
+  --kalambury-stage-bg: radial-gradient(
+      circle at 50% -10%,
+      rgba(255, 79, 216, 0.16),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 82% 24%,
+      rgba(56, 232, 255, 0.12),
+      transparent 22%
+    ),
+    radial-gradient(
+      circle at 14% 72%,
+      rgba(255, 79, 216, 0.08),
+      transparent 20%
+    ), linear-gradient(180deg, #09070f 0%, #05050a 48%, #020204 100%);
+  --kalambury-stage-panel: linear-gradient(
+    180deg,
+    rgba(20, 10, 27, 0.92),
+    rgba(8, 6, 14, 0.96)
+  );
+  --kalambury-stage-panel-strong: linear-gradient(
+    180deg,
+    rgba(27, 11, 34, 0.96),
+    rgba(6, 5, 12, 0.98)
+  );
+  --kalambury-stage-border: rgba(255, 79, 216, 0.16);
+  --kalambury-stage-border-strong: rgba(56, 232, 255, 0.3);
+  --kalambury-stage-shadow: 0 36px 110px rgba(0, 0, 0, 0.58);
+  --kalambury-stage-glow: 0 0 34px rgba(255, 79, 216, 0.2);
+  --kalambury-stage-copy: rgba(233, 226, 247, 0.8);
+}
+
+.app-shell--kalambury-hub,
+.app-shell--kalambury-setup,
+.app-shell--kalambury-play {
+  background: var(--kalambury-stage-bg);
+}
+
+.app-shell--kalambury-hub::before,
+.app-shell--kalambury-setup::before,
+.app-shell--kalambury-play::before {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.02),
+      transparent 16%
+    ),
+    radial-gradient(circle at 50% 0%, rgba(255, 79, 216, 0.06), transparent 24%),
+    radial-gradient(
+      circle at 100% 12%,
+      rgba(56, 232, 255, 0.05),
+      transparent 20%
+    );
+}
+
+.kal-hub-shell,
+.hero--kalambury-setup,
+.kal-hub-setup-overlay__panel,
+.kalambury-stage-shell {
+  background: var(--kalambury-stage-panel-strong);
+  border: 1px solid var(--kalambury-stage-border);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    var(--kalambury-stage-shadow);
+}
+
+.kal-hub-shell {
+  background: var(--kalambury-stage-bg);
+}
+
+.kal-hub-topbar {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 9, 27, 0.92),
+    rgba(7, 6, 13, 0.9)
+  );
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kal-hub-login-button,
+.kal-hub-icon-button,
+.kal-hub-carousel-button,
+.kalambury-setup__close,
+.kalambury-playtopbar__settings {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 16, 31, 0.9),
+    rgba(10, 9, 18, 0.92)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(16px);
+}
+
+.kal-hub-login-button:hover,
+.kal-hub-icon-button:hover,
+.kal-hub-carousel-button:hover,
+.kalambury-setup__close:hover,
+.kalambury-playtopbar__settings:hover {
+  border-color: var(--kalambury-stage-border-strong);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 79, 216, 0.18),
+    rgba(56, 232, 255, 0.12)
+  );
+}
+
+.kal-hub-sidebar {
+  background: linear-gradient(
+    180deg,
+    rgba(14, 9, 22, 0.96),
+    rgba(6, 6, 12, 0.98)
+  );
+  box-shadow: inset -1px 0 0 rgba(255, 255, 255, 0.03);
+}
+
+.kal-hub-sidebar__item {
+  border-color: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 236, 245, 0.88);
+}
+
+.kal-hub-sidebar__item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.kal-hub-sidebar__item--active {
+  border-color: rgba(255, 255, 255, 0.06);
+  background: linear-gradient(135deg, #ff2fa8, #ff69c5);
+  box-shadow: 0 18px 40px rgba(255, 47, 168, 0.28), 0 0 0 1px
+    rgba(255, 255, 255, 0.08) inset;
+}
+
+.kal-hub-main {
+  gap: 18px;
+  padding: 22px 24px 18px;
+}
+
+.kal-hub-main__intro p,
+.kal-hub-mode-card__body p,
+.kal-hub-footer,
+.kalambury-setup__header .lead,
+.kalambury-setup__section-head p,
+.kalambury-presenter-toggle p,
+.kalambury-setup__empty-state,
+.kalambury-host-copy,
+.kalambury-host-status p {
+  color: var(--kalambury-stage-copy);
+}
+
+.kal-hub-mode-card {
+  border-color: var(--kalambury-stage-border);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 10, 24, 0.9),
+    rgba(8, 8, 16, 0.96)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kal-hub-mode-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--kalambury-stage-border-strong);
+  box-shadow: var(--kalambury-stage-glow);
+}
+
+.kal-hub-mode-card--selected {
+  border-color: rgba(255, 105, 197, 0.58);
+  box-shadow: 0 24px 58px rgba(0, 0, 0, 0.34), 0 0 0 1px
+    rgba(255, 105, 197, 0.14) inset;
+}
+
+.kal-hub-mode-card__hero {
+  background: radial-gradient(
+      circle at 50% 0%,
+      rgba(56, 232, 255, 0.1),
+      transparent 24%
+    ), linear-gradient(180deg, rgba(7, 7, 14, 0.98), rgba(15, 9, 24, 0.9));
+}
+
+.kal-hub-mode-card__hero-overlay {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 6, 13, 0.08),
+    rgba(26, 9, 21, 0.88)
+  );
+}
+
+.kal-hub-mode-card__badge--muted {
+  background: rgba(22, 9, 19, 0.82);
+  color: rgba(255, 228, 238, 0.88);
+}
+
+.kal-hub-cta-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0 2px;
+}
+
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border: 1px solid rgba(255, 167, 221, 0.22);
+  background: linear-gradient(135deg, #ff2fa8, #ff59c0 52%, #38e8ff 115%);
+  color: #fff;
+  box-shadow: 0 18px 42px rgba(255, 47, 168, 0.28), 0 0 0 1px
+    rgba(255, 255, 255, 0.08) inset;
+}
+
+.kal-hub-launch-button {
+  min-width: min(100%, 320px);
+  min-height: 56px;
+  padding: 0 28px;
+  border-radius: 18px;
+  font-size: 1.2rem;
+  letter-spacing: -0.02em;
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.08);
+}
+
+.kal-hub-footer {
+  background: linear-gradient(
+    180deg,
+    rgba(12, 9, 18, 0.94),
+    rgba(5, 5, 11, 0.98)
+  );
+}
+
+.kal-hub-setup-overlay {
+  background: rgba(8, 3, 9, 0.78);
+}
+
+.kal-hub-setup-overlay__panel {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 10, 28, 0.97),
+    rgba(6, 6, 12, 0.99)
+  );
+}
+
+.hero--kalambury-setup {
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 79, 216, 0.14),
+      transparent 28%
+    ),
+    radial-gradient(circle at 86% 12%, rgba(56, 232, 255, 0.1), transparent 18%),
+    linear-gradient(180deg, rgba(24, 12, 34, 0.94), rgba(7, 6, 14, 0.98));
+}
+
+.kalambury-setup__header,
+.kalambury-setup__panel,
+.kalambury-setup__footer,
+.kalambury-setup-modal__panel,
+.kalambury-player-card,
+.kalambury-mode-summary,
+.kalambury-presenter-toggle,
+.kalambury-settings-card,
+.kalambury-mode-content {
+  border-color: var(--kalambury-stage-border);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 16, 31, 0.88),
+    rgba(10, 9, 18, 0.94)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-player-card {
+  background: linear-gradient(
+    180deg,
+    rgba(35, 18, 42, 0.74),
+    rgba(14, 10, 22, 0.94)
+  );
+}
+
+.kalambury-player-card--add,
+.kalambury-category-tag,
+.kalambury-secondary-action,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-footer-button--ghost,
+.kalambury-mode-nav {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 16, 31, 0.9),
+    rgba(10, 9, 18, 0.95)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kalambury-secondary-action,
+.kalambury-modal-close,
+.kalambury-footer-button--ghost,
+.kalambury-playtopbar__settings {
+  color: rgba(255, 232, 241, 0.92);
+}
+
+.kalambury-category-tag:hover,
+.kalambury-secondary-action:hover,
+.kalambury-modal-option:hover,
+.kalambury-modal-close:hover,
+.kalambury-footer-button--ghost:hover,
+.kalambury-mode-nav:hover {
+  border-color: var(--kalambury-stage-border-strong);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 79, 216, 0.16),
+    rgba(56, 232, 255, 0.08)
+  );
+}
+
+.kalambury-setup-modal__panel--mode,
+.kalambury-setup-modal__panel--player {
+  background: linear-gradient(
+    180deg,
+    rgba(17, 11, 29, 0.97),
+    rgba(6, 6, 12, 0.99)
+  );
+}
+
+.kalambury-playtopbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.kalambury-stage-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(56, 232, 255, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(56, 232, 255, 0.14),
+    rgba(255, 79, 216, 0.12)
+  );
+  color: rgba(234, 249, 255, 0.98);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.kalambury-playtopbar__settings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+}
+
+.hero--kalambury-play.hero--kalambury-playwide {
+  width: min(100%, 1180px);
+  padding: 22px;
+  border-radius: 34px;
+  background: linear-gradient(
+    180deg,
+    rgba(12, 10, 21, 0.56),
+    rgba(5, 5, 11, 0.26)
+  );
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: var(--kalambury-stage-shadow);
+}
+
+.kalambury-stage-shell {
+  padding: 18px;
+  border-radius: 30px;
+}
+
+.kalambury-stage-canvas {
+  display: grid;
+  place-items: center;
+  min-height: clamp(320px, calc(100dvh - 280px), 710px);
+  padding: 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 79, 216, 0.08),
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(56, 232, 255, 0.08),
+      transparent 18%
+    ), linear-gradient(180deg, rgba(14, 10, 24, 0.74), rgba(7, 8, 16, 0.88));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-stage-panel,
+.kalambury-order-card,
+.kalambury-presenter-hero,
+.kalambury-verdict-shell,
+.kalambury-summary-rank,
+.kalambury-verdict-player-card,
+.kalambury-verdict-strip {
+  border-color: var(--kalambury-stage-border);
+  background: linear-gradient(
+    180deg,
+    rgba(24, 14, 34, 0.84),
+    rgba(10, 9, 18, 0.96)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-order-card,
+.kalambury-presenter-hero,
+.kalambury-verdict-player-card,
+.kalambury-summary-rank {
+  border-radius: 28px;
+}
+
+.kalambury-order-card__name,
+.kalambury-presenter-hero__name,
+.kalambury-verdict-player-card__name,
+.kalambury-summary-rank__name {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.kalambury-presenter-hero {
+  gap: 18px;
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 79, 216, 0.12),
+      transparent 28%
+    ),
+    radial-gradient(circle at 82% 20%, rgba(56, 232, 255, 0.1), transparent 20%),
+    linear-gradient(180deg, rgba(22, 13, 33, 0.88), rgba(9, 9, 18, 0.96));
+}
+
+.kalambury-presenter-hero__label,
+.kalambury-stage-counter {
+  color: rgba(255, 182, 231, 0.9);
+  letter-spacing: 0.14em;
+}
+
+.kalambury-play__event-badge,
+.kalambury-hint-chip {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(17, 16, 29, 0.88),
+    rgba(10, 9, 18, 0.94)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kalambury-hint-chip {
+  min-height: 52px;
+  padding: 0 20px;
+  border-radius: 18px;
+  color: rgba(255, 233, 240, 0.94);
+  font-weight: 700;
+}
+
+.kalambury-play__timer {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(3.6rem, 8vw, 5.8rem);
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  color: #fff4d1;
+  text-shadow: 0 0 24px rgba(255, 179, 71, 0.2);
+}
+
+.kalambury-play__timer--prepare {
+  margin-top: 16px;
+  align-self: stretch;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: clamp(220px, 34vh, 420px);
+  font-size: clamp(6rem, 15vw, 11rem);
+  line-height: 0.82;
+  letter-spacing: -0.09em;
+  color: #fff0b8;
+  text-shadow: 0 0 34px rgba(255, 200, 96, 0.24), 0 18px 44px rgba(0, 0, 0, 0.3);
+}
+
+.kalambury-stage-footer {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.kalambury-footer-button {
+  min-height: 54px;
+  padding: 0 24px;
+  border-radius: 18px;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+}
+
+.kalambury-footer-button--danger {
+  border: 1px solid rgba(255, 157, 157, 0.18);
+  background: linear-gradient(135deg, #ff5b72, #ff2f72);
+  color: #fff;
+  box-shadow: 0 16px 36px rgba(255, 47, 114, 0.26);
+}
+
+.kalambury-verdict-choice {
+  min-height: 82px;
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 16, 31, 0.9),
+    rgba(10, 9, 18, 0.95)
+  );
+  color: rgba(255, 238, 245, 0.95);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-weight: 700;
+}
+
+.kalambury-verdict-choice:hover,
+.kalambury-verdict-player-card:hover {
+  border-color: var(--kalambury-stage-border-strong);
+  transform: translateY(-2px);
+}
+
+.kalambury-verdict-strip {
+  border-radius: 24px;
+}
+
+.kalambury-summary-rank--winner {
+  border-color: rgba(255, 205, 102, 0.48);
+  background: radial-gradient(
+      circle at 18% 18%,
+      rgba(255, 179, 71, 0.16),
+      transparent 28%
+    ), linear-gradient(180deg, rgba(87, 37, 44, 0.72), rgba(43, 20, 33, 0.96));
+}
+
+@media (max-width: 980px) {
+  .kal-hub-main {
+    padding: 18px;
+  }
+
+  .kal-hub-cta-row {
+    padding-top: 4px;
+  }
+
+  .hero--kalambury-play.hero--kalambury-playwide {
+    width: min(100%, 980px);
+    padding: 18px;
+  }
+}
+
+@media (max-width: 720px) {
+  .kal-hub-launch-button,
+  .kalambury-footer-button,
+  .kalambury-mode-trigger,
+  .kalambury-footer-button--primary {
+    width: 100%;
+  }
+
+  .kalambury-playtopbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kalambury-stage-shell,
+  .kalambury-stage-canvas,
+  .hero--kalambury-setup,
+  .hero--kalambury-play.hero--kalambury-playwide {
+    padding: 16px;
+  }
+}
+
+@media (max-height: 980px) {
+  .kal-hub-launch-button {
+    min-height: 52px;
+  }
+}
+
+@media (max-height: 820px) {
+  .kalambury-stage-canvas {
+    min-height: clamp(280px, calc(100dvh - 250px), 520px);
+    padding: 18px;
+  }
+
+  .hero--kalambury-play.hero--kalambury-playwide {
+    padding: 16px;
+  }
+}
+/* Kalambury UI polish pass: verdict + summary refinement */
+.kalambury-stage-panel--verdict,
+.kalambury-stage-panel--summary {
+  width: min(100%, 1180px);
+}
+
+.kalambury-verdict-shell {
+  position: relative;
+  overflow: hidden;
+  gap: 24px;
+  padding: 30px;
+  border-radius: 32px;
+  background: radial-gradient(
+      circle at 50% 0%,
+      rgba(255, 79, 216, 0.1),
+      transparent 24%
+    ),
+    radial-gradient(
+      circle at 92% 18%,
+      rgba(56, 232, 255, 0.08),
+      transparent 18%
+    ), linear-gradient(180deg, rgba(25, 14, 35, 0.9), rgba(9, 9, 18, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 24px 64px
+    rgba(0, 0, 0, 0.32);
+}
+
+.kalambury-verdict-shell::before,
+.kalambury-summary-head::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto auto 50%;
+  width: min(100%, 420px);
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(56, 232, 255, 0.36),
+    transparent
+  );
+  pointer-events: none;
+}
+
+.kalambury-verdict-shell h2,
+.kalambury-summary-head h2 {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.kalambury-verdict-choice-row {
+  gap: 20px;
+  width: min(100%, 820px);
+}
+
+.kalambury-verdict-choice {
+  position: relative;
+  overflow: hidden;
+  min-height: 96px;
+  padding: 0 24px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 34, 0.94),
+    rgba(10, 9, 18, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px
+    rgba(0, 0, 0, 0.24);
+  letter-spacing: -0.02em;
+}
+
+.kalambury-verdict-choice::after {
+  content: "";
+  position: absolute;
+  inset: auto 22px 18px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 79, 216, 0.9),
+    rgba(56, 232, 255, 0.88)
+  );
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.kalambury-verdict-choice:hover,
+.kalambury-verdict-player-card:hover {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px
+    rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(56, 232, 255, 0.14);
+  transform: translateY(-2px);
+}
+
+.kalambury-verdict-choice:hover::after,
+.kalambury-verdict-player-card--active::after {
+  opacity: 1;
+}
+
+.kalambury-verdict-player-grid {
+  width: min(100%, 920px);
+  gap: 16px;
+}
+
+.kalambury-verdict-player-grid--guessers {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  width: min(100%, 1120px);
+}
+
+.kalambury-verdict-player-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 112px;
+  border-radius: 30px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 34, 0.92),
+    rgba(10, 9, 18, 0.98)
+  );
+}
+
+.kalambury-verdict-player-card--guesser {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 14px;
+  min-height: 164px;
+  padding: 18px 14px 16px;
+  border-radius: 28px;
+}
+
+.kalambury-verdict-player-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 24px 16px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 79, 216, 0.96),
+    rgba(56, 232, 255, 0.88)
+  );
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.kalambury-verdict-player-card--active {
+  border-color: rgba(56, 232, 255, 0.36);
+  background: radial-gradient(
+      circle at 12% 16%,
+      rgba(255, 79, 216, 0.14),
+      transparent 26%
+    ), linear-gradient(180deg, rgba(27, 18, 42, 0.96), rgba(11, 10, 19, 1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 18px 42px
+      rgba(0, 0, 0, 0.24), 0 0 0 2px rgba(56, 232, 255, 0.36),
+    0 0 28px rgba(56, 232, 255, 0.18);
+  transform: translateY(-2px) scale(1.015);
+}
+
+.kalambury-verdict-player-card--active .kalambury-verdict-player-card__name {
+  color: rgba(255, 249, 253, 1);
+}
+
+.kalambury-verdict-player-card--active .kalambury-verdict-player-card__avatar {
+  filter: drop-shadow(0 0 12px rgba(56, 232, 255, 0.18));
+}
+
+.kalambury-verdict-player-card__avatar,
+.kalambury-summary-rank__avatar {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-verdict-player-card__name {
+  font-size: clamp(1.55rem, 2.3vw, 1.9rem);
+}
+
+.kalambury-verdict-player-card--guesser .kalambury-verdict-player-card__avatar {
+  font-size: clamp(2.8rem, 4vw, 3.8rem);
+  min-height: 78px;
+}
+
+.kalambury-verdict-player-card--guesser .kalambury-verdict-player-card__name {
+  width: 100%;
+  justify-content: center;
+  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+}
+
+.kalambury-verdict-player-card__score {
+  background: linear-gradient(
+    180deg,
+    rgba(18, 10, 26, 0.92),
+    rgba(9, 8, 16, 0.98)
+  );
+  color: #ff6cd0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-verdict-strip {
+  padding: 20px 24px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 14, 32, 0.92),
+    rgba(10, 9, 18, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kalambury-verdict-strip__bonus {
+  color: rgba(241, 236, 255, 0.9);
+}
+
+.kalambury-verdict-strip__bonus strong {
+  color: #6ce9ff;
+}
+
+.kalambury-verdict-strip__plus {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 79, 216, 0.16),
+    rgba(56, 232, 255, 0.1)
+  );
+  border-color: rgba(56, 232, 255, 0.18);
+  color: #fff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 1280px) {
+  .kalambury-verdict-player-grid--guessers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .kalambury-verdict-player-grid--guessers {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.kalambury-summary-head {
+  position: relative;
+  gap: 10px;
+  width: min(100%, 920px);
+  padding-top: 18px;
+}
+
+.kalambury-summary-head p {
+  max-width: 48rem;
+}
+
+.kalambury-summary-head strong {
+  color: #6ce9ff;
+}
+
+.kalambury-summary-rankings {
+  width: min(100%, 1120px);
+  gap: 16px;
+}
+
+.kalambury-summary-rank {
+  min-height: clamp(96px, calc(100dvh - 640px), 136px);
+  padding: 0 24px;
+  border-radius: 32px;
+  background: linear-gradient(
+    180deg,
+    rgba(22, 14, 32, 0.92),
+    rgba(10, 9, 18, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 42px
+    rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-summary-rank--winner {
+  border-color: rgba(255, 179, 71, 0.34);
+  background: radial-gradient(
+      circle at 12% 18%,
+      rgba(255, 179, 71, 0.16),
+      transparent 26%
+    ),
+    radial-gradient(
+      circle at 86% 24%,
+      rgba(255, 79, 216, 0.12),
+      transparent 18%
+    ), linear-gradient(180deg, rgba(31, 18, 34, 0.96), rgba(11, 10, 18, 1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 22px 50px
+    rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 179, 71, 0.1);
+}
+
+.kalambury-summary-rank__position {
+  color: rgba(255, 210, 116, 0.96);
+  text-shadow: 0 0 18px rgba(255, 179, 71, 0.16);
+}
+
+.kalambury-summary-rank__name {
+  background: linear-gradient(
+    180deg,
+    rgba(17, 14, 27, 0.9),
+    rgba(10, 9, 18, 0.96)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-summary-rank__score {
+  color: #ff6cd0;
+}
+
+@media (max-width: 900px) {
+  .kalambury-verdict-choice {
+    min-height: 84px;
+    padding: 0 20px;
+  }
+
+  .kalambury-verdict-player-card {
+    min-height: 98px;
+    padding: 18px;
+  }
+
+  .kalambury-summary-rank {
+    padding: 18px;
+  }
+}
+
+@media (max-height: 820px) {
+  .kalambury-verdict-shell {
+    min-height: 200px;
+    padding: 22px;
+  }
+
+  .kalambury-verdict-choice {
+    min-height: 74px;
+  }
+
+  .kalambury-summary-rank {
+    min-height: 86px;
+  }
+}
+/* Kalambury UI polish pass: CTA refinement soft tint A */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(56, 232, 255, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(39, 18, 48, 0.94),
+    rgba(16, 11, 24, 0.98)
+  );
+  color: #f7fbff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 0 0 1px
+    rgba(255, 255, 255, 0.02), 0 16px 34px rgba(0, 0, 0, 0.22);
+}
+
+.kal-hub-mode-card__select--selected::after,
+.kal-hub-launch-button::after,
+.kalambury-mode-trigger::after,
+.kalambury-footer-button--primary::after {
+  content: "";
+  position: absolute;
+  inset: auto 18px 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(56, 232, 255, 0.18),
+    rgba(56, 232, 255, 0.92),
+    rgba(56, 232, 255, 0.18)
+  );
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover,
+.kal-hub-mode-card__select--selected:hover {
+  transform: translateY(-2px);
+  border-color: rgba(56, 232, 255, 0.32);
+  background: linear-gradient(
+    180deg,
+    rgba(45, 21, 56, 0.96),
+    rgba(18, 12, 28, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 0 1px
+    rgba(255, 255, 255, 0.02), 0 18px 38px rgba(0, 0, 0, 0.24), 0 0 0 1px
+    rgba(56, 232, 255, 0.08);
+  filter: none;
+}
+
+.kalambury-footer-button--danger {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 120, 160, 0.2);
+  background: linear-gradient(
+    180deg,
+    rgba(56, 18, 38, 0.94),
+    rgba(22, 10, 19, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 34px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kalambury-footer-button--danger::after {
+  content: "";
+  position: absolute;
+  inset: auto 18px 12px;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 91, 114, 0.12),
+    rgba(255, 91, 114, 0.88),
+    rgba(255, 91, 114, 0.12)
+  );
+  opacity: 0.88;
+}
+
+.kalambury-footer-button--danger:hover {
+  border-color: rgba(255, 120, 160, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(64, 21, 42, 0.96),
+    rgba(26, 11, 22, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 38px
+    rgba(0, 0, 0, 0.24);
+}
+/* Kalambury UI polish pass: CTA refinement no bottom bar */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border-color: rgba(56, 232, 255, 0.24);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 17, 43, 0.96),
+    rgba(15, 11, 23, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), inset 0 0 0 1px
+    rgba(255, 255, 255, 0.02), 0 16px 34px rgba(0, 0, 0, 0.22), 0 0 0 1px
+    rgba(56, 232, 255, 0.05);
+}
+
+.kal-hub-mode-card__select--selected::after,
+.kal-hub-launch-button::after,
+.kalambury-mode-trigger::after,
+.kalambury-footer-button--primary::after,
+.kalambury-footer-button--danger::after {
+  content: none;
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover,
+.kal-hub-mode-card__select--selected:hover {
+  border-color: rgba(56, 232, 255, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(40, 20, 51, 0.97),
+    rgba(17, 12, 26, 1)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), inset 0 0 0 1px
+    rgba(255, 255, 255, 0.02), 0 18px 38px rgba(0, 0, 0, 0.24), 0 0 0 1px
+    rgba(56, 232, 255, 0.1);
+}
+
+.kalambury-footer-button--danger {
+  border-color: rgba(255, 120, 160, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(52, 20, 37, 0.95),
+    rgba(23, 11, 18, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 34px
+    rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(255, 120, 160, 0.04);
+}
+
+.kalambury-footer-button--danger:hover {
+  border-color: rgba(255, 120, 160, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(60, 23, 42, 0.97),
+    rgba(26, 12, 20, 1)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 38px
+    rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(255, 120, 160, 0.08);
+} /* Kalambury UI polish pass: CTA hierarchy pink primary */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border: 1px solid rgba(255, 122, 211, 0.78);
+  background: linear-gradient(180deg, #ff66cc 0%, #f04fb8 100%);
+  color: #fff8fe;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 18px 40px
+    rgba(36, 6, 32, 0.34), 0 0 0 1px rgba(255, 122, 211, 0.16);
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover,
+.kal-hub-mode-card__select--selected:hover {
+  border-color: rgba(255, 164, 226, 0.9);
+  background: linear-gradient(180deg, #ff73d2 0%, #f557bf 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22), 0 22px 44px
+    rgba(44, 8, 38, 0.4), 0 0 0 1px rgba(255, 164, 226, 0.22);
+}
+
+.kal-hub-launch-button:focus-visible,
+.kalambury-mode-trigger:focus-visible,
+.kalambury-footer-button--primary:focus-visible,
+.kal-hub-mode-card__select--selected:focus-visible {
+  outline: 2px solid rgba(255, 202, 237, 0.86);
+  outline-offset: 3px;
+}
+
+.kalambury-secondary-action,
+.kalambury-footer-button--ghost {
+  border-color: rgba(175, 197, 255, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(29, 23, 42, 0.94),
+    rgba(15, 12, 24, 0.98)
+  );
+  color: rgba(244, 239, 255, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 32px
+    rgba(0, 0, 0, 0.2);
+}
+
+.kalambury-secondary-action:hover,
+.kalambury-footer-button--ghost:hover {
+  border-color: rgba(195, 214, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(35, 28, 50, 0.96),
+    rgba(18, 14, 29, 1)
+  );
+  color: #ffffff;
+}
+
+.kal-hub-shell a,
+.kalambury-shell a,
+.kalambury-shell button.kalambury-link-button,
+.kalambury-back-link {
+  color: rgba(227, 222, 244, 0.78);
+}
+
+.kal-hub-shell a:hover,
+.kalambury-shell a:hover,
+.kalambury-shell button.kalambury-link-button:hover,
+.kalambury-back-link:hover {
+  color: #ffffff;
+}
+/* Kalambury UI polish pass: CTA hierarchy hot pink primary */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border: 1px solid rgba(255, 99, 182, 0.92);
+  background: linear-gradient(180deg, #f71f74 0%, #ea1a70 100%);
+  color: #fff9fd;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 40px
+    rgba(64, 8, 37, 0.34), 0 0 0 1px rgba(255, 99, 182, 0.2);
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover,
+.kal-hub-mode-card__select--selected:hover {
+  border-color: rgba(255, 136, 202, 0.96);
+  background: linear-gradient(180deg, #ff2c81 0%, #f42178 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 22px 44px
+    rgba(76, 10, 44, 0.38), 0 0 0 1px rgba(255, 136, 202, 0.24);
+}
+
+.kal-hub-launch-button:focus-visible,
+.kalambury-mode-trigger:focus-visible,
+.kalambury-footer-button--primary:focus-visible,
+.kal-hub-mode-card__select--selected:focus-visible {
+  outline: 2px solid rgba(255, 210, 235, 0.88);
+  outline-offset: 3px;
+}
+/* Kalambury UI polish pass: unified CTA system across gameplay */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border: 1px solid rgba(255, 99, 182, 0.92);
+  background: linear-gradient(180deg, #f71f74 0%, #ea1a70 100%);
+  color: #fff9fd;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 18px 40px
+    rgba(64, 8, 37, 0.34), 0 0 0 1px rgba(255, 99, 182, 0.2);
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover:not(:disabled),
+.kal-hub-mode-card__select--selected:hover {
+  border-color: rgba(255, 136, 202, 0.96);
+  background: linear-gradient(180deg, #ff2c81 0%, #f42178 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 22px 44px
+    rgba(76, 10, 44, 0.38), 0 0 0 1px rgba(255, 136, 202, 0.24);
+}
+
+.kalambury-footer-button--primary:disabled {
+  border-color: rgba(255, 99, 182, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(112, 29, 72, 0.76),
+    rgba(74, 20, 48, 0.82)
+  );
+  color: rgba(255, 241, 248, 0.62);
+  box-shadow: none;
+  opacity: 1;
+}
+
+.kal-hub-launch-button:focus-visible,
+.kalambury-mode-trigger:focus-visible,
+.kalambury-footer-button--primary:focus-visible,
+.kal-hub-mode-card__select--selected:focus-visible {
+  outline: 2px solid rgba(255, 210, 235, 0.88);
+  outline-offset: 3px;
+}
+
+.kalambury-secondary-action,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-playtopbar__settings,
+.kalambury-verdict-choice {
+  border: 1px solid rgba(189, 206, 255, 0.16);
+  background: linear-gradient(
+    180deg,
+    rgba(27, 20, 40, 0.94),
+    rgba(13, 10, 23, 0.98)
+  );
+  color: rgba(247, 243, 255, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 32px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kalambury-secondary-action:hover,
+.kalambury-modal-option:hover,
+.kalambury-modal-close:hover,
+.kalambury-playtopbar__settings:hover,
+.kalambury-verdict-choice:hover {
+  border-color: rgba(222, 231, 255, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(35, 27, 52, 0.97),
+    rgba(17, 13, 30, 1)
+  );
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 36px
+    rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-footer-button--ghost,
+.kalambury-shell a.kalambury-footer-button--ghost,
+.kalambury-shell button.kalambury-link-button,
+.kalambury-back-link {
+  border: 1px solid rgba(161, 177, 222, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(15, 13, 26, 0.82),
+    rgba(10, 9, 18, 0.92)
+  );
+  color: rgba(225, 220, 242, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.kalambury-footer-button--ghost:hover,
+.kalambury-shell a.kalambury-footer-button--ghost:hover,
+.kalambury-shell button.kalambury-link-button:hover,
+.kalambury-back-link:hover {
+  border-color: rgba(196, 210, 245, 0.22);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 17, 33, 0.9),
+    rgba(12, 10, 22, 0.98)
+  );
+  color: rgba(248, 245, 255, 0.96);
+}
+
+.kalambury-footer-button--danger {
+  border: 1px solid rgba(255, 121, 121, 0.32);
+  background: linear-gradient(180deg, #9f1d43 0%, #851334 100%);
+  color: #fff8fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 18px 36px
+    rgba(74, 9, 28, 0.36), 0 0 0 1px rgba(255, 121, 121, 0.1);
+}
+
+.kalambury-footer-button--danger:hover {
+  border-color: rgba(255, 151, 151, 0.4);
+  background: linear-gradient(180deg, #b6224d 0%, #97173d 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 20px 40px
+    rgba(86, 10, 33, 0.4), 0 0 0 1px rgba(255, 151, 151, 0.14);
+}
+/* Kalambury UI polish pass: stage surfaces, HUD and low-height desktop */
+.kal-hub-shell {
+  background: radial-gradient(
+      circle at 46% 0%,
+      rgba(123, 26, 92, 0.2),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(35, 157, 217, 0.14),
+      transparent 20%
+    ), linear-gradient(180deg, rgba(5, 5, 11, 0.94), rgba(3, 3, 8, 0.98));
+}
+
+.kal-hub-main,
+.hero--kalambury-play.hero--kalambury-playwide,
+.kal-hub-setup-overlay__panel,
+.kalambury-stage-shell {
+  border-color: rgba(255, 120, 194, 0.12);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 26px 60px
+    rgba(0, 0, 0, 0.34), 0 0 0 1px rgba(255, 120, 194, 0.04);
+}
+
+.kal-hub-main {
+  background: radial-gradient(
+      circle at top right,
+      rgba(35, 157, 217, 0.08),
+      transparent 24%
+    ), linear-gradient(180deg, rgba(9, 7, 18, 0.9), rgba(4, 4, 10, 0.96));
+  border-radius: 28px;
+}
+
+.kal-hub-main__intro h1,
+.kalambury-host-status h2,
+.kalambury-summary-head h2,
+.kalambury-verdict-shell h2 {
+  text-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.kal-hub-mode-card,
+.kalambury-setup__header,
+.kalambury-setup__panel,
+.kalambury-setup__footer,
+.kalambury-setup-modal__panel,
+.kalambury-player-card,
+.kalambury-mode-summary,
+.kalambury-presenter-toggle,
+.kalambury-settings-card,
+.kalambury-mode-content,
+.kalambury-stage-panel,
+.kalambury-order-card,
+.kalambury-presenter-hero,
+.kalambury-verdict-shell,
+.kalambury-summary-rank,
+.kalambury-verdict-player-card,
+.kalambury-verdict-strip,
+.kalambury-summary-head {
+  border-color: rgba(255, 120, 194, 0.14);
+  background: radial-gradient(
+      circle at top left,
+      rgba(255, 255, 255, 0.04),
+      transparent 30%
+    ), linear-gradient(180deg, rgba(15, 11, 26, 0.94), rgba(7, 7, 15, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 40px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kal-hub-mode-card--selected,
+.kalambury-summary-rank--winner,
+.kalambury-verdict-player-card--active {
+  border-color: rgba(255, 121, 195, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 46px
+    rgba(0, 0, 0, 0.28), 0 0 0 1px rgba(255, 121, 195, 0.1);
+}
+
+.kalambury-verdict-player-card.kalambury-verdict-player-card--active {
+  border-color: rgba(56, 232, 255, 0.44);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 46px
+      rgba(0, 0, 0, 0.28), 0 0 0 3px rgba(56, 232, 255, 0.34),
+    0 0 30px rgba(56, 232, 255, 0.2);
+}
+
+.kalambury-verdict-player-card[data-gender="female"].kalambury-verdict-player-card--active {
+  border-color: rgba(255, 79, 216, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 46px
+      rgba(0, 0, 0, 0.28), 0 0 0 3px rgba(255, 79, 216, 0.34),
+    0 0 30px rgba(255, 79, 216, 0.2);
+}
+
+.kalambury-verdict-player-card[data-gender="male"].kalambury-verdict-player-card--active {
+  border-color: rgba(56, 232, 255, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 24px 46px
+      rgba(0, 0, 0, 0.28), 0 0 0 3px rgba(56, 232, 255, 0.34),
+    0 0 30px rgba(56, 232, 255, 0.2);
+}
+
+.kalambury-verdict-player-card[data-gender="female"].kalambury-verdict-player-card--active .kalambury-verdict-player-card__avatar {
+  filter: drop-shadow(0 0 14px rgba(255, 79, 216, 0.24));
+}
+
+.kalambury-verdict-player-card[data-gender="male"].kalambury-verdict-player-card--active .kalambury-verdict-player-card__avatar {
+  filter: drop-shadow(0 0 14px rgba(56, 232, 255, 0.24));
+}
+
+.kal-hub-mode-card__hero,
+.kalambury-stage-canvas {
+  background: radial-gradient(
+      circle at 18% 18%,
+      rgba(255, 48, 151, 0.08),
+      transparent 24%
+    ),
+    radial-gradient(circle at 82% 14%, rgba(64, 203, 255, 0.1), transparent 20%),
+    linear-gradient(180deg, rgba(9, 8, 18, 0.98), rgba(14, 7, 20, 0.92));
+}
+
+.kalambury-stage-shell {
+  padding: 22px;
+  border-radius: 34px;
+  background: radial-gradient(
+      circle at top,
+      rgba(103, 20, 74, 0.14),
+      transparent 28%
+    ), linear-gradient(180deg, rgba(11, 9, 21, 0.72), rgba(5, 5, 10, 0.34));
+}
+
+.kalambury-stage-canvas {
+  border: 1px solid rgba(255, 120, 194, 0.1);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), inset 0 0 0 1px
+    rgba(255, 120, 194, 0.03);
+}
+
+.kalambury-playtopbar {
+  gap: 20px;
+}
+
+.kalambury-stage-pill {
+  border-color: rgba(104, 227, 255, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(16, 30, 42, 0.88),
+    rgba(10, 16, 26, 0.96)
+  );
+  color: rgba(232, 247, 255, 0.98);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 12px 26px
+    rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(104, 227, 255, 0.08);
+}
+
+.kalambury-playtopbar__settings {
+  min-width: 130px;
+  min-height: 46px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: rgba(247, 243, 255, 0.92);
+}
+
+.kalambury-host-status,
+.kalambury-summary-head,
+.kalambury-verdict-shell {
+  gap: 16px;
+}
+
+.kalambury-host-status {
+  width: min(100%, 760px);
+  padding: 20px 24px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 120, 194, 0.14);
+  background: radial-gradient(
+      circle at top right,
+      rgba(61, 195, 255, 0.08),
+      transparent 22%
+    ), linear-gradient(180deg, rgba(16, 11, 28, 0.95), rgba(8, 7, 16, 0.98));
+}
+
+.kalambury-stage-panel--prepare .kalambury-host-status--prepare {
+  width: 100%;
+  max-width: none;
+}
+
+.kalambury-stage-panel--act-host .kalambury-host-status--act {
+  width: 100%;
+  max-width: none;
+}
+
+.kalambury-play__timer {
+  color: #ffe7a9;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 30px rgba(255, 185, 81, 0.2), 0 14px 34px rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-presenter-hero__label,
+.kalambury-stage-counter {
+  color: rgba(255, 177, 228, 0.92);
+}
+
+.kalambury-play__event-badge,
+.kalambury-hint-chip,
+.kalambury-mode-summary,
+.kalambury-verdict-strip__bonus {
+  border-color: rgba(119, 222, 255, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(17, 18, 31, 0.9),
+    rgba(9, 10, 18, 0.96)
+  );
+}
+
+.kalambury-hint-chip,
+.kalambury-mode-summary strong,
+.kalambury-verdict-strip__bonus strong,
+.kalambury-summary-head strong {
+  color: rgba(246, 244, 255, 0.98);
+}
+
+.kalambury-order-card__index,
+.kalambury-summary-rank__position,
+.kalambury-summary-rank__score {
+  color: #ff7cca;
+  text-shadow: 0 8px 18px rgba(59, 7, 39, 0.22);
+}
+
+.kalambury-order-card__avatar,
+.kalambury-presenter-hero__avatar,
+.kalambury-summary-rank__avatar,
+.kalambury-verdict-player-card__avatar {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 30px
+    rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-stage-footer {
+  gap: 18px;
+}
+
+.kalambury-stage-footer__summary {
+  color: rgba(231, 226, 245, 0.82);
+}
+
+@media (max-height: 840px) and (min-width: 1100px) {
+  .kal-hub-main,
+  .hero--kalambury-play.hero--kalambury-playwide,
+  .kal-hub-setup-overlay__panel,
+  .kalambury-stage-shell {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 20px 42px
+      rgba(0, 0, 0, 0.3);
+  }
+
+  .kal-hub-main {
+    padding: 18px 20px 14px;
+  }
+
+  .kalambury-stage-shell {
+    padding: 16px;
+    border-radius: 28px;
+  }
+
+  .kalambury-stage-canvas {
+    min-height: clamp(320px, calc(100dvh - 260px), 560px);
+    padding: 18px;
+  }
+
+  .kalambury-stage-panel,
+  .kalambury-verdict-shell,
+  .kalambury-summary-head,
+  .kalambury-summary-rank,
+  .kalambury-verdict-player-card {
+    border-radius: 22px;
+  }
+
+  .kalambury-host-status {
+    padding: 16px 20px;
+  }
+
+  .kalambury-play__timer {
+    font-size: clamp(3.1rem, 7vw, 4.8rem);
+  }
+
+  .kalambury-stage-footer {
+    gap: 14px;
+  }
+}
+/* Kalambury UI polish pass: gameplay settings button cleanup */
+.kalambury-playtopbar__settings::before,
+.kalambury-playtopbar__settings::after {
+  content: none;
+}
+
+/* Kalambury UI polish pass: primary CTA tone tuning */
+.kal-hub-mode-card__select--selected,
+.kal-hub-launch-button,
+.kalambury-mode-trigger,
+.kalambury-footer-button--primary {
+  border-color: rgba(216, 27, 96, 0.92);
+  background: linear-gradient(180deg, #d81b60 0%, #e91e63 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 18px 38px
+    rgba(70, 8, 37, 0.3), 0 0 0 1px rgba(216, 27, 96, 0.16);
+}
+
+.kal-hub-launch-button:hover:enabled,
+.kalambury-mode-trigger:hover,
+.kalambury-footer-button--primary:hover:not(:disabled),
+.kal-hub-mode-card__select--selected:hover {
+  border-color: rgba(233, 30, 99, 0.96);
+  background: linear-gradient(180deg, #e11d67 0%, #ec4899 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 20px 42px
+    rgba(82, 10, 43, 0.34), 0 0 0 1px rgba(233, 30, 99, 0.2);
+}
+
+.kalambury-footer-button--primary:disabled {
+  border-color: rgba(216, 27, 96, 0.26);
+  background: linear-gradient(
+    180deg,
+    rgba(96, 20, 50, 0.78),
+    rgba(70, 18, 42, 0.84)
+  );
+}
+/* Kalambury UI polish pass: hub primary family alignment */
+.kal-hub-sidebar__item--active,
+.kal-hub-mode-card__badge--featured {
+  border-color: rgba(216, 27, 96, 0.28);
+  background: linear-gradient(180deg, #d81b60 0%, #e91e63 100%);
+  color: #fff9fd;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 30px
+    rgba(70, 8, 37, 0.24);
+}
+
+.kal-hub-sidebar__item:hover {
+  background: linear-gradient(
+    180deg,
+    rgba(56, 27, 52, 0.6),
+    rgba(26, 18, 30, 0.84)
+  );
+  box-shadow: inset 0 0 0 1px rgba(155, 89, 182, 0.12);
+}
+
+.kal-hub-mode-card--selected {
+  border-color: rgba(216, 27, 96, 0.34);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(216, 27, 96, 0.1)
+    inset;
+}
+
+.kal-hub-mode-card__meta .material-symbols-outlined,
+.kal-hub-mode-card__badge--muted {
+  color: rgba(244, 176, 219, 0.92);
+}
+/* Kalambury UI polish pass: secondary accent unification */
+.kal-hub-mode-card--selected,
+.kalambury-secondary-action,
+.kalambury-footer-button--ghost,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-playtopbar__settings,
+.kalambury-verdict-choice,
+.kalambury-stage-pill,
+.kalambury-host-status,
+.kalambury-play__event-badge,
+.kalambury-hint-chip,
+.kalambury-mode-summary,
+.kalambury-verdict-strip__bonus {
+  --kal-secondary: #8b5cf6;
+  --kal-secondary-soft: rgba(139, 92, 246, 0.12);
+  --kal-secondary-strong: rgba(139, 92, 246, 0.28);
+}
+
+.kal-hub-mode-card--selected {
+  border-color: var(--kal-secondary-strong);
+  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(139, 92, 246, 0.08)
+    inset;
+}
+
+.kal-hub-sidebar__item:hover,
+.kal-hub-mode-card__badge--muted {
+  color: rgba(203, 190, 234, 0.86);
+}
+
+.kalambury-secondary-action,
+.kalambury-footer-button--ghost,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-playtopbar__settings,
+.kalambury-verdict-choice {
+  border-color: rgba(139, 92, 246, 0.12);
+}
+
+.kalambury-secondary-action:hover,
+.kalambury-footer-button--ghost:hover,
+.kalambury-modal-option:hover,
+.kalambury-modal-close:hover,
+.kalambury-playtopbar__settings:hover,
+.kalambury-verdict-choice:hover,
+.kal-hub-sidebar__item:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(41, 32, 63, 0.9),
+    rgba(19, 16, 31, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 36px
+    rgba(0, 0, 0, 0.24), 0 0 0 1px rgba(139, 92, 246, 0.05);
+}
+
+.kalambury-stage-pill {
+  border-color: rgba(139, 92, 246, 0.32);
+  background: linear-gradient(
+    180deg,
+    rgba(34, 28, 54, 0.9),
+    rgba(18, 15, 29, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 26px
+    rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(139, 92, 246, 0.07);
+}
+
+.kalambury-host-status {
+  border-color: rgba(139, 92, 246, 0.12);
+  background: radial-gradient(
+      circle at top right,
+      rgba(139, 92, 246, 0.06),
+      transparent 22%
+    ), linear-gradient(180deg, rgba(16, 11, 28, 0.95), rgba(8, 7, 16, 0.98));
+}
+
+.kalambury-play__timer {
+  color: #b7a9e4;
+  text-shadow: 0 0 24px rgba(139, 92, 246, 0.1), 0 14px 34px rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-presenter-hero__label,
+.kalambury-stage-counter,
+.kalambury-order-card__index,
+.kalambury-summary-rank__position,
+.kalambury-summary-rank__score,
+.kal-hub-mode-card__meta .material-symbols-outlined {
+  color: #9d8ccf;
+}
+
+.kalambury-play__event-badge,
+.kalambury-hint-chip,
+.kalambury-mode-summary,
+.kalambury-verdict-strip__bonus {
+  border-color: rgba(139, 92, 246, 0.16);
+  background: linear-gradient(
+    180deg,
+    rgba(31, 27, 47, 0.46),
+    rgba(16, 14, 28, 0.96)
+  );
+}
+
+/* Kalambury UI polish pass: secondary vs ghost separation */
+.kal-hub-sidebar__item:not(.kal-hub-sidebar__item--active),
+.kalambury-secondary-action,
+.kalambury-modal-option,
+.kalambury-modal-close,
+.kalambury-category-tag {
+  border: 1px solid rgba(139, 92, 246, 0.2);
+  background: linear-gradient(
+    180deg,
+    rgba(30, 24, 45, 0.96),
+    rgba(16, 13, 27, 0.99)
+  );
+  color: rgba(243, 239, 255, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 28px
+    rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(139, 92, 246, 0.04);
+}
+
+.kal-hub-sidebar__item:not(.kal-hub-sidebar__item--active):hover,
+.kalambury-secondary-action:hover,
+.kalambury-modal-option:hover,
+.kalambury-modal-close:hover,
+.kalambury-category-tag:hover {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(38, 30, 57, 0.98),
+    rgba(20, 16, 33, 1)
+  );
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 34px
+    rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(139, 92, 246, 0.06);
+}
+
+.kalambury-footer-button--ghost,
+.kalambury-shell a.kalambury-footer-button--ghost,
+.kalambury-shell button.kalambury-link-button,
+.kalambury-back-link,
+.kal-hub-shell a:not(.kal-hub-sidebar__item) {
+  border: 1px solid rgba(139, 92, 246, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(14, 12, 24, 0.48),
+    rgba(9, 8, 17, 0.62)
+  );
+  color: rgba(214, 207, 233, 0.76);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.kalambury-footer-button--ghost:hover,
+.kalambury-shell a.kalambury-footer-button--ghost:hover,
+.kalambury-shell button.kalambury-link-button:hover,
+.kalambury-back-link:hover,
+.kal-hub-shell a:not(.kal-hub-sidebar__item):hover {
+  border-color: rgba(139, 92, 246, 0.14);
+  background: linear-gradient(
+    180deg,
+    rgba(18, 15, 29, 0.62),
+    rgba(11, 10, 21, 0.76)
+  );
+  color: rgba(240, 236, 250, 0.92);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+/* Kalambury UI polish pass: hub settings tabs */
+.kal-hub-settings {
+  display: grid;
+  gap: 22px;
+}
+
+.kal-hub-settings__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.kal-hub-settings__tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 0 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(139, 92, 246, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(24, 20, 37, 0.94),
+    rgba(12, 10, 22, 0.98)
+  );
+  color: rgba(235, 230, 247, 0.88);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 14px 28px
+    rgba(0, 0, 0, 0.18);
+  font-weight: 700;
+}
+
+.kal-hub-settings__tab:hover {
+  border-color: rgba(139, 92, 246, 0.28);
+  background: linear-gradient(
+    180deg,
+    rgba(31, 26, 47, 0.97),
+    rgba(16, 13, 28, 1)
+  );
+  color: #ffffff;
+}
+
+.kal-hub-settings__tab--active {
+  border-color: rgba(139, 92, 246, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(45, 34, 70, 0.96),
+    rgba(21, 17, 35, 0.99)
+  );
+  color: rgba(247, 244, 255, 0.98);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 34px
+    rgba(0, 0, 0, 0.22), 0 0 0 1px rgba(139, 92, 246, 0.08);
+}
+
+.kal-hub-settings__panel {
+  display: grid;
+  gap: 18px;
+  padding: 26px 28px;
+  border-radius: 28px;
+  border: 1px solid rgba(139, 92, 246, 0.16);
+  background: radial-gradient(
+      circle at top right,
+      rgba(139, 92, 246, 0.08),
+      transparent 24%
+    ), linear-gradient(180deg, rgba(15, 11, 26, 0.94), rgba(7, 7, 15, 0.98));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 40px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kal-hub-settings__panel-head {
+  display: grid;
+  gap: 8px;
+}
+
+.kal-hub-settings__eyebrow {
+  margin: 0;
+  color: rgba(157, 140, 207, 0.92);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.kal-hub-settings__panel h2 {
+  margin: 0;
+}
+
+.kal-hub-settings__panel p {
+  margin: 0;
+  color: rgba(225, 220, 242, 0.82);
+}
+
+.kal-hub-settings__list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.kal-hub-settings__list li {
+  position: relative;
+  padding: 14px 16px 14px 44px;
+  border-radius: 18px;
+  border: 1px solid rgba(139, 92, 246, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(24, 20, 36, 0.84),
+    rgba(12, 10, 22, 0.96)
+  );
+  color: rgba(243, 239, 255, 0.9);
+}
+
+.kal-hub-settings__list li::before {
+  content: "";
+  position: absolute;
+  inset: 20px auto auto 18px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(139, 92, 246, 0.72);
+  box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.12);
+}
+
+@media (max-width: 900px) {
+  .kal-hub-settings__panel {
+    padding: 22px 20px;
+  }
+
+  .kal-hub-settings__tab {
+    flex: 1 1 calc(50% - 12px);
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .kal-hub-settings__tab {
+    flex-basis: 100%;
+  }
+}
+/* Kalambury UI polish pass: setup overlay interaction and focused setup cards */
+.kal-hub-setup-overlay {
+  cursor: default;
+}
+
+.kal-hub-setup-overlay__panel {
+  cursor: auto;
+}
+
+.kalambury-player-card {
+  gap: 12px;
+  min-height: 188px;
+  padding: 18px 16px 18px;
+  align-content: start;
+  justify-items: center;
+  background: radial-gradient(
+      circle at top,
+      rgba(255, 255, 255, 0.03),
+      transparent 40%
+    ), linear-gradient(180deg, rgba(13, 10, 23, 0.92), rgba(8, 7, 15, 0.98));
+}
+
+.kalambury-player-card__avatar-wrap {
+  display: grid;
+  place-items: center;
+  min-height: 96px;
+  width: 100%;
+}
+
+.kalambury-player-card__avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  background: linear-gradient(
+    180deg,
+    rgba(216, 27, 96, 0.22),
+    rgba(139, 92, 246, 0.16)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 16px 30px
+    rgba(0, 0, 0, 0.24);
+  font-size: 2rem;
+}
+
+.kalambury-player-card__name {
+  min-width: 96px;
+  padding: 10px 16px;
+  background: rgba(7, 7, 12, 0.58);
+}
+
+.kalambury-mode-trigger {
+  gap: 12px;
+}
+
+.kalambury-mode-trigger .material-symbols-outlined {
+  font-size: 1.18rem;
+}
+
+.kalambury-addon-card--collapsed {
+  gap: 12px;
+}
+
+.kalambury-addon-card__helper {
+  margin: 0;
+  color: rgba(243, 239, 255, 0.84);
+}
+
+.kalambury-setup-modal__panel--qr {
+  width: min(100%, 540px);
+}
+
+.kalambury-qr-modal {
+  display: grid;
+  gap: 18px;
+}
+
+.kalambury-qr-modal__code {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.06),
+      rgba(255, 255, 255, 0.03)
+    ), rgba(8, 8, 12, 0.82);
+}
+
+.kalambury-qr-modal__image {
+  display: block;
+  width: min(100%, 280px);
+  aspect-ratio: 1;
+  border-radius: 22px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+}
+
+.kalambury-qr-modal__copy {
+  display: grid;
+  gap: 10px;
+}
+
+.kalambury-qr-modal__eyebrow {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.kalambury-qr-modal__session-name {
+  color: var(--text-high);
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+
+.kalambury-qr-modal__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.74);
+  line-height: 1.6;
+}
+
+@media (max-width: 767px) {
+  .kalambury-addon-card--collapsed {
+    gap: 12px;
+  }
+
+  .kalambury-player-card {
+    min-height: 172px;
+  }
+
+  .kalambury-player-card__avatar {
+    width: 88px;
+    height: 88px;
+    font-size: 1.8rem;
+  }
+}
+/* Kalambury UI polish pass: setup close button and single-action footer */
+.kalambury-setup__close {
+  min-width: 52px;
+  min-height: 52px;
+  padding: 0;
+  border-radius: 16px;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.kalambury-setup__footer--single {
+  position: static;
+  bottom: auto;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kalambury-setup__footer--single .kalambury-footer-button--primary {
+  width: 100%;
+}
+
+/* Kalambury setup layout closer to Tajniacy: centered card, no sticky footer bar */
+.app-shell--kalambury-setup {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 48px 40px;
+  box-sizing: border-box;
+}
+
+.hero--kalambury-setup {
+  width: min(100%, 1120px);
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.kalambury-setup__footer {
+  position: static;
+  bottom: auto;
+  gap: 14px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kalambury-setup__footer .kalambury-footer-button {
+  min-height: 58px;
+  border-radius: 18px;
+}
+
+@media (max-width: 767px) {
+  .app-shell--kalambury-setup {
+    padding: 20px 16px 28px;
+  }
+
+  .kalambury-setup__footer {
+    gap: 10px;
+  }
+}
+
+/* Kalambury hub layout aligned with Tajniacy: centered shell, viewport breathing room, no global footer */
+.kal-hub-centered-layout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  padding: 20px 28px;
+  box-sizing: border-box;
+}
+
+.app-shell--kalambury-hub-shell.kal-hub-centered-layout {
+  height: auto;
+  min-height: 100dvh;
+  padding: 20px 28px !important;
+  overflow: visible;
+}
+
+.kal-hub-centered-layout .kal-hub-shell {
+  width: min(1280px, 100%);
+  height: auto;
+  min-height: min(860px, calc(100dvh - 40px));
+  border-radius: 28px;
+  padding: 0;
+}
+
+.kal-hub-centered-layout .kal-hub-layout {
+  min-height: 0;
+}
+
+.kal-hub-centered-layout .kal-hub-main {
+  align-content: start;
+}
+
+@media (max-width: 980px) {
+  .kal-hub-centered-layout,
+  .app-shell--kalambury-hub-shell.kal-hub-centered-layout {
+    padding: 16px !important;
+  }
+
+  .kal-hub-centered-layout .kal-hub-shell {
+    min-height: auto;
+    border-radius: 24px;
+  }
+}
+
+/* Kalambury hub typography and spacing aligned with Tajniacy proportions */
+.kal-hub-centered-layout .kal-hub-shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  width: min(1280px, calc(100% - 32px));
+  height: calc(100vh - 40px);
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kal-hub-centered-layout .kal-hub-topbar {
+  min-height: 72px;
+  margin-bottom: 32px;
+  padding: 0 24px;
+  border: 1px solid rgba(255, 88, 196, 0.14);
+  border-radius: 20px;
+  background: rgba(24, 12, 24, 0.6);
+  box-shadow: 0 24px 90px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(24px);
+}
+
+.kal-hub-centered-layout .kal-hub-brand {
+  gap: 12px;
+}
+
+.kal-hub-centered-layout .kal-hub-brand__mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+}
+
+.kal-hub-centered-layout .kal-hub-brand__text {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.kal-hub-centered-layout .kal-hub-topbar__actions {
+  gap: 12px;
+}
+
+.kal-hub-centered-layout .kal-hub-login-button {
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.kal-hub-centered-layout .kal-hub-layout {
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 28px;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+  top: 112px;
+  align-self: stretch;
+  height: calc(100vh - 160px);
+  padding: 0;
+  border-right: 0;
+  background: transparent;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__section {
+  gap: 12px;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__eyebrow {
+  padding-left: 14px;
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__nav {
+  gap: 6px;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__item {
+  gap: 12px;
+  min-height: 52px;
+  padding: 0 14px;
+  border-radius: 14px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.98rem;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__item--active {
+  box-shadow: inset 3px 0 0 #ff4fd8;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__exit {
+  margin-top: auto;
+  margin-bottom: 32px;
+  display: grid;
+  gap: 12px;
+  padding-top: 0;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__exit-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+}
+
+.kal-hub-centered-layout .kal-hub-sidebar__exit-link:hover {
+  background: rgba(255, 79, 216, 0.1);
+  border-color: rgba(255, 79, 216, 0.3);
+  box-shadow: 0 4px 12px rgba(255, 79, 216, 0.08);
+  color: #ffb5ed;
+}
+
+.kal-hub-centered-layout .kal-hub-main {
+  display: grid;
+  align-content: start;
+  gap: 32px;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kal-hub-centered-layout .kal-hub-main__intro {
+  align-items: start;
+  gap: 16px;
+}
+
+.kal-hub-centered-layout .kal-hub-main__intro h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1;
+  letter-spacing: -0.045em;
+}
+
+.kal-hub-centered-layout .kal-hub-main__intro p {
+  margin: 4px 0 0;
+  max-width: 36rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.kal-hub-centered-layout .kal-hub-selector-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 0.88rem;
+  font-weight: 700;
+}
+
+.kal-hub-centered-layout .kal-hub-selector-status__dots {
+  gap: 6px;
+}
+
+.kal-hub-centered-layout .kal-hub-selector-status__dot {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.kal-hub-centered-layout .kal-hub-selector-status__dot--active {
+  background: #ff59c0;
+  box-shadow: 0 0 8px rgba(255, 89, 192, 0.4);
+}
+
+.kal-hub-centered-layout .kal-hub-card-rail {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.kal-hub-centered-layout .kal-hub-carousel-button {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  font-size: 22px;
+}
+
+.kal-hub-centered-layout .kal-hub-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-radius: 24px;
+  border-width: 1px;
+  overflow: hidden;
+  transition: transform 300ms ease, box-shadow 300ms ease;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__hero {
+  position: relative;
+  height: 240px;
+  min-height: 240px;
+  overflow: hidden;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__hero img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__badge-row {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__badge {
+  min-height: 26px;
+  padding: 0 10px;
+  font-size: 0.64rem;
+  letter-spacing: 0.08em;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 20px 22px;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__body h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__body p {
+  margin: 4px 0 0;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.kal-hub-centered-layout .kal-hub-mode-card__select {
+  min-height: 38px;
+  padding: 0 18px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+
+.kal-hub-centered-layout .kal-hub-cta-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 52px;
+  gap: 16px;
+  justify-items: stretch;
+  padding: 0;
+}
+
+.kal-hub-centered-layout .kal-hub-launch-button {
+  grid-column: 2;
+  width: 100%;
+  min-height: 64px;
+  padding: 0;
+  border-radius: 18px;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 1.2rem;
+  font-weight: 800;
+  box-shadow: 0 12px 32px rgba(255, 47, 168, 0.12);
+}
+
+@media (max-width: 900px) {
+  .kal-hub-centered-layout .kal-hub-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    height: auto;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar__section {
+    flex: 1;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar__nav {
+    grid-template-columns: repeat(2, auto);
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar__exit {
+    margin-bottom: 0;
+    padding-top: 0;
+    padding-left: 16px;
+    border-top: 0;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .kal-hub-centered-layout .kal-hub-cards {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .kal-hub-centered-layout .kal-hub-topbar {
+    min-height: 60px;
+    padding: 0 16px;
+    border-radius: 16px;
+    margin-bottom: 22px;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar__nav {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .kal-hub-centered-layout .kal-hub-sidebar__exit {
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 12px;
+    margin-bottom: 0;
+  }
+
+  .kal-hub-centered-layout .kal-hub-mode-card__hero {
+    height: 120px;
+    min-height: 120px;
+  }
+}
+/* Kalambury UI polish pass: legacy-style player avatars */
+.kalambury-player-card {
+  min-height: 176px;
+}
+
+.kalambury-player-card__avatar-wrap {
+  min-height: 88px;
+}
+
+.kalambury-player-card__avatar {
+  width: auto;
+  height: auto;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 4.2rem;
+  line-height: 1;
+}
+
+.kalambury-player-card__name {
+  min-width: 112px;
+}
+
+@media (max-width: 767px) {
+  .kalambury-player-card__avatar {
+    font-size: 3.6rem;
+  }
+}
+/* Kalambury UI polish pass: legacy add-player modal layout */
+.kalambury-setup-modal__panel--player {
+  width: min(100%, 980px);
+  padding: 28px 30px 32px;
+  border-radius: 32px;
+}
+
+.kalambury-setup-modal__titlebar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+.kalambury-setup-modal__panel--player .kalambury-setup-modal__titlebar h2 {
+  margin: 0;
+  color: #d14aa2;
+  font-size: clamp(2.3rem, 4vw, 3rem);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.kalambury-player-modal-layout {
+  grid-template-columns: minmax(300px, 0.86fr) minmax(0, 1.14fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.kalambury-player-preview-panel,
+.kalambury-avatar-picker-panel {
+  gap: 18px;
+}
+
+.kalambury-player-preview-panel {
+  padding-top: 14px;
+}
+
+.kalambury-player-preview-panel__label {
+  color: rgba(255, 255, 255, 0.42);
+  font-size: 0.92rem;
+  text-align: center;
+}
+
+.kalambury-player-preview-panel__avatar {
+  width: min(100%, 170px);
+  margin: 0 auto;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    180deg,
+    rgba(19, 19, 24, 0.96),
+    rgba(12, 12, 16, 0.98)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  color: #d7dde5;
+  font-size: 4.6rem;
+}
+
+.kalambury-player-preview-panel__hint {
+  min-height: 22px;
+  color: rgba(255, 255, 255, 0.26);
+  text-align: center;
+}
+
+.kalambury-player-preview-panel__field {
+  gap: 10px;
+}
+
+.kalambury-player-preview-panel__field > span,
+.kalambury-player-gender-panel > span {
+  color: rgba(255, 255, 255, 0.42);
+  text-align: center;
+}
+
+.kalambury-player-name-input {
+  min-height: 50px;
+  border-radius: 14px;
+  border-color: rgba(233, 30, 99, 0.9);
+  box-shadow: 0 0 0 1px rgba(233, 30, 99, 0.18);
+  text-align: center;
+}
+
+.kalambury-player-name-input--female {
+  border-color: rgba(255, 79, 160, 0.38);
+  box-shadow: 0 0 0 1px rgba(255, 79, 160, 0.12);
+}
+
+.kalambury-player-name-input--male {
+  border-color: rgba(112, 225, 255, 0.34);
+  box-shadow: 0 0 0 1px rgba(112, 225, 255, 0.1);
+}
+
+.kalambury-player-gender-panel {
+  justify-items: center;
+  gap: 12px;
+}
+
+.kalambury-player-gender-options {
+  justify-content: center;
+}
+
+.kalambury-gender-chip {
+  min-width: 56px;
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+}
+
+.kalambury-gender-chip span:last-child {
+  display: none;
+}
+
+.kalambury-avatar-picker-panel {
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.kalambury-avatar-tabs {
+  gap: 10px;
+}
+
+.kalambury-avatar-tab {
+  min-height: 54px;
+  border-radius: 14px;
+  font-size: 0.98rem;
+  background: rgba(8, 10, 14, 0.96);
+}
+
+.kalambury-avatar-tab--active {
+  background: rgba(209, 74, 162, 0.18);
+  border-color: rgba(233, 30, 99, 0.8);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-avatar-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  max-height: 390px;
+  padding-right: 8px;
+}
+
+.kalambury-avatar-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.kalambury-avatar-grid::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.kalambury-avatar-grid::-webkit-scrollbar-thumb {
+  background: rgba(233, 30, 99, 0.9);
+  border-radius: 999px;
+}
+
+.kalambury-avatar-tile {
+  border-radius: 14px;
+  background: rgba(8, 10, 14, 0.98);
+  font-size: 1.95rem;
+}
+
+.kalambury-avatar-tile--active {
+  border-color: rgba(233, 30, 99, 0.84);
+  background: rgba(233, 30, 99, 0.12);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-setup-modal__actions--full {
+  justify-content: center;
+  padding-top: 14px;
+  margin-top: 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.kalambury-setup-modal__actions--full .kalambury-secondary-action--large,
+.kalambury-setup-modal__actions--full .kalambury-footer-button--large {
+  min-width: 170px;
+  min-height: 66px;
+  border-radius: 18px;
+}
+
+@media (max-width: 900px) {
+  .kalambury-setup-modal__panel--player {
+    width: min(100%, 760px);
+    padding: 24px 22px 28px;
+  }
+
+  .kalambury-player-modal-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-player-preview-panel {
+    padding-top: 0;
+  }
+}
+/* Kalambury UI polish pass: lucide gender icons */
+.kalambury-gender-chip {
+  min-width: 56px;
+}
+
+.kalambury-gender-chip__icon {
+  width: 20px;
+  height: 20px;
+}
+
+.kalambury-gender-chip__icon--female {
+  color: #ff4fa0;
+}
+
+.kalambury-gender-chip__icon--male {
+  color: #2f8cff;
+}
+/* Kalambury UI polish pass: icon-only gender chips */
+.kalambury-gender-chip {
+  width: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  padding: 0;
+  gap: 0;
+  border-radius: 14px;
+}
+
+.kalambury-gender-chip__icon {
+  width: 24px;
+  height: 24px;
+}
+/* Kalambury UI polish pass: mode settings modal */
+.kalambury-setup-modal__panel--mode {
+  width: min(100%, 860px);
+  max-height: min(88vh, 860px);
+}
+
+.kalambury-mode-layout {
+  grid-template-columns: 230px minmax(0, 1fr);
+  align-items: stretch;
+  min-height: 540px;
+  max-height: 540px;
+}
+
+.kalambury-mode-sidebar {
+  grid-auto-rows: minmax(58px, auto);
+}
+
+.kalambury-mode-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  text-align: left;
+}
+
+.kalambury-mode-nav__label {
+  min-width: 0;
+}
+
+.kalambury-mode-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 42px;
+  min-height: 24px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.kalambury-mode-nav--disabled {
+  cursor: not-allowed;
+  opacity: 0.62;
+  box-shadow: none;
+}
+
+.kalambury-mode-nav--disabled:hover {
+  transform: none;
+}
+
+.kalambury-mode-content {
+  min-height: 540px;
+  max-height: 540px;
+  overflow: hidden;
+}
+
+.kalambury-mode-content__body {
+  min-height: 0;
+  overflow-y: auto;
+  padding: 0 16px 18px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(233, 30, 99, 0.9) rgba(255, 255, 255, 0.06);
+}
+
+.kalambury-mode-content__body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.kalambury-mode-content__body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+}
+
+.kalambury-mode-content__body::-webkit-scrollbar-thumb {
+  background: rgba(233, 30, 99, 0.9);
+  border-radius: 999px;
+}
+
+.kalambury-mode-stack {
+  align-content: start;
+}
+
+.kalambury-settings-card--slider {
+  gap: 16px;
+}
+
+.kalambury-settings-lockline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.kalambury-settings-card__hint {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.64);
+  line-height: 1.45;
+}
+
+.kalambury-slider-rail {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+  gap: 8px;
+  align-items: start;
+  padding-top: 4px;
+}
+
+.kalambury-slider-rail__track {
+  position: absolute;
+  top: 14px;
+  left: 18px;
+  right: 18px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.kalambury-slider-dot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.48);
+  font-weight: 700;
+}
+
+.kalambury-slider-dot__thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22);
+}
+
+.kalambury-slider-dot__label {
+  font-size: 0.82rem;
+}
+
+.kalambury-slider-dot--active {
+  color: rgba(255, 255, 255, 0.96);
+}
+
+.kalambury-slider-dot--active .kalambury-slider-dot__thumb {
+  background: linear-gradient(180deg, #ff2f86, #d81b60);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.kalambury-slider-dot[aria-pressed="false"]:hover .kalambury-slider-dot__thumb {
+  background: rgba(255, 255, 255, 1);
+}
+
+.kalambury-switch {
+  min-width: 72px;
+  min-height: 40px;
+  padding: 0 6px;
+  gap: 0;
+}
+
+.kalambury-switch > span:first-child {
+  display: none;
+}
+
+.kalambury-switch__thumb {
+  width: 26px;
+  height: 26px;
+  transform: translateX(-12px);
+  transition: transform 180ms ease;
+}
+
+.kalambury-switch--active .kalambury-switch__thumb {
+  transform: translateX(12px);
+}
+
+.kalambury-settings-row__copy small {
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .kalambury-mode-layout {
+    min-height: 0;
+    max-height: none;
+  }
+
+  .kalambury-mode-content {
+    min-height: 420px;
+    max-height: 420px;
+  }
+}
+
+/* Kalambury UI polish pass: real range sliders */
+.kalambury-slider-control {
+  display: grid;
+  gap: 10px;
+}
+
+.kalambury-slider-control__input {
+  width: 100%;
+  margin: 0;
+  accent-color: #e91e63;
+  cursor: pointer;
+}
+
+.kalambury-slider-control__labels {
+  display: grid;
+  grid-template-columns: repeat(var(--kal-slider-columns, 1), minmax(0, 1fr));
+  gap: 8px;
+}
+
+.kalambury-slider-control__label {
+  text-align: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.42);
+}
+
+.kalambury-slider-control__label--active {
+  color: rgba(255, 255, 255, 0.98);
+}
+
+/* Kalambury UI polish pass: player action menu + infinity icon */
+.kalambury-player-card--menu-open {
+  padding-bottom: 68px;
+}
+
+.kalambury-player-card__actions-toggle {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.kalambury-player-card__action-menu {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kalambury-player-card__action-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  background: rgba(11, 11, 18, 0.9);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.kalambury-player-card__action-button--danger {
+  color: rgba(255, 132, 132, 0.92);
+}
+
+.kalambury-player-card__action-button:disabled {
+  opacity: 0.4;
+}
+
+.kalambury-settings-card__value svg,
+.kalambury-slider-control__label svg {
+  display: block;
+  margin: 0 auto;
+}
+/* Kalambury UI polish pass: player action rail */
+.kalambury-player-card {
+  min-height: 184px;
+  padding: 16px 16px 18px;
+}
+
+.kalambury-player-card--menu-open {
+  border-color: rgba(255, 121, 195, 0.28);
+}
+
+.kalambury-player-card__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 12px;
+  width: 100%;
+}
+
+.kalambury-player-card__avatar-wrap {
+  width: 100%;
+  min-height: 98px;
+  justify-items: center;
+}
+
+.kalambury-player-card__action-rail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 46px;
+}
+
+.kalambury-player-card__actions-toggle,
+.kalambury-player-card__action-button {
+  width: 42px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.kalambury-player-card__actions-toggle {
+  position: static;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 17, 25, 0.96),
+    rgba(10, 10, 16, 0.98)
+  );
+  color: rgba(246, 241, 255, 0.84);
+}
+
+.kalambury-player-card__action-menu {
+  position: static;
+  left: auto;
+  right: auto;
+  bottom: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kalambury-player-card__action-button {
+  background: linear-gradient(
+    180deg,
+    rgba(19, 19, 28, 0.96),
+    rgba(11, 11, 18, 0.99)
+  );
+  color: rgba(255, 245, 249, 0.94);
+}
+
+.kalambury-player-card__action-button--danger {
+  background: linear-gradient(
+    180deg,
+    rgba(224, 79, 79, 0.92),
+    rgba(205, 66, 66, 0.98)
+  );
+  border-color: rgba(255, 162, 162, 0.16);
+  color: rgba(27, 8, 8, 0.96);
+}
+
+.kalambury-player-card__action-button:hover:not(:disabled),
+.kalambury-player-card__actions-toggle:hover {
+  transform: translateY(-1px);
+}
+
+.kalambury-player-card__name {
+  min-width: 104px;
+  margin-top: 2px;
+}
+
+@media (max-width: 767px) {
+  .kalambury-player-card__action-rail {
+    min-width: 42px;
+  }
+
+  .kalambury-player-card__actions-toggle,
+  .kalambury-player-card__action-button {
+    width: 38px;
+    height: 38px;
+    min-height: 38px;
+  }
+}
+/* Kalambury UI polish pass: player cards centering fix */
+.kalambury-player-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  min-height: 184px;
+  padding: 20px 16px 18px;
+}
+
+.kalambury-player-card__top {
+  display: block;
+  width: 100%;
+}
+
+.kalambury-player-card__avatar-wrap {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 102px;
+}
+
+.kalambury-player-card__action-rail {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  min-width: 42px;
+}
+
+.kalambury-player-card__action-menu {
+  position: static;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.kalambury-player-card--add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 184px;
+  padding: 20px 16px 18px;
+}
+
+.kalambury-player-card__add-primary {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+
+.kalambury-player-card--add .kalambury-player-card__plus {
+  font-size: 3.3rem;
+  line-height: 1;
+}
+
+.kalambury-player-card__add-primary > span:last-child {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.kalambury-player-card__dice {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 12, 24, 0.68);
+  color: rgba(255, 238, 245, 0.92);
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .kalambury-player-card,
+  .kalambury-player-card--add {
+    min-height: 172px;
+  }
+
+  .kalambury-player-card__action-rail {
+    top: 14px;
+    right: 14px;
+  }
+}
+
+/* Kalambury setup pixel-fit pass: Tajniacy layout proportions with Kalambury theme */
+.app-shell--kalambury-setup {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 48px;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  box-sizing: border-box;
+}
+
+.app-shell--kalambury-setup .ambient-orb {
+  opacity: 0.78;
+}
+
+.app-shell--kalambury-setup .hero--kalambury-setup {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: 0;
+  gap: 20px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__header {
+  position: relative;
+  justify-items: center;
+  gap: 4px;
+  padding: 16px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__header .lead {
+  margin: 0;
+  color: #71717a;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__header h1 {
+  margin: 0;
+  color: #f7f8fa;
+  font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+  font-size: 2rem;
+  font-style: italic;
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__close {
+  position: absolute;
+  top: 12px;
+  right: 0;
+  width: 36px;
+  min-width: 36px;
+  height: 36px;
+  min-height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f5;
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel,
+.app-shell--kalambury-setup .kalambury-setup__footer {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.02);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel {
+  gap: 20px;
+  padding: 24px 32px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel--pairing {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__section-head {
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__section-head h2,
+.app-shell--kalambury-setup .kalambury-section-toggle h2 {
+  margin: 0;
+  color: #f7f8fa;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__section-head p,
+.app-shell--kalambury-setup .kalambury-section-toggle p,
+.app-shell--kalambury-setup .kalambury-setup__empty-state {
+  margin: 2px 0 0;
+  color: #71717a;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__count {
+  min-width: 52px;
+  min-height: 32px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #d4d4d8;
+  font-size: 14px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__players-grid {
+  gap: 16px;
+}
+
+.app-shell--kalambury-setup .kalambury-player-card {
+  min-height: 172px;
+  padding: 20px 18px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.22);
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-player-card__avatar {
+  width: 76px;
+  height: 76px;
+  border-radius: 22px;
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-player-card__name {
+  min-width: 0;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f4f4f5;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app-shell--kalambury-setup .kalambury-player-card__actions-toggle,
+.app-shell--kalambury-setup .kalambury-player-card__action-button {
+  width: 38px;
+  height: 38px;
+  min-height: 38px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-mode-trigger {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #e91e63 0%, #d81b60 100%);
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 8px 30px rgba(216, 27, 96, 0.2);
+}
+
+.app-shell--kalambury-setup .kalambury-mode-summary-grid {
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.app-shell--kalambury-setup .kalambury-mode-summary {
+  gap: 8px;
+  padding: 16px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-mode-summary p {
+  color: #71717a;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.app-shell--kalambury-setup .kalambury-mode-summary strong {
+  color: #f4f4f5;
+  font-size: 16px;
+}
+
+.app-shell--kalambury-setup .kalambury-section-toggle {
+  width: 100%;
+  padding: 16px 20px;
+  border: 0;
+  background: transparent;
+  color: #f4f4f5;
+}
+
+.app-shell--kalambury-setup .kalambury-section-toggle__icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: #a1a1aa;
+  font-size: 18px;
+}
+
+.app-shell--kalambury-setup .kalambury-categories-grid {
+  gap: 12px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel--categories {
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel--categories .kalambury-categories-grid,
+.app-shell--kalambury-setup .kalambury-setup__panel--categories .kalambury-setup__empty-state,
+.app-shell--kalambury-setup .kalambury-setup__panel--categories .kalambury-category-actions {
+  margin: 0 20px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel--categories .kalambury-category-actions {
+  margin-bottom: 20px;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__panel--categories .kalambury-setup__empty-state {
+  margin-top: 12px;
+}
+
+.app-shell--kalambury-setup .kalambury-category-chip {
+  min-height: 52px;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.app-shell--kalambury-setup .kalambury-category-actions,
+.app-shell--kalambury-setup .kalambury-setup-modal__actions,
+.app-shell--kalambury-setup .kalambury-modal-options {
+  gap: 12px;
+}
+
+.app-shell--kalambury-setup .kalambury-secondary-action,
+.app-shell--kalambury-setup .kalambury-modal-option,
+.app-shell--kalambury-setup .kalambury-modal-close,
+.app-shell--kalambury-setup .kalambury-footer-button--ghost {
+  min-height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #d4d4d8;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__footer {
+  position: static;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 0.66fr);
+  gap: 12px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.app-shell--kalambury-setup .kalambury-footer-button {
+  min-height: 54px;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.app-shell--kalambury-setup .kalambury-footer-button--primary {
+  border: 1px solid rgba(216, 27, 96, 0.88);
+  background: linear-gradient(180deg, #d81b60 0%, #e91e63 100%);
+  color: #fff;
+  box-shadow: none;
+}
+
+.app-shell--kalambury-setup .kalambury-setup__feedback {
+  margin: 0;
+  color: #a1a1aa;
+  font-size: 13px;
+  text-align: center;
+}
+
+.kalambury-setup-modal {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__panel {
+  width: min(100%, 1000px);
+  max-height: min(100%, 680px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0a0a0a;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  backdrop-filter: none;
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__panel--qr {
+  width: min(100%, 540px);
+  max-height: none;
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__titlebar {
+  justify-content: center;
+  padding: 32px 40px 8px;
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__titlebar h2 {
+  margin: 0;
+  color: #d81b60;
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__actions {
+  padding-top: 8px;
+}
+
+.kalambury-setup-modal .kalambury-setup-modal__actions--full {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+}
+
+.kalambury-setup-modal .kalambury-secondary-action--large,
+.kalambury-setup-modal .kalambury-footer-button--large {
+  min-width: 160px;
+  min-height: 52px;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+@media (max-width: 767px) {
+  .app-shell--kalambury-setup {
+    padding: 20px 16px 28px;
+  }
+
+  .app-shell--kalambury-setup .hero--kalambury-setup {
+    gap: 16px;
+  }
+
+  .app-shell--kalambury-setup .kalambury-setup__panel {
+    padding: 20px;
+  }
+
+  .app-shell--kalambury-setup .kalambury-setup__footer {
+    grid-template-columns: 1fr;
+  }
+
+  .kalambury-setup-modal .kalambury-setup-modal__panel {
+    width: min(100%, 620px);
+    max-height: calc(100vh - 48px);
+  }
+}
+
+.kalambury-category-tags {
+  align-items: center;
+}
+
+.kalambury-category-difficulty {
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
+}
+
+.kalambury-category-difficulty:not(.kalambury-category-difficulty--active) {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.74);
+  box-shadow: none;
+}
+
+.kalambury-category-difficulty--active {
+  border-color: rgba(216, 27, 96, 0.34);
+  background: linear-gradient(
+    180deg,
+    rgba(216, 27, 96, 0.18),
+    rgba(102, 32, 82, 0.3)
+  );
+  color: #ffffff;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 14px 24px
+    rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(216, 27, 96, 0.08);
+}
+
+.kalambury-category-difficulty:hover {
+  transform: translateY(-1px);
+}
+
+.kalambury-category-card {
+  display: grid;
+  gap: 10px;
+  padding: 0;
+}
+
+.kalambury-category-card--selected {
+  border-radius: 22px;
+}
+
+.kalambury-category-card__difficulty-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.kalambury-category-card .kalambury-category-chip {
+  width: 100%;
+}
+
+.kalambury-category-card .kalambury-category-tag {
+  width: 100%;
+  justify-content: center;
+}
+
+.kalambury-category-difficulty--disabled {
+  border-color: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(255, 255, 255, 0.72);
+  box-shadow: none;
+}
+
+.kalambury-category-stack {
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+
+.kalambury-category-inline-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 8px;
+}
+
+.kalambury-category-inline-options .kalambury-category-tag {
+  min-height: 34px;
+  padding: 0 12px;
+  font-size: 0.88rem;
+}
+
+/* Kalambury UI polish pass: categories spacing and opened vs selected states */
+.kalambury-categories-grid {
+  align-items: start;
+  column-gap: 18px;
+  row-gap: 18px;
+}
+
+.kalambury-category-stack {
+  gap: 10px;
+}
+
+.kalambury-category-chip {
+  width: 100%;
+  min-height: 56px;
+  transition: border-color 160ms ease, background 160ms ease, box-shadow 160ms
+    ease, transform 160ms ease;
+}
+
+.kalambury-category-chip--opened {
+  border-color: rgba(155, 89, 182, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(84, 39, 96, 0.36),
+    rgba(23, 18, 37, 0.92)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px
+    rgba(155, 89, 182, 0.08);
+}
+
+.kalambury-category-chip--selected {
+  background: linear-gradient(
+    180deg,
+    rgba(105, 21, 65, 0.88),
+    rgba(56, 15, 42, 0.98)
+  );
+  border-color: rgba(216, 27, 96, 0.48);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 14px 28px
+    rgba(0, 0, 0, 0.18), 0 0 0 1px rgba(216, 27, 96, 0.1);
+}
+
+.kalambury-category-chip:hover {
+  transform: translateY(-1px);
+}
+
+.kalambury-category-inline-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: 100%;
+  gap: 10px;
+  padding-left: 0;
+}
+
+.kalambury-category-inline-options .kalambury-category-tag {
+  width: 100%;
+  min-height: 34px;
+  justify-content: center;
+  padding: 0 12px;
+  font-size: 0.88rem;
+}
+
+@media (max-width: 900px) {
+  .kalambury-categories-grid {
+    column-gap: 14px;
+    row-gap: 14px;
+  }
+
+  .kalambury-category-inline-options {
+    gap: 8px;
+  }
+}
+
+.kalambury-category-actions {
+  justify-content: center;
+}
+
+/* Kalambury UI polish pass: full-stage gameplay shell */
+.app-shell.app-shell--kalambury-play {
+  place-items: center;
+  min-height: 100dvh;
+  height: 100dvh;
+  padding: 0 !important;
+  overflow: hidden;
+}
+
+.hero--kalambury-play.hero--kalambury-playwide {
+  width: min(100%, calc(100vw - 28px));
+  height: calc(100dvh - 20px);
+  min-height: 0;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 8px 14px 10px;
+  gap: 10px;
+  overflow: hidden;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.kalambury-playbar {
+  width: 100%;
+  padding: 9px 16px;
+  border-radius: 22px;
+  border: 1px solid rgba(255, 120, 194, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(13, 10, 24, 0.9),
+    rgba(7, 6, 14, 0.96)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 16px 30px
+    rgba(0, 0, 0, 0.22);
+}
+
+.kalambury-playtopbar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+}
+
+.kalambury-stage-pill {
+  grid-column: 1;
+  justify-self: start;
+  min-height: 38px;
+  padding: 0 18px;
+}
+
+.kalambury-playtopbar__settings {
+  grid-column: 3;
+  justify-self: end;
+  width: auto;
+  min-width: 124px;
+  height: 46px;
+  padding: 0 18px;
+  border-radius: 16px;
+  color: rgba(243, 239, 250, 0.96);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.kalambury-stage-shell--fullstage {
+  display: grid;
+  align-items: stretch;
+  min-height: 0;
+  height: 100%;
+  padding: 18px 22px;
+  border-radius: 28px;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-stage-canvas {
+  display: grid;
+  place-items: center;
+  min-height: 0;
+  height: 100%;
+  overflow: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.kalambury-stage-panel,
+.kalambury-stage-panel--order,
+.kalambury-stage-panel--prepare,
+.kalambury-stage-panel--act-host,
+.kalambury-stage-panel--verdict,
+.kalambury-stage-panel--summary {
+  width: min(100%, 1440px);
+}
+
+.kalambury-stage-panel--prepare {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-stage-panel--act-host,
+.kalambury-stage-panel--verdict {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-stage-panel--draw {
+  width: min(100%, 1500px);
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-stage-panel--order {
+  width: min(100%, 1500px);
+  min-height: 0;
+  height: 100%;
+  display: grid;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-order-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+  gap: clamp(12px, 1.5vw, 18px);
+  min-height: 0;
+  height: 100%;
+}
+
+.kalambury-order-grid .kalambury-order-card {
+  min-height: 0;
+  height: 100%;
+  padding: clamp(20px, 2vw, 30px) clamp(14px, 1.6vw, 22px)
+    clamp(14px, 1.4vw, 18px);
+}
+
+.kalambury-order-grid .kalambury-order-card__index {
+  width: clamp(34px, 2.4vw, 40px);
+  height: clamp(34px, 2.4vw, 40px);
+  font-size: clamp(1.05rem, 1.4vw, 1.35rem);
+}
+
+.kalambury-order-grid .kalambury-order-card__avatar {
+  font-size: clamp(3.6rem, 6vw, 5.8rem);
+}
+
+.kalambury-order-grid .kalambury-order-card__name {
+  min-height: clamp(52px, 6vw, 64px);
+  font-size: clamp(1.2rem, 2.1vw, 2rem);
+}
+
+.kalambury-order-grid--orphan .kalambury-order-card:last-child {
+  grid-column: 1 / -1;
+  width: min(100%, calc(50% - clamp(6px, 0.75vw, 9px)));
+  justify-self: center;
+}
+
+.kalambury-order-grid--compact {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kalambury-order-grid--compact .kalambury-order-card {
+  padding: 18px 12px 12px;
+}
+
+.kalambury-order-grid--compact .kalambury-order-card__avatar {
+  font-size: clamp(2.8rem, 4vw, 4.2rem);
+}
+
+.kalambury-order-grid--compact .kalambury-order-card__name {
+  min-height: 48px;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+}
+
+.kalambury-order-grid--dense {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.kalambury-order-grid--dense .kalambury-order-card {
+  grid-template-rows: 1fr auto;
+  align-items: stretch;
+  justify-items: center;
+  row-gap: 10px;
+  padding: 16px 10px 10px;
+  border-radius: 22px;
+}
+
+.kalambury-order-grid--dense .kalambury-order-card__index {
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.kalambury-order-grid--dense .kalambury-order-card__avatar {
+  align-self: center;
+  font-size: clamp(2.2rem, 2.7vw, 3.1rem);
+}
+
+.kalambury-order-grid--dense .kalambury-order-card__name {
+  width: 100%;
+  min-height: 44px;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 14px;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 16, 31, 0.94),
+    rgba(11, 10, 19, 0.99)
+  );
+  font-size: clamp(0.86rem, 0.98vw, 1rem);
+  text-align: center;
+}
+
+.kalambury-card-stack {
+  width: clamp(260px, 28vw, 360px);
+  height: clamp(300px, 32vw, 420px);
+}
+
+.kalambury-draw-sequence {
+  --draw-card-width: 248px;
+  --draw-card-height: 196px;
+  --draw-card-radius: 24px;
+  --draw-card-avatar-size: 4.6rem;
+  --draw-name-height: 46px;
+  --draw-back-mark-height: 54px;
+  position: relative;
+  justify-self: center;
+  align-self: center;
+  width: min(100%, 1320px);
+  height: min(100%, 640px);
+  min-height: clamp(320px, 64vh, 640px);
+  padding: clamp(18px, 2vw, 28px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.kalambury-draw-sequence--compact {
+  --draw-card-width: 196px;
+  --draw-card-height: 156px;
+  --draw-card-avatar-size: 3.7rem;
+  --draw-name-height: 40px;
+  --draw-back-mark-height: 46px;
+}
+
+.kalambury-draw-sequence--dense {
+  --draw-card-width: 152px;
+  --draw-card-height: 118px;
+  --draw-card-radius: 20px;
+  --draw-card-avatar-size: 2.8rem;
+  --draw-name-height: 34px;
+  --draw-back-mark-height: 38px;
+}
+
+.kalambury-draw-card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: var(--draw-card-width);
+  height: var(--draw-card-height);
+  perspective: 1200px;
+  will-change: transform, opacity;
+}
+
+.kalambury-draw-card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kalambury-draw-card--revealed .kalambury-draw-card__inner {
+  transform: rotateY(180deg);
+}
+
+.kalambury-draw-card__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: calc(var(--draw-card-height) * 0.08)
+    calc(var(--draw-card-width) * 0.08);
+  border-radius: var(--draw-card-radius);
+  border: 1px solid rgba(255, 120, 194, 0.16);
+  backface-visibility: hidden;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 18px 36px
+    rgba(0, 0, 0, 0.24);
+}
+
+.kalambury-draw-card__face--front {
+  transform: rotateY(180deg);
+  border-color: rgba(255, 255, 255, 0.14);
+  background: radial-gradient(
+      circle at 50% 14%,
+      rgba(141, 79, 255, 0.12),
+      transparent 28%
+    ), linear-gradient(180deg, rgba(24, 18, 38, 0.97), rgba(8, 8, 16, 0.99));
+}
+
+.kalambury-draw-card__face--back {
+  justify-content: center;
+  background: radial-gradient(
+      circle at 50% 18%,
+      rgba(141, 79, 255, 0.18),
+      transparent 24%
+    ), linear-gradient(180deg, rgba(22, 17, 38, 0.98), rgba(8, 8, 16, 1));
+}
+
+.kalambury-draw-card--active .kalambury-draw-card__face--back {
+  border-color: rgba(233, 30, 99, 0.5);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 0 0 1px
+    rgba(233, 30, 99, 0.16), 0 18px 36px rgba(0, 0, 0, 0.24), 0 0 24px
+    rgba(233, 30, 99, 0.2);
+}
+
+.kalambury-draw-card__back-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: min(100%, calc(var(--draw-card-width) * 0.72));
+  min-height: calc(var(--draw-card-height) * 0.22);
+  padding: 0 calc(var(--draw-card-width) * 0.05);
+  border-radius: calc(var(--draw-card-radius) * 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(10, 10, 18, 0.76);
+  color: rgba(247, 241, 255, 0.94);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(0.82rem, calc(var(--draw-card-width) * 0.055), 1rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+.kalambury-draw-card__index {
+  position: absolute;
+  top: calc(var(--draw-card-height) * 0.06);
+  right: calc(var(--draw-card-width) * 0.06);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: calc(var(--draw-card-width) * 0.14);
+  height: calc(var(--draw-card-width) * 0.14);
+  padding: 0 calc(var(--draw-card-width) * 0.03);
+  border-radius: 999px;
+  border: 1px solid rgba(255, 120, 194, 0.36);
+  background: rgba(31, 22, 45, 0.92);
+  color: #f2ebff;
+  font-size: clamp(0.8rem, calc(var(--draw-card-width) * 0.04), 0.92rem);
+  font-weight: 800;
+}
+
+.kalambury-draw-card__avatar {
+  display: grid;
+  place-items: center;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+  margin: calc(var(--draw-card-height) * 0.08) 0
+    calc(var(--draw-card-height) * 0.06);
+  background: none;
+  border: 0;
+  box-shadow: none;
+  font-size: clamp(1.8rem, calc(var(--draw-card-width) * 0.2), 4.6rem);
+  line-height: 1;
+}
+
+.kalambury-draw-card__name {
+  width: min(100%, calc(var(--draw-card-width) * 0.86));
+  min-height: calc(var(--draw-card-height) * 0.2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 calc(var(--draw-card-width) * 0.05);
+  border-radius: calc(var(--draw-card-radius) * 0.66);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(14, 12, 24, 0.96),
+    rgba(8, 8, 15, 0.99)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 8px 18px
+    rgba(0, 0, 0, 0.22);
+  color: rgba(245, 241, 255, 0.96);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(0.82rem, calc(var(--draw-card-width) * 0.058), 1.08rem);
+  font-weight: 700;
+  text-align: center;
+}
+
+.kalambury-stage-footer {
+  width: 100%;
+  justify-content: stretch;
+  align-items: center;
+  gap: 14px;
+  min-height: 72px;
+}
+
+.kalambury-stage-footer__cta {
+  width: 100%;
+  max-width: none;
+}
+
+@media (max-width: 1100px) {
+  .hero--kalambury-play.hero--kalambury-playwide {
+    width: min(100%, calc(100vw - 20px));
+    height: calc(100dvh - 14px);
+    padding: 8px 10px 10px;
+    gap: 8px;
+  }
+
+  .kalambury-stage-shell--fullstage {
+    padding: 16px;
+  }
+
+  .kalambury-card-stack {
+    width: clamp(220px, 30vw, 300px);
+    height: clamp(250px, 34vw, 340px);
+  }
+}
+
+@media (max-width: 720px) {
+  .kalambury-draw-sequence {
+    --draw-card-width: 128px;
+    --draw-card-height: 156px;
+    --draw-card-radius: 18px;
+    --draw-card-avatar-size: 2.3rem;
+    --draw-name-height: 32px;
+    --draw-back-mark-height: 38px;
+    min-height: 320px;
+  }
+
+  .kalambury-draw-sequence--compact {
+    --draw-card-width: 114px;
+    --draw-card-height: 140px;
+    --draw-card-avatar-size: 2rem;
+  }
+
+  .kalambury-draw-sequence--dense {
+    --draw-card-width: 96px;
+    --draw-card-height: 116px;
+    --draw-card-avatar-size: 1.75rem;
+  }
+
+  .kalambury-draw-card__face {
+    padding: 10px 10px 12px;
+    border-radius: var(--draw-card-radius);
+  }
+
+  .kalambury-draw-card__index {
+    min-width: 24px;
+    height: 24px;
+    font-size: 0.76rem;
+  }
+
+  .kalambury-draw-card__back-mark {
+    border-radius: 14px;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+  }
+
+  .kalambury-draw-card__name {
+    border-radius: 12px;
+    font-size: 0.72rem;
+  }
+
+  .hero--kalambury-play.hero--kalambury-playwide {
+    height: auto;
+    min-height: calc(100dvh - 14px);
+    overflow: visible;
+  }
+
+  .kalambury-playbar {
+    padding: 10px 12px;
+    border-radius: 20px;
+  }
+
+  .kalambury-playtopbar {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .kalambury-stage-pill,
+  .kalambury-playtopbar__settings {
+    grid-column: auto;
+    justify-self: stretch;
+    width: 100%;
+  }
+
+  .kalambury-playtopbar__settings {
+    min-width: 0;
+  }
+
+  .kalambury-stage-shell--fullstage {
+    height: auto;
+    padding: 14px 12px;
+  }
+
+  .kalambury-stage-canvas {
+    height: auto;
+    min-height: clamp(280px, calc(100dvh - 240px), 560px);
+  }
+
+  .kalambury-card-stack {
+    width: clamp(180px, 52vw, 240px);
+    height: clamp(210px, 60vw, 290px);
+  }
+}
+
+.kalambury-order-card[data-gender="female"] .kalambury-order-card__name,
+.kalambury-draw-card[data-gender="female"] .kalambury-draw-card__name {
+  border: 1px solid rgba(255, 79, 160, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px
+    rgba(255, 79, 160, 0.08), 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+.kalambury-order-card[data-gender="male"] .kalambury-order-card__name,
+.kalambury-draw-card[data-gender="male"] .kalambury-draw-card__name {
+  border: 1px solid rgba(112, 225, 255, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px
+    rgba(112, 225, 255, 0.07), 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+.kalambury-persona-card[data-gender="female"] .kalambury-persona-card__nameplate {
+  border: 1px solid rgba(255, 79, 160, 0.38);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px
+    rgba(255, 79, 160, 0.08), 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+.kalambury-persona-card[data-gender="male"] .kalambury-persona-card__nameplate {
+  border: 1px solid rgba(112, 225, 255, 0.34);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 0 0 1px
+    rgba(112, 225, 255, 0.07), 0 10px 24px rgba(0, 0, 0, 0.26);
+}
+
+.kalambury-order-card,
+.kalambury-draw-card__face--front {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.kalambury-order-card__name,
+.kalambury-draw-card__name {
+  background: linear-gradient(180deg, rgba(12, 11, 22, 0.98), rgba(7, 7, 13, 1));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 26px
+    rgba(0, 0, 0, 0.3);
+}
+
+.kalambury-order-card__avatar,
+.kalambury-draw-card__avatar {
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-persona-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: radial-gradient(
+      circle at 50% 16%,
+      rgba(141, 79, 255, 0.12),
+      transparent 28%
+    ),
+    linear-gradient(180deg, rgba(24, 18, 38, 0.97), rgba(8, 8, 16, 0.99));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 24px 44px
+    rgba(0, 0, 0, 0.34);
+}
+
+.kalambury-persona-card__avatar {
+  display: grid;
+  place-items: center;
+  align-self: center;
+  justify-self: center;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.kalambury-persona-card__nameplate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 64px;
+  padding: 0 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: linear-gradient(
+    180deg,
+    rgba(12, 11, 22, 0.98),
+    rgba(7, 7, 13, 1)
+  );
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 12px 26px
+    rgba(0, 0, 0, 0.3);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: clamp(1.2rem, 2.2vw, 2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+}
+
+.kalambury-persona-card__badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 79, 216, 0.62);
+  background: rgba(52, 44, 64, 0.86);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-weight: 800;
+}
+
+.kalambury-persona-card--setup {
+  background: radial-gradient(
+      circle at 50% 16%,
+      rgba(141, 79, 255, 0.1),
+      transparent 26%
+    ),
+    linear-gradient(180deg, rgba(20, 18, 31, 0.95), rgba(10, 10, 16, 0.98));
+}
+
+.kalambury-persona-card--interactive {
+  transition: transform 180ms ease, border-color 180ms ease,
+    box-shadow 180ms ease, background 180ms ease;
+}
+
+.kalambury-persona-card--interactive:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 79, 216, 0.26);
+}
+
+.kalambury-persona-card--verdict .kalambury-persona-card__nameplate,
+.kalambury-persona-card--summary .kalambury-persona-card__nameplate {
+  min-height: 56px;
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+}

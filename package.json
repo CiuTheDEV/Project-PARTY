@@ -1,0 +1,23 @@
+{
+  "name": "project-party",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.6.0",
+  "scripts": {
+    "dev": "node ./scripts/run-tool.mjs turbo run dev --parallel",
+    "build": "node ./scripts/run-tool.mjs turbo run build",
+    "check": "node ./scripts/run-tool.mjs turbo run check",
+    "lint": "node ./scripts/run-tool.mjs turbo run lint",
+    "typecheck": "node ./scripts/run-tool.mjs turbo run typecheck",
+    "test": "node ./scripts/run-tool.mjs turbo run test",
+    "playwright:install": "node ./scripts/playwright-local.mjs install",
+    "playwright:install:browser": "node ./scripts/playwright-local.mjs install-browser",
+    "playwright:debug:launch": "node ./scripts/playwright-local.mjs debug-launch"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.2",
+    "vite": "^6.2.0"
+  }
+}

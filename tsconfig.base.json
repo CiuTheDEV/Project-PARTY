@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "paths": {
+      "@project-party/types": ["packages/types/src/index.ts"],
+      "@project-party/shared": ["packages/shared/src/index.ts"],
+      "@project-party/design-system": ["packages/design-system/src/index.ts"],
+      "@project-party/ui": ["packages/ui/src/index.tsx"],
+      "@project-party/game-runtime": ["packages/game-runtime/src/index.ts"],
+      "@project-party/game-sdk": ["packages/game-sdk/src/index.ts"],
+      "@project-party/game-kalambury": ["games/kalambury/src/index.ts"],
+      "@project-party/game-tajniacy": ["games/tajniacy/src/index.ts"]
+    }
+  }
+}

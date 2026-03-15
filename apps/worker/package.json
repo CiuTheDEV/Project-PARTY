@@ -1,0 +1,18 @@
+{
+  "name": "@project-party/worker",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/http.ts",
+    "build": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "lint": "node ../../scripts/run-tool.mjs biome check .",
+    "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts"
+  },
+  "dependencies": {
+    "@project-party/shared": "workspace:*",
+    "@project-party/types": "workspace:*"
+  }
+}
