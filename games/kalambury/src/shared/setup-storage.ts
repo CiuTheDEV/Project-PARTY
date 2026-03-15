@@ -23,6 +23,7 @@ type PersistedKalamburySetupDraft = {
   players: KalamburySetupPlayer[];
   modeSettings: KalamburyModeSettings;
   presenterDeviceEnabled: boolean;
+  pairedPresenterDeviceId: string | null;
   categories: PersistedKalamburyCategoryDraft[];
   activeCategoryId: string;
 };
@@ -169,7 +170,10 @@ export async function loadKalamburySetupDraft(
       players: mergePlayers(baseState, parsed.players),
       modeSettings: mergeModeSettings(baseState, parsed.modeSettings),
       presenterDeviceEnabled: parsed.presenterDeviceEnabled === true,
-      pairedPresenterDeviceId: null,
+      pairedPresenterDeviceId:
+        typeof parsed.pairedPresenterDeviceId === "string"
+          ? parsed.pairedPresenterDeviceId
+          : null,
       categories,
       activeCategoryId,
     };
@@ -192,6 +196,7 @@ export async function saveKalamburySetupDraft(
     players: state.players,
     modeSettings: state.modeSettings,
     presenterDeviceEnabled: state.presenterDeviceEnabled,
+    pairedPresenterDeviceId: state.pairedPresenterDeviceId,
     categories: state.categories.map((category) => ({
       id: category.id,
       easyEnabled: category.easyEnabled,
