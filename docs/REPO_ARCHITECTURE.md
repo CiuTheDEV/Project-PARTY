@@ -38,7 +38,7 @@ Odpowiada za:
 - join flow,
 - uruchomienie gry,
 - ekrany platformowe,
-- frontend hostowany docelowo na Cloudflare Pages.
+- frontend hostowany docelowo jako Cloudflare Worker serwujący static assets.
 
 Nie trzyma:
 - gameplay logiki gier,
@@ -98,7 +98,7 @@ Platforma nie może znać:
 Po domknięciu migracji:
 - `apps/web` uruchamia gry wyłącznie przez kontrakt runtime,
 - `apps/worker` obsługuje katalog i lifecycle sesji,
-- Cloudflare Pages hostuje frontend platformy,
+- Cloudflare Worker hostuje frontend platformy i proxyuje `/api/*` do backendu,
 - Cloudflare Workers + Durable Objects zapewniają docelowe session infra,
 - `games/kalambury` jest wzorcowym modułem gry dla dalszych implementacji,
 - `_legacy/old-repo` pozostaje poza aktywną ścieżką produktu.

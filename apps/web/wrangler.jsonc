@@ -1,0 +1,16 @@
+{
+  "name": "project-party-web",
+  "main": "./src/cloudflare-entry.ts",
+  "compatibility_date": "2026-03-15",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application"
+  },
+  "services": [
+    {
+      "binding": "API",
+      "service": "project-party-api"
+    }
+  ]
+}

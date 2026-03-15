@@ -20,11 +20,10 @@ Stack ma być:
 - TypeScript
 - Vite
 - React Router
-- deploy na Cloudflare Pages
+- Cloudflare Workers Static Assets
 
 ### Backend / session infra (`apps/worker`)
 - Cloudflare Workers
-- Hono
 - Durable Objects dla stateful session coordination i realtime w produkcji
 
 ### Współdzielony kod
@@ -136,8 +135,8 @@ E2E / smoke flow:
 
 ## Dlaczego ten stack
 
-### React + Vite + Pages
-Daje szybki development po stronie frontendu i prosty deploy na edge-hosting Cloudflare bez mieszania hostingu UI z backendowym session infra.
+### React + Vite + Workers Static Assets
+Daje szybki development po stronie frontendu i deploy na aktualny model Cloudflare Workers bez rozdzielania hostingu UI od edge-integracji z backendowym workerem.
 
 ### Workers + Durable Objects
 Na MVP i dalszy rozwój daje sensowny backend pod:

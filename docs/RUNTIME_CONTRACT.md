@@ -74,6 +74,7 @@ Pole `transport` opisuje wspólny interfejs komunikacji runtime, a nie jedną sz
 To oznacza:
 - produkcja może mapować `transport` na Cloudflare Workers + Durable Objects,
 - lokalny development może mapować `transport` na prostszy mechanizm, np. `BroadcastChannel`,
+- web layer może być serwowana przez osobnego Cloudflare Workera, bez zmiany kontraktu gry,
 - kontrakt runtime pozostaje stabilny nawet jeśli infrastruktura transportu zmienia się między local i production.
 
 ## Co runtime contract robi

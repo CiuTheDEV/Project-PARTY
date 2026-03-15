@@ -23,6 +23,7 @@ output
 .playwright-tools
 .playwright-tmp
 .playwright-mcp/
+.wrangler/
 
 # Local Codex workspace data
 .codex/

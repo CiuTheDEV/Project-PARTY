@@ -10,6 +10,10 @@
     "lint": "node ./scripts/run-tool.mjs turbo run lint",
     "typecheck": "node ./scripts/run-tool.mjs turbo run typecheck",
     "test": "node ./scripts/run-tool.mjs turbo run test",
+    "cf:dev:web": "npx wrangler dev --config apps/web/wrangler.jsonc",
+    "cf:dev:worker": "npx wrangler dev --config apps/worker/wrangler.jsonc",
+    "cf:deploy:web": "npx wrangler deploy --config apps/web/wrangler.jsonc",
+    "cf:deploy:worker": "npx wrangler deploy --config apps/worker/wrangler.jsonc",
     "playwright:install": "node ./scripts/playwright-local.mjs install",
     "playwright:install:browser": "node ./scripts/playwright-local.mjs install-browser",
     "playwright:debug:launch": "node ./scripts/playwright-local.mjs debug-launch"

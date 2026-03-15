@@ -6,8 +6,12 @@ import {
 
 import { createSession } from "./index.ts";
 import { getSessionByCode, joinSession } from "./session-store.ts";
+import type { WorkerEnv } from "./cloudflare-entry.ts";
 
-export async function handleRequest(request: Request): Promise<Response> {
+export async function handleRequest(
+  request: Request,
+  env?: WorkerEnv,
+): Promise<Response> {
   const url = new URL(request.url);
 
   if (request.method === "GET" && url.pathname === "/api/games") {
@@ -34,7 +38,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     const session = await createSession({
       gameId: body.gameId,
       config: body.config ?? {},
-    });
+    }, env);
 
     return Response.json(session, { status: 201 });
   }
@@ -43,7 +47,7 @@ export async function handleRequest(request: Request): Promise<Response> {
     const sessionCode = normalizeSessionCode(
       url.pathname.replace("/api/sessions/", ""),
     );
-    const session = getSessionByCode(sessionCode);
+    const session = await getSessionByCode(sessionCode, env);
 
     if (!session) {
       return Response.json({ error: "Session not found" }, { status: 404 });
@@ -57,10 +61,10 @@ export async function handleRequest(request: Request): Promise<Response> {
       sessionCode: string;
       playerName: string;
     };
-    const joined = joinSession({
+    const joined = await joinSession({
       sessionCode: normalizeSessionCode(body.sessionCode),
       playerName: body.playerName,
-    });
+    }, env);
 
     if (!joined) {
       return Response.json({ error: "Session not found" }, { status: 404 });

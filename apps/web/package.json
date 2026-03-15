@@ -9,7 +9,9 @@
     "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
     "lint": "node ../../scripts/run-tool.mjs biome check src vite.config.ts",
     "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
-    "test": "node ../../scripts/run-node-test.mjs src/*.test.mjs src/platform/*.test.mjs src/api/*.test.mjs src/runtime/*.test.mjs"
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.mjs src/platform/*.test.mjs src/api/*.test.mjs src/runtime/*.test.mjs",
+    "cf:dev": "npx wrangler dev --config wrangler.jsonc",
+    "cf:deploy": "npx wrangler deploy --config wrangler.jsonc"
   },
   "dependencies": {
     "@project-party/design-system": "workspace:*",

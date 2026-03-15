@@ -9,7 +9,9 @@
     "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
     "lint": "node ../../scripts/run-tool.mjs biome check .",
     "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
-    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts"
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts",
+    "cf:dev": "npx wrangler dev --config wrangler.jsonc",
+    "cf:deploy": "npx wrangler deploy --config wrangler.jsonc"
   },
   "dependencies": {
     "@project-party/shared": "workspace:*",
