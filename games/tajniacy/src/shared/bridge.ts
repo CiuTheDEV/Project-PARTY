@@ -41,6 +41,7 @@ type TajniacyChannel = {
 };
 
 type BridgeOptions = {
+  /** Injectable channel (overrides BroadcastChannel entirely — for remote transport or testing) */
   channel?: TajniacyChannel;
   onStateSync?: (state: MatchState) => void;
   onRoleAssigned?: (role: TajniacyBridgeRole) => void;
@@ -52,14 +53,18 @@ type BridgeOptions = {
   onOccupiedRolesUpdate?: (captainRedTaken: boolean, captainBlueTaken: boolean) => void;
   onHostReset?: () => void;
   onCaptainDisconnect?: () => void;
-  /** Injectable channel (overrides BroadcastChannel entirely — for testing) */
-  channel?: TajniacyChannel;
   /** Injectable BroadcastChannel implementation (for testing) */
   BroadcastChannelImpl?: new (name: string) => {
     onmessage: ((event: MessageEvent<unknown>) => void) | null;
     postMessage: (message: unknown) => void;
     close: () => void;
   };
+  /**
+   * Enable host→controller heartbeat. Defaults to true only when using
+   * BroadcastChannel (same-browser). Set false for remote HTTP transport
+   * where ping/pong would spam the DO event log and cause false disconnects.
+   */
+  enableHeartbeat?: boolean;
   /** How often the host pings controllers (ms). Default: 4000 */
   pingIntervalMs?: number;
   /** How long without a pong before a device is considered disconnected (ms). Default: 8000 */
@@ -97,6 +102,10 @@ export function createTajniacyBridge(
 ) {
   const rawChannel = options.channel ?? createBroadcastChannel(sessionCode, options.BroadcastChannelImpl);
   if (!rawChannel) return null;
+
+  // Heartbeat is only meaningful over BroadcastChannel (same-browser, instant).
+  // Over remote HTTP transport it would spam the DO event log and cause false disconnects.
+  const enableHeartbeat = options.enableHeartbeat ?? !options.channel;
 
   // Wrap channel to track sent/received counts in dev
   const channel: TajniacyChannel = {
@@ -204,8 +213,8 @@ export function createTajniacyBridge(
         break;
 
       case "presence-ping":
-        // Controllers respond with a pong so host can track presence
-        if (role !== "host") {
+        // Controllers respond with a pong so host can track presence (BroadcastChannel only)
+        if (role !== "host" && enableHeartbeat) {
           channel.postMessage({ type: "presence-pong", deviceId, role });
           // Re-announce only if we had a real role (captain/player) and lost assignment
           // (e.g. after WS reconnect + host timeout). Skipped for passive listener
@@ -243,10 +252,10 @@ export function createTajniacyBridge(
     }
   });
 
-  // ── Periodic presence check (host only) ────────────────────────
+  // ── Periodic presence check (host only, BroadcastChannel only) ────────────────────────
   let pingInterval: ReturnType<typeof setInterval> | null = null;
 
-  if (role === "host") {
+  if (role === "host" && enableHeartbeat) {
     const PING_INTERVAL_MS = options.pingIntervalMs ?? 4000;
     const TIMEOUT_MS = options.pingTimeoutMs ?? 8000;
 
