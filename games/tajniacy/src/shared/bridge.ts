@@ -22,6 +22,7 @@ export type TajniacyBridgeMessage =
   | { type: "agent-reveal-request"; index: number; deviceId: string }
   | { type: "hint-submit-request"; word: string; count: number; teamId: TeamId; deviceId: string }
   | { type: "hint-clear-request"; teamId: TeamId; deviceId: string }
+  | { type: "device-disconnected"; deviceId: string }
   | { type: "presence-ping"; deviceId: string; role: TajniacyBridgeRole }
   | { type: "presence-pong"; deviceId: string; role: TajniacyBridgeRole }
   | { type: "roles-occupied"; captainRedTaken: boolean; captainBlueTaken: boolean }
@@ -156,6 +157,20 @@ export function createTajniacyBridge(
         if (msg.deviceId === deviceId) {
           isAssigned = true;
           options.onRoleAssigned?.(msg.role);
+        }
+        break;
+
+      case "device-disconnected":
+        if (role === "host") {
+          const info = connectedDevices.get(msg.deviceId);
+          if (info) {
+            const wasCapt = info.role === "captain-red" || info.role === "captain-blue";
+            connectedDevices.delete(msg.deviceId);
+            notifyPresence();
+            if (wasCapt) {
+              options.onCaptainDisconnect?.();
+            }
+          }
         }
         break;
 
@@ -327,6 +342,9 @@ export function createTajniacyBridge(
     destroy() {
       if (pingInterval) clearInterval(pingInterval);
       unsubscribe();
+      if (role !== "host") {
+        channel.postMessage({ type: "device-disconnected", deviceId });
+      }
       channel.close?.();
     },
   };
