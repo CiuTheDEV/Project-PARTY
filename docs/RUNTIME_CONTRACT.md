@@ -67,6 +67,15 @@ type GameRuntimeContext = {
 };
 ```
 
+## Transport model
+
+Pole `transport` opisuje wspólny interfejs komunikacji runtime, a nie jedną sztywną technologię backendową.
+
+To oznacza:
+- produkcja może mapować `transport` na Cloudflare Workers + Durable Objects,
+- lokalny development może mapować `transport` na prostszy mechanizm, np. `BroadcastChannel`,
+- kontrakt runtime pozostaje stabilny nawet jeśli infrastruktura transportu zmienia się między local i production.
+
 ## Co runtime contract robi
 
 - daje wspólny język startu gry,
@@ -74,11 +83,13 @@ type GameRuntimeContext = {
 - pozwala na wiele modeli urządzeń,
 - daje grze kanał storage niezależny od `window.localStorage/sessionStorage`,
 - pozwala grze przejąć własny setup i host/controller flow po starcie runtime,
-- nie wymusza jednego modelu scoringu ani state machine.
+- nie wymusza jednego modelu scoringu ani state machine,
+- nie wymusza jednej implementacji transportu sesji.
 
 ## Czego runtime contract nie robi
 
 - nie definiuje rund gry,
 - nie definiuje punktacji gry,
 - nie definiuje stage flow gry,
-- nie definiuje uniwersalnego lobby gameplayowego dla każdej gry.
+- nie definiuje uniwersalnego lobby gameplayowego dla każdej gry,
+- nie wymaga, aby każda gra lub każdy build działał wyłącznie przez Durable Objects.

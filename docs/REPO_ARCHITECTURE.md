@@ -4,27 +4,27 @@
 
 ```text
 project-party/
-├─ apps/
-│  ├─ web/
-│  └─ worker/
-├─ games/
-│  ├─ kalambury/
-│  └─ ...kolejne gry
-├─ packages/
-│  ├─ ui/
-│  ├─ shared/
-│  ├─ types/
-│  ├─ design-system/
-│  ├─ game-runtime/
-│  └─ game-sdk/
-├─ docs/
-├─ scripts/
-├─ tests/
-├─ AGENTS.md
-├─ package.json
-├─ pnpm-workspace.yaml
-├─ turbo.json
-└─ tsconfig.base.json
+|- apps/
+|  |- web/
+|  `- worker/
+|- games/
+|  |- kalambury/
+|  `- ...kolejne gry
+|- packages/
+|  |- ui/
+|  |- shared/
+|  |- types/
+|  |- design-system/
+|  |- game-runtime/
+|  `- game-sdk/
+|- docs/
+|- scripts/
+|- tests/
+|- AGENTS.md
+|- package.json
+|- pnpm-workspace.yaml
+|- turbo.json
+`- tsconfig.base.json
 ```
 
 ## Warstwy
@@ -37,7 +37,8 @@ Odpowiada za:
 - konfigurację i tworzenie sesji,
 - join flow,
 - uruchomienie gry,
-- ekrany platformowe.
+- ekrany platformowe,
+- frontend hostowany docelowo na Cloudflare Pages.
 
 Nie trzyma:
 - gameplay logiki gier,
@@ -50,7 +51,7 @@ Odpowiada za:
 - tworzenie sesji,
 - join codes i join flow,
 - lekkie HTTP API dla web,
-- przyszłe realtime helpers,
+- Durable Objects dla stateful session coordination i realtime,
 - backend niezależny od konkretnej gry.
 
 ### `games/*`
@@ -97,5 +98,7 @@ Platforma nie może znać:
 Po domknięciu migracji:
 - `apps/web` uruchamia gry wyłącznie przez kontrakt runtime,
 - `apps/worker` obsługuje katalog i lifecycle sesji,
+- Cloudflare Pages hostuje frontend platformy,
+- Cloudflare Workers + Durable Objects zapewniają docelowe session infra,
 - `games/kalambury` jest wzorcowym modułem gry dla dalszych implementacji,
 - `_legacy/old-repo` pozostaje poza aktywną ścieżką produktu.
