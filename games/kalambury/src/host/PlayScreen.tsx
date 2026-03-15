@@ -978,6 +978,26 @@ export function PlayScreen({
 
       <section className="hero hero--kalambury-play hero--kalambury-playwide">
         <header className="kalambury-playtopbar kalambury-playbar">
+          {Boolean(setupPayload.presenterDevice?.enabled) && (
+            <div className="kalambury-playtopbar__left">
+              <span
+                className={
+                  presenterPairState.connected
+                    ? "kalambury-presenter-status kalambury-presenter-status--connected"
+                    : "kalambury-presenter-status kalambury-presenter-status--disconnected"
+                }
+                aria-label={
+                  presenterPairState.connected
+                    ? "Telefon prezentera połączony"
+                    : "Czekam na telefon prezentera..."
+                }
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  {presenterPairState.connected ? "smartphone" : "smartphone_off"}
+                </span>
+              </span>
+            </div>
+          )}
           <span className="kalambury-stage-pill">
             {getStageLabel(playState.stage)}
           </span>

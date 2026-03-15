@@ -34,6 +34,12 @@ export type TajniacyPresence = {
   spectatorCaptain: boolean;
 };
 
+type TajniacyChannel = {
+  postMessage(message: TajniacyBridgeMessage): void;
+  subscribe(handler: (message: TajniacyBridgeMessage) => void): () => void;
+  close(): void;
+};
+
 type BridgeOptions = {
   channel?: TajniacyChannel;
   onStateSync?: (state: MatchState) => void;
@@ -46,12 +52,28 @@ type BridgeOptions = {
   onOccupiedRolesUpdate?: (captainRedTaken: boolean, captainBlueTaken: boolean) => void;
   onHostReset?: () => void;
   onCaptainDisconnect?: () => void;
+  /** Injectable channel (overrides BroadcastChannel entirely — for testing) */
+  channel?: TajniacyChannel;
+  /** Injectable BroadcastChannel implementation (for testing) */
+  BroadcastChannelImpl?: new (name: string) => {
+    onmessage: ((event: MessageEvent<unknown>) => void) | null;
+    postMessage: (message: unknown) => void;
+    close: () => void;
+  };
+  /** How often the host pings controllers (ms). Default: 4000 */
+  pingIntervalMs?: number;
+  /** How long without a pong before a device is considered disconnected (ms). Default: 8000 */
+  pingTimeoutMs?: number;
 };
 
-function createBroadcastChannel(sessionCode: string): TajniacyChannel | null {
-  if (typeof BroadcastChannel === "undefined") return null;
+function createBroadcastChannel(
+  sessionCode: string,
+  BroadcastChannelImpl?: BridgeOptions["BroadcastChannelImpl"]
+): TajniacyChannel | null {
+  const BC = BroadcastChannelImpl ?? (typeof BroadcastChannel !== "undefined" ? BroadcastChannel : null);
+  if (!BC) return null;
 
-  const bc = new BroadcastChannel(`project-party.tajniacy.${sessionCode.toUpperCase()}`);
+  const bc = new BC(`project-party.tajniacy.${sessionCode.toUpperCase()}`);
   let handler: ((message: TajniacyBridgeMessage) => void) | null = null;
 
   bc.onmessage = (event: MessageEvent<TajniacyBridgeMessage>) => {
@@ -59,16 +81,12 @@ function createBroadcastChannel(sessionCode: string): TajniacyChannel | null {
   };
 
   return {
-    postMessage(message) {
-      bc.postMessage(message);
-    },
+    postMessage(message) { bc.postMessage(message); },
     subscribe(h) {
       handler = h;
       return () => { handler = null; };
     },
-    close() {
-      bc.close();
-    },
+    close() { bc.close(); },
   };
 }
 
@@ -77,7 +95,7 @@ export function createTajniacyBridge(
   role: TajniacyBridgeRole,
   options: BridgeOptions = {}
 ) {
-  const rawChannel = options.channel ?? createBroadcastChannel(sessionCode);
+  const rawChannel = options.channel ?? createBroadcastChannel(sessionCode, options.BroadcastChannelImpl);
   if (!rawChannel) return null;
 
   // Wrap channel to track sent/received counts in dev
@@ -94,6 +112,7 @@ export function createTajniacyBridge(
     },
     close: rawChannel.close,
   };
+
 
   const deviceId = `device-${Math.random().toString(36).slice(2, 10)}`;
 
@@ -228,8 +247,8 @@ export function createTajniacyBridge(
   let pingInterval: ReturnType<typeof setInterval> | null = null;
 
   if (role === "host") {
-    const PING_INTERVAL_MS = 4000; // How often to ping
-    const TIMEOUT_MS = 8000;       // If no pong in this time → consider disconnected
+    const PING_INTERVAL_MS = options.pingIntervalMs ?? 4000;
+    const TIMEOUT_MS = options.pingTimeoutMs ?? 8000;
 
     pingInterval = setInterval(() => {
       // Send ping to all controllers
@@ -237,7 +256,6 @@ export function createTajniacyBridge(
 
       // After half the interval, check for timed-out devices
       setTimeout(() => {
-        const before = computePresence();
         const now = Date.now();
         let changed = false;
 

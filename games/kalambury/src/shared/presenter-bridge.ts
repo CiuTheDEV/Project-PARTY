@@ -21,9 +21,11 @@ export type KalamburyPresenterPreviewState =
 export type KalamburyPresenterMessage =
   | { type: "controller-ready"; deviceId: string }
   | { type: "controller-disconnected"; deviceId: string }
+  | { type: "controller-pong"; deviceId: string }
   | { type: "controller-reveal-request"; deviceId: string }
   | { type: "controller-reroll-request"; deviceId: string }
   | { type: "host-probe"; deviceId: string }
+  | { type: "host-ping"; deviceId: string }
   | { type: "host-paired"; deviceId: string }
   | { type: "host-rejected"; deviceId: string }
   | { type: "host-reset" }
@@ -274,8 +276,6 @@ export function createKalamburyPresenterHostBridge(
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
 
-      // If the previously paired device doesn't respond within the timeout,
-      // reset pairing so any new device can connect.
       const probeTimeoutMs = options.probeTimeoutMs ?? 5000;
       probeTimer = setTimeout(() => {
         probeTimer = null;
@@ -414,6 +414,9 @@ export function createKalamburyPresenterControllerBridge(
           type: "controller-pong",
           deviceId,
         } satisfies KalamburyPresenterMessage);
+        if (!isDestroyed) {
+          postReady();
+        }
       }
 
       if (message.type === "host-paired" && message.deviceId === deviceId) {
@@ -517,6 +520,15 @@ export function createKalamburyPresenterControllerBridge(
         type: "controller-disconnected",
         deviceId,
       } satisfies KalamburyPresenterMessage);
+      if (shouldCloseChannel) {
+        channel?.close?.();
+      }
+    },
+    _dropWithoutDisconnect() {
+      if (isDestroyed) return;
+      isDestroyed = true;
+      stopReadyRetry();
+      unsubscribe();
       if (shouldCloseChannel) {
         channel?.close?.();
       }

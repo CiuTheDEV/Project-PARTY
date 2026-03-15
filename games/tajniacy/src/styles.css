@@ -1003,3 +1003,30 @@
 .taj-button-enter:active {
   transform: scale(0.98);
 }
+
+/* ─── Captain disconnect banner ─── */
+.tajniacy-disconnect-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: rgba(232, 100, 56, 0.18);
+  border: 1px solid rgba(232, 100, 56, 0.35);
+  color: rgba(255, 180, 140, 0.95);
+  font-weight: 600;
+  font-size: 0.95rem;
+  animation: tajniacy-pulse 1.5s ease-in-out infinite;
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  z-index: 200;
+  pointer-events: none;
+}
+
+@keyframes tajniacy-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}

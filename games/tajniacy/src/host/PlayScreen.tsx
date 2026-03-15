@@ -2,12 +2,14 @@ import { useState, useEffect } from "react";
 
 import { TEAM_AVATAR_EMOJI } from "../shared/avatars.ts";
 import { countRemaining } from "../shared/board-generator.ts";
+import type { TajniacyPresence } from "../shared/bridge.ts";
 import type { MatchState, TeamId } from "../shared/types.ts";
 import { standardWords, uncensoredWords, loadUsedWords } from "../shared/words.ts";
 import { getDevStats, resetDevStats, subscribeDevStats } from "../shared/dev-stats.ts";
 
 type PlayScreenProps = {
   state: MatchState;
+  presence?: TajniacyPresence;
   onRevealCard: (index: number) => void;
   onAssassinResolve: (clickedBy: TeamId) => void;
   onNextRound: () => void;
@@ -20,6 +22,7 @@ type PlayScreenProps = {
 
 export function PlayScreen({
   state,
+  presence,
   onRevealCard,
   onAssassinResolve,
   onNextRound,
@@ -76,8 +79,24 @@ export function PlayScreen({
     onRevealCard(index);
   };
 
+  const captainDisconnected =
+    presence !== undefined &&
+    (!presence.captainRed || !presence.captainBlue);
+
   return (
     <div style={shellStyle} className="app-shell--tajniacy-hub">
+      {/* ─── Captain disconnect banner ─── */}
+      {captainDisconnected && (
+        <div className="tajniacy-disconnect-banner" role="alert">
+          <span className="material-symbols-outlined">wifi_off</span>
+          {!presence.captainRed && !presence.captainBlue
+            ? "Obaj kapitanowie się rozłączyli. Czekamy na powrót..."
+            : !presence.captainRed
+              ? "Kapitan czerwonych się rozłączył. Czekamy na powrót..."
+              : "Kapitan niebieskich się rozłączył. Czekamy na powrót..."}
+        </div>
+      )}
+
       {/* ─── HEADER (Drums/Scores) ─── */}
       <header style={headerStyle}>
         <div style={{ ...teamScoreBlockStyle, borderColor: "rgba(231,76,60,0.3)" }}>
