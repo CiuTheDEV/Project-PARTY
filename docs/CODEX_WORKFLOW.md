@@ -42,6 +42,38 @@ Ta kopia workspace jest Windows-first.
 - Nie opieraj lokalnego workflow o WSL, linuxowe binarki w `.tools/*` ani skrypty wymagające środowiska Linux.
 - Jeśli lokalny toolchain znowu zacznie wskazywać na WSL fallbacki, potraktuj to jako błąd workflow i napraw root cause zamiast doklejać kolejne obejścia.
 
+## Common PowerShell commands
+
+Podstawowe komendy uruchamiaj z roota repo:
+
+```powershell
+pnpm install
+pnpm dev
+pnpm test
+pnpm build
+pnpm lint
+pnpm typecheck
+```
+
+Przykłady pracy na konkretnych workspace'ach:
+
+```powershell
+pnpm --filter @project-party/web dev
+pnpm --filter @project-party/web test
+pnpm --filter @project-party/worker test
+pnpm --filter @project-party/game-kalambury test
+pnpm --filter @project-party/game-tajniacy test
+```
+
+Przykłady dodatkowych narzędzi:
+
+```powershell
+pnpm playwright:install
+pnpm playwright:debug:launch
+```
+
+Jeśli dopisujesz komendy do dokumentacji, bazuj na realnych skryptach z `package.json`, a nie na przykładowych komendach z internetu.
+
 ## Zasady implementacyjne
 
 - Preferuj micro-buildy.
@@ -49,6 +81,7 @@ Ta kopia workspace jest Windows-first.
 - Lokalna zmiana w grze powinna zostać lokalną zmianą w grze.
 - Zmiana w `packages/*` wymaga uzasadnienia, że jest realnie współdzielona.
 - Zmiana w `docs/*` jest obowiązkowa, gdy zmienia się kontrakt lub docelowa struktura.
+- Wspólny layout `main menu` i `game setup` jest platformowym shell-em UI i powinien pozostać spójny między grami.
 
 ## Checklist przed zakończeniem taska
 

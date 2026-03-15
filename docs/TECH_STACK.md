@@ -37,8 +37,41 @@ Stack ma być:
 - Zod do schematów konfiguracji i payloadów
 
 ### Testy
-- Vitest dla unit/integration
-- Playwright później dla krytycznych flow
+- testy jednostkowe i integracyjne na poziomie workspace'ów
+- Playwright dla krytycznych flow platformy i wejścia do gry
+
+## Strategia testów
+
+Repo powinno testować trzy warstwy:
+
+### Platforma
+- testy dla `apps/web` obejmują routing, launcher, runtime integration i helpery platformowe,
+- testy dla `apps/worker` obejmują HTTP API, session lifecycle i lekkie kontrakty backendowe.
+
+### Shared packages
+- `packages/*` powinny mieć testy tylko tam, gdzie logika jest naprawdę współdzielona,
+- nie przenoś semantyki jednej gry do shared tylko po to, aby "mieć wspólne testy".
+
+### Game modules
+- każda gra testuje własne metadata, settings, runtime state i helpery specyficzne dla gry,
+- testy game module powinny skupiać się na kontrakcie integracyjnym oraz na logice samej gry,
+- wspólny layout wejścia do gry nie zastępuje testów gameplayu.
+
+## Running tests
+
+Najczęściej używane komendy:
+
+```powershell
+pnpm test
+pnpm --filter @project-party/web test
+pnpm --filter @project-party/worker test
+pnpm --filter @project-party/game-kalambury test
+pnpm --filter @project-party/game-tajniacy test
+```
+
+E2E / smoke flow:
+- Playwright uruchamiaj dla krytycznych przepływów platformy i najbardziej ryzykownych flow wejścia do gry,
+- nie zastępuj nim unit i integration testów modułów.
 
 ## Dlaczego ten stack
 
