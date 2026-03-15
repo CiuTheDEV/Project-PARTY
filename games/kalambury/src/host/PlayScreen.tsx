@@ -904,6 +904,25 @@ export function PlayScreen({
     });
   }
 
+  function handleSkipDraw() {
+    if (!isDrawAnimating || !pendingDrawState) {
+      return;
+    }
+
+    if (drawAnimationTimerRef.current !== null) {
+      window.clearTimeout(drawAnimationTimerRef.current);
+      drawAnimationTimerRef.current = null;
+    }
+
+    setPlayState(pendingDrawState);
+    setPendingDrawState(null);
+    setDrawSequenceCards([]);
+    setActiveDrawCardId(null);
+    setCurrentDrawRevealIndex(0);
+    setDrawRouletteStep(0);
+    setDrawAnimationPhase("idle");
+  }
+
   function handleShowPreparation() {
     setPlayState((current) =>
       current ? enterKalamburyPreparation(current, setup) : current,
@@ -962,14 +981,26 @@ export function PlayScreen({
           <span className="kalambury-stage-pill">
             {getStageLabel(playState.stage)}
           </span>
-          <button
-            className="kalambury-playtopbar__settings"
-            type="button"
-            onClick={onBackToHub}
-            aria-label="Wroc do menu gry i ustawien"
-          >
-            Ustawienia
-          </button>
+          <div className="kalambury-playtopbar__actions">
+            {isDrawAnimating && setup.players.length > 4 ? (
+              <button
+                className="kalambury-playtopbar__skip-draw"
+                type="button"
+                onClick={handleSkipDraw}
+                aria-label="Pominij animacje losowania"
+              >
+                Pomiń losowanie
+              </button>
+            ) : null}
+            <button
+              className="kalambury-playtopbar__settings"
+              type="button"
+              onClick={onBackToHub}
+              aria-label="Wroc do menu gry i ustawien"
+            >
+              Ustawienia
+            </button>
+          </div>
         </header>
 
         <section className="kalambury-stage-shell kalambury-stage-shell--fullstage">

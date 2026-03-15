@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { TajniacyPresence } from "../shared/bridge.ts";
 import { TajniacyPairingModal } from "./PairingModal.tsx";
 import {
@@ -14,7 +14,7 @@ import type {
   TeamId,
   WordCategory,
 } from "../shared/types.ts";
-import { standardWords, uncensoredWords } from "../shared/words.ts";
+import { standardWords, uncensoredWords, loadUsedWords, resetUsedWords } from "../shared/words.ts";
 
 type SetupScreenProps = {
   sessionCode?: string;
@@ -48,6 +48,10 @@ export function SetupScreen({
   onClose,
 }: SetupScreenProps) {
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
+  const [usedWordsCount, setUsedWordsCount] = useState(0);
+  useEffect(() => {
+    setUsedWordsCount(settings.category ? loadUsedWords(settings.category).length : 0);
+  }, [settings.category]);
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
   const [activeSettingsTab, setActiveSettingsTab] = useState<"gameplay" | "advanced">("gameplay");
   const [isPairingModalOpen, setIsPairingModalOpen] = useState(false);
@@ -344,6 +348,38 @@ export function SetupScreen({
               </span>
             </button>
           </div>
+
+          {/* Pool status + reset */}
+          {settings.category && (() => {
+            const total = settings.category === "uncensored" ? uncensoredWords.length : standardWords.length;
+            const available = total - usedWordsCount;
+            const pct = Math.round((available / total) * 100);
+            return (
+              <div style={poolStatusStyle}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                  <span style={{ fontSize: 12, color: "#a1a1aa" }}>
+                    Dostępne hasła: <strong style={{ color: available > 25 ? "#4ade80" : "#f59e0b" }}>{available}</strong>
+                    <span style={{ color: "#52525b" }}> / {total}</span>
+                  </span>
+                  <span style={{ fontSize: 11, color: "#52525b" }}>{pct}%</span>
+                </div>
+                <div style={poolBarTrackStyle}>
+                  <div style={{ ...poolBarFillStyle, width: `${pct}%`, background: available > 25 ? "#4ade80" : "#f59e0b" }} />
+                </div>
+                <button
+                  type="button"
+                  style={resetPoolButtonStyle}
+                  onClick={() => {
+                    resetUsedWords(settings.category!);
+                    setUsedWordsCount(0);
+                  }}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 16 }}>refresh</span>
+                  Reset puli haseł
+                </button>
+              </div>
+            );
+          })()}
         </Section>
 
         {/* Action buttons */}
@@ -1173,5 +1209,43 @@ const avatarModalSecondaryButtonStyle: React.CSSProperties = {
   fontSize: 18,
   fontWeight: 800,
   cursor: "pointer",
+};
+
+const poolStatusStyle: React.CSSProperties = {
+  marginTop: 12,
+  padding: "14px 16px",
+  borderRadius: 10,
+  background: "rgba(255,255,255,0.03)",
+  border: "1px solid rgba(255,255,255,0.06)",
+};
+
+const poolBarTrackStyle: React.CSSProperties = {
+  height: 4,
+  borderRadius: 2,
+  background: "rgba(255,255,255,0.08)",
+  overflow: "hidden",
+  marginBottom: 12,
+};
+
+const poolBarFillStyle: React.CSSProperties = {
+  height: "100%",
+  borderRadius: 2,
+  transition: "width 0.3s ease",
+};
+
+const resetPoolButtonStyle: React.CSSProperties = {
+  width: "100%",
+  padding: "10px 16px",
+  borderRadius: 8,
+  border: "1px solid rgba(255,255,255,0.1)",
+  background: "rgba(255,255,255,0.04)",
+  color: "#a1a1aa",
+  fontSize: 13,
+  fontWeight: 600,
+  cursor: "pointer",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  gap: 8,
 };
 

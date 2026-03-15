@@ -13,6 +13,8 @@ type DurableObjectStorageLike = {
 
 type DurableObjectStateLike = {
   storage: DurableObjectStorageLike;
+  acceptWebSocket: (ws: WebSocket, tags?: string[]) => void;
+  getWebSockets: (tag?: string) => WebSocket[];
 };
 
 const SESSION_RECORD_KEY = "session-record";
@@ -32,7 +34,7 @@ type SessionEventsResponse = {
 };
 
 export class SessionDurableObject {
-  constructor(private readonly state: DurableObjectStateLike) {}
+  constructor(private readonly state: DurableObjectStateLike) { }
 
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
@@ -137,9 +139,67 @@ export class SessionDurableObject {
 
       await this.state.storage.put(SESSION_EVENTS_KEY, [...events, eventRecord]);
 
+      // Broadcast to all connected WebSocket clients
+      const message = JSON.stringify(eventRecord);
+      for (const ws of this.state.getWebSockets()) {
+        try {
+          ws.send(message);
+        } catch {
+          // Client disconnected, hibernation will clean it up
+        }
+      }
+
       return Response.json(eventRecord);
     }
 
+    if (request.method === "GET" && url.pathname === "/ws") {
+      const record = await this.state.storage.get<SessionRecord>(
+        SESSION_RECORD_KEY,
+      );
+
+      if (!record) {
+        return Response.json({ error: "Session not found" }, { status: 404 });
+      }
+
+      const upgradeHeader = request.headers.get("Upgrade");
+      if (upgradeHeader !== "websocket") {
+        return new Response("Expected WebSocket upgrade", { status: 426 });
+      }
+
+      const pair = new WebSocketPair();
+      const [client, server] = Object.values(pair);
+
+      this.state.acceptWebSocket(server);
+
+      return new Response(null, {
+        status: 101,
+        // @ts-expect-error -- Cloudflare-specific WebSocket response field
+        webSocket: client,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
+    }
+
+    if (request.method === "OPTIONS") {
+      return new Response(null, {
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Upgrade",
+        },
+      });
+    }
+
     return Response.json({ error: "Not found" }, { status: 404 });
+  }
+
+  async webSocketMessage(ws: WebSocket, message: string | ArrayBuffer) {
+    // Clients don't send messages over WS — they use HTTP POST /events
+    // This handler is required by the Hibernation API interface
+  }
+
+  async webSocketClose(ws: WebSocket) {
+    // Hibernation API cleans up the socket automatically
   }
 }

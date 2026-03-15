@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { TEAM_AVATAR_EMOJI } from "../shared/avatars.ts";
 import { countRemaining } from "../shared/board-generator.ts";
 import type { MatchState, TeamId } from "../shared/types.ts";
+import { standardWords, uncensoredWords, loadUsedWords } from "../shared/words.ts";
+import { getDevStats, resetDevStats, subscribeDevStats } from "../shared/dev-stats.ts";
 
 type PlayScreenProps = {
   state: MatchState;
@@ -12,6 +14,8 @@ type PlayScreenProps = {
   onResetMatch: () => void;
   onReplay: () => void;
   onReturnToSetup: () => void;
+  poolJustReset?: boolean;
+  onPoolResetAck?: () => void;
 };
 
 export function PlayScreen({
@@ -22,9 +26,17 @@ export function PlayScreen({
   onResetMatch,
   onReplay,
   onReturnToSetup,
+  poolJustReset = false,
+  onPoolResetAck,
 }: PlayScreenProps) {
   const [showResetConfirm, setShowResetConfirm] = useState(false);
   const [showAssassinModal, setShowAssassinModal] = useState(false);
+  const [showDevModal, setShowDevModal] = useState(false);
+  const [devStats, setDevStats] = useState(getDevStats);
+
+  useEffect(() => {
+    return subscribeDevStats(() => setDevStats(getDevStats()));
+  }, []);
 
 
   const round = state.round;
@@ -93,6 +105,16 @@ export function PlayScreen({
 
           <button type="button" style={actionCircleButtonStyle} onClick={onReturnToSetup}>
             <span className="material-symbols-outlined" style={{ fontSize: 28 }}>settings</span>
+          </button>
+
+          {/* DEV only */}
+          <button
+            type="button"
+            style={{ ...actionCircleButtonStyle, opacity: 0.5, fontSize: 11 }}
+            onClick={() => setShowDevModal(true)}
+            title="DEV: Pula haseł"
+          >
+            DEV
           </button>
         </div>
 
@@ -386,6 +408,25 @@ export function PlayScreen({
         </div>
       )}
 
+      {/* Pool exhausted — auto-reset notification */}
+      {poolJustReset && (
+        <div style={overlayStyle}>
+          <div style={{ ...modalStyle, padding: 48 }} className="taj-modal-glass">
+            <div style={{ fontSize: 48, marginBottom: 16 }}>♻️</div>
+            <h2 style={modalTitleStyle}>Pula haseł wyczerpana</h2>
+            <p style={modalTextStyle}>
+              Wszystkie unikalne hasła zostały już użyte. Pula została zresetowana — hasła wróciły do obiegu.
+            </p>
+            <button
+              style={{ ...modalBtnStyle, background: "#E74C3C", width: "100%" }}
+              onClick={onPoolResetAck}
+            >
+              Rozumiem, gramy dalej
+            </button>
+          </div>
+        </div>
+      )}
+
       {showResetConfirm && (
         <div style={overlayStyle}>
           <div style={{ ...modalStyle, padding: 48 }} className="taj-modal-glass">
@@ -398,6 +439,109 @@ export function PlayScreen({
           </div>
         </div>
       )}
+
+      {/* DEV: Word pool inspector */}
+      {showDevModal && (() => {
+        const category = state.settings.category ?? "standard";
+        const allWords = category === "uncensored" ? uncensoredWords : standardWords;
+        const boardWords = new Set(round.board.map((c) => c.word));
+        const allUsed = new Set(loadUsedWords(category));
+        const prevUsed = new Set([...allUsed].filter((w) => !boardWords.has(w)));
+        const unused = allWords.filter((w) => !allUsed.has(w));
+
+        return (
+          <div style={overlayStyle} onClick={() => setShowDevModal(false)}>
+            <div
+              style={{
+                background: "#111",
+                border: "1px solid rgba(255,255,255,0.15)",
+                borderRadius: 20,
+                padding: 32,
+                maxWidth: 760,
+                width: "90vw",
+                maxHeight: "80vh",
+                overflowY: "auto",
+                color: "#fff",
+                fontFamily: "monospace",
+              }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+                <h2 style={{ margin: 0, fontSize: 18 }}>🛠 DEV — Pula haseł</h2>
+                <button
+                  type="button"
+                  onClick={() => setShowDevModal(false)}
+                  style={{ background: "none", border: "none", color: "#fff", fontSize: 24, cursor: "pointer" }}
+                >✕</button>
+              </div>
+
+              <div style={{ marginBottom: 20, fontSize: 12, color: "rgba(255,255,255,0.4)" }}>
+                Kategoria: <strong style={{ color: "#fff" }}>{category}</strong>
+                {" · "}
+                <span style={{ color: "#e74c3c" }}>■ zużyte ({prevUsed.size})</span>
+                {" · "}
+                <span style={{ color: "#2ecc71" }}>■ aktywne na planszy ({boardWords.size})</span>
+                {" · "}
+                <span style={{ color: "#555" }}>■ unikalne ({unused.length})</span>
+              </div>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                {allWords.map((w) => {
+                  const isActive = boardWords.has(w);
+                  const isUsed = prevUsed.has(w);
+                  return (
+                    <span
+                      key={w}
+                      style={{
+                        borderRadius: 6,
+                        padding: "3px 10px",
+                        fontSize: 12,
+                        fontWeight: isActive ? 700 : 400,
+                        background: isActive
+                          ? "rgba(46,204,113,0.15)"
+                          : isUsed
+                          ? "rgba(231,76,60,0.12)"
+                          : "rgba(255,255,255,0.04)",
+                        border: `1px solid ${isActive ? "rgba(46,204,113,0.5)" : isUsed ? "rgba(231,76,60,0.3)" : "rgba(255,255,255,0.08)"}`,
+                        color: isActive ? "#2ecc71" : isUsed ? "#e74c3c" : "#555",
+                      }}
+                    >
+                      {w}
+                    </span>
+                  );
+                })}
+              </div>
+
+              {/* Bridge stats */}
+              <div style={{ marginTop: 12, padding: "12px 16px", background: "rgba(255,255,255,0.03)", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <span style={{ fontSize: 11, fontWeight: 700, color: "#71717a", letterSpacing: "0.05em" }}>BRIDGE STATS</span>
+                  <button
+                    type="button"
+                    onClick={resetDevStats}
+                    style={{ background: "none", border: "1px solid rgba(255,255,255,0.1)", color: "#71717a", fontSize: 10, padding: "2px 8px", borderRadius: 4, cursor: "pointer" }}
+                  >
+                    reset
+                  </button>
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+                  {([
+                    ["📤 Wysłane", devStats.messagesSent],
+                    ["📥 Odebrane", devStats.messagesReceived],
+                    ["🔄 Sync retries", devStats.syncRetries],
+                    ["📡 Re-announces", devStats.reannounces],
+                  ] as [string, number][]).map(([label, val]) => (
+                    <div key={label} style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "rgba(255,255,255,0.6)" }}>
+                      <span>{label}</span>
+                      <strong style={{ color: val > 0 ? "#fff" : "#444" }}>{val}</strong>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }

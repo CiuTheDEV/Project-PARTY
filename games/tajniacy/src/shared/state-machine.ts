@@ -152,13 +152,17 @@ export function canStartMatch(
 
 // ─── Round lifecycle ─────────────────────────
 
-export function startNewRound(state: MatchState): MatchState {
+export function startNewRound(
+  state: MatchState,
+  usedWords: string[] = [],
+): MatchState {
   const startingTeam = pickStartingTeam();
   const category = state.settings.category!;
   const board = generateBoard(
     category,
     state.settings.assassinCount,
     startingTeam,
+    usedWords,
   );
 
   const round: RoundState = {

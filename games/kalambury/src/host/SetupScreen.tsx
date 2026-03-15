@@ -29,7 +29,10 @@ import {
   saveKalamburySetupDraft,
 } from "../shared/setup-storage";
 import { cloneModeSettings, normalizeModeSettings } from "../shared/setup-ui";
-import { createKalamburyPresenterHostBridge } from "../shared/presenter-bridge";
+import {
+  type KalamburyPresenterChannel,
+  createKalamburyPresenterHostBridge,
+} from "../shared/presenter-bridge";
 import {
   KalamburyAddPlayerModal,
   KalamburyModeSettingsModal,
@@ -50,6 +53,7 @@ type SetupScreenProps = {
   embedded?: boolean;
   modeId?: "classic" | "team";
   sessionCode?: string;
+  channel?: KalamburyPresenterChannel;
   storage?: KalamburyStorageLike | null;
   onClose?: () => void;
   onStartRound: (payload: KalamburySetupPayload) => void;
@@ -60,6 +64,7 @@ export function SetupScreen({
   onClose,
   modeId = "classic",
   sessionCode,
+  channel,
   storage = null,
   onStartRound,
 }: SetupScreenProps) {
@@ -183,6 +188,7 @@ export function SetupScreen({
 
     setPresenterDeviceConnected(false);
     const bridge = createKalamburyPresenterHostBridge(sessionCode, {
+      channel,
       initialPairedDeviceId: pairedPresenterDeviceId,
       onPairingChange: ({ connected, pairedDeviceId: nextPairedDeviceId }) => {
         setPresenterDeviceConnected(connected);
@@ -320,8 +326,8 @@ export function SetupScreen({
     setPlayers((currentPlayers) =>
       editingPlayerId
         ? currentPlayers.map((player) =>
-            player.id === editingPlayerId ? nextPlayer : player,
-          )
+          player.id === editingPlayerId ? nextPlayer : player,
+        )
         : [...currentPlayers, nextPlayer],
     );
     closeAddPlayerModal();

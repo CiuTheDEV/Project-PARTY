@@ -1,12 +1,14 @@
 
-import { useEffect, useState } from "react";
-import { createTajniacyBridge, type TajniacyBridgeRole } from "../shared/bridge";
+import { useEffect, useRef, useState } from "react";
+import { createTajniacyBridge, type TajniacyBridgeRole, type TajniacyChannel } from "../shared/bridge";
+import { devTrack } from "../shared/dev-stats.ts";
 import type { MatchState } from "../shared/types";
 import { TajniacyCaptainApp } from "./CaptainView";
 import { TajniacyPlayerView } from "./PlayerView";
 
 type TajniacyControllerAppProps = {
   sessionCode: string;
+  transportChannel?: TajniacyChannel;
 };
 
 function resolvePresetRole(): TajniacyBridgeRole | null {
@@ -19,7 +21,7 @@ function resolvePresetRole(): TajniacyBridgeRole | null {
   return null;
 }
 
-export function TajniacyControllerApp({ sessionCode }: TajniacyControllerAppProps) {
+export function TajniacyControllerApp({ sessionCode, transportChannel }: TajniacyControllerAppProps) {
   const presetRole = resolvePresetRole();
 
   const [role, setRole] = useState<TajniacyBridgeRole | null>(presetRole);
@@ -39,6 +41,7 @@ export function TajniacyControllerApp({ sessionCode }: TajniacyControllerAppProp
     if (role !== null) return; // Only when on selection screen
 
     const b = createTajniacyBridge(sessionCode, "player-view", {
+      channel: transportChannel,
       onOccupiedRolesUpdate: (redTaken, blueTaken) => {
         setCaptainRedTaken(redTaken);
         setCaptainBlueTaken(blueTaken);
@@ -53,14 +56,33 @@ export function TajniacyControllerApp({ sessionCode }: TajniacyControllerAppProp
     b?.announceReady("player-view");
 
     return () => b?.destroy();
-  }, [role, sessionCode]);
+  }, [role, sessionCode, transportChannel]);
 
   // ─── Active bridge (after role selected) ──────────────────────
+  const matchStateRef = useRef<MatchState | null>(null);
+
   useEffect(() => {
     if (!role) return;
 
     const b = createTajniacyBridge(sessionCode, role, {
-      onStateSync: (state) => setMatchState(state),
+      channel: transportChannel,
+      onStateSync: (state) => {
+        // Skip if state is identical to what we already have (dedup BroadcastChannel + WS/poll)
+        const prev = matchStateRef.current;
+        if (
+          prev &&
+          prev.phase === state.phase &&
+          prev.round?.roundNumber === state.round?.roundNumber &&
+          prev.matchScore.red === state.matchScore.red &&
+          prev.matchScore.blue === state.matchScore.blue &&
+          prev.round?.board.filter((c) => c.revealed).length ===
+            state.round?.board.filter((c) => c.revealed).length
+        ) {
+          return;
+        }
+        matchStateRef.current = state;
+        setMatchState(state);
+      },
       onRoleAssigned: (r) => {
         setAssignedRole(r);
         if (r !== role) setRole(r);
@@ -72,6 +94,7 @@ export function TajniacyControllerApp({ sessionCode }: TajniacyControllerAppProp
       onHostReset: () => {
         setRole(null);
         setMatchState(null);
+        matchStateRef.current = null;
         setAssignedRole(null);
         setCaptainRedTaken(false);
         setCaptainBlueTaken(false);
@@ -81,12 +104,26 @@ export function TajniacyControllerApp({ sessionCode }: TajniacyControllerAppProp
     if (b) {
       setBridge(b);
       b.announceReady(role);
-      // Request immediate state sync so we don't get stuck on "Waiting for TV"
       b.requestSync();
+
+      // Retry requestSync every 2s until we receive state (cold join resilience)
+      const syncRetryInterval = setInterval(() => {
+        if (!matchStateRef.current) {
+          devTrack("syncRetries");
+          b.requestSync();
+        } else {
+          clearInterval(syncRetryInterval);
+        }
+      }, 2000);
+
+      return () => {
+        clearInterval(syncRetryInterval);
+        b.destroy();
+      };
     }
 
     return () => b?.destroy();
-  }, [role, sessionCode]);
+  }, [role, sessionCode, transportChannel]);
 
 
   // ─── Role Selection Screen ─────────────────────────────────────

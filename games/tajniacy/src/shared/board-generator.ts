@@ -67,8 +67,9 @@ export function generateBoard(
   category: "standard" | "uncensored",
   assassinCount: number,
   startingTeam: TeamId,
+  usedWords: string[] = [],
 ): Board {
-  const pool = getWordPool(category);
+  const pool = getWordPool(category, usedWords);
   const words = shuffle(pool).slice(0, BOARD_SIZE);
   const identities = generateIdentities(startingTeam, assassinCount);
 

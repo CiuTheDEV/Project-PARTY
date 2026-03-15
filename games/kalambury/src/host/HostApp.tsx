@@ -390,6 +390,7 @@ export function KalamburyHostApp({
               embedded
               modeId={selectedMode.id}
               sessionCode={sessionCode}
+              channel={transportChannel}
               storage={storage}
               onClose={() => setIsSetupOpen(false)}
               onStartRound={(payload) => {

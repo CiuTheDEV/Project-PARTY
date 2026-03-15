@@ -33,7 +33,7 @@ pnpm --filter @project-party/game-my-game test
 
 Potem wróć do szczegółów poniżej.
 
-Jeśli nowa gra ma mieć remote transport albo production flow oparty o Cloudflare Workers + Durable Objects, przeczytaj też `docs/CLOUDFLARE_GAME_DEPLOY.md`.
+Jeśli nowa gra ma mieć remote transport albo production flow oparty o Cloudflare Workers + Durable Objects (w tym pairing telefon↔host przez internet), przeczytaj **obowiązkowo** `docs/CLOUDFLARE_GAME_DEPLOY.md` przed pisaniem kodu ekranów hosta i kontrolera.
 
 ## Checklist krok po kroku
 
@@ -251,6 +251,14 @@ To, co może być indywidualne:
 - Czy gra nie wypchnęła logiki do `apps/*` lub `packages/*` bez realnej potrzeby?
 - Czy runtime używa wyłącznie kontraktu z `@project-party/game-runtime` / `@project-party/game-sdk`?
 
+### Cloudflare / remote transport (jeśli gra ma `host-plus-phones`)
+
+- Czy `createRuntime` tworzy channel z `context.transport` i przekazuje go do `HostApp`?
+- Czy `HostApp` przekazuje `transportChannel` do wszystkich sub-ekranów które tworzą bridge (np. `SetupScreen`)?
+- Czy bridge hosta przyjmuje `channel` jako prop zamiast tworzyć własny `BroadcastChannel`?
+- Czy `pairedDeviceId` (lub odpowiednik) **nie jest** zapisywany w storage?
+- Czy po deployu WebSocket pokazuje status 101 w DevTools (Network → WS)?
+
 ### Dokumentacja
 
 - Czy `docs/CREATING_NEW_GAME.md` nadal opisuje aktualny flow?
@@ -306,6 +314,11 @@ pnpm --filter @project-party/game-my-game typecheck
 - Sprawdź, czy `createRuntime` zwraca obiekt z poprawnym `teardown`, jeśli gra tego wymaga.
 - Zobacz logi w konsoli przeglądarki.
 - Porównaj entrypoint z `games/kalambury/src/index.ts` albo `games/tajniacy/src/index.ts`.
+
+### Telefon nie łączy się z hostem na Cloudflare
+
+- Patrz `docs/TROUBLESHOOTING.md` → sekcja "Cloudflare / produkcja".
+- Najczęstsze przyczyny: brak `channel` prop w SetupScreen, persistowany `pairedDeviceId`, zła kolejność routingu `/ws`.
 
 ## Suggested next steps
 

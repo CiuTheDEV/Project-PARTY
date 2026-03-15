@@ -1486,6 +1486,35 @@
   opacity: 0.92;
 }
 
+.kalambury-playtopbar__skip-draw {
+  grid-column: 1;
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: linear-gradient(
+    180deg,
+    rgba(56, 58, 66, 0.72),
+    rgba(31, 33, 40, 0.92)
+  );
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.kalambury-playtopbar__skip-draw:hover {
+  opacity: 0.8;
+}
+
 .kalambury-stage-shell {
   display: grid;
   min-height: 0;
@@ -7445,22 +7474,24 @@
 }
 
 .kalambury-playtopbar {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 16px;
 }
 
 .kalambury-stage-pill {
-  grid-column: 1;
-  justify-self: start;
   min-height: 38px;
   padding: 0 18px;
 }
 
+.kalambury-playtopbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .kalambury-playtopbar__settings {
-  grid-column: 3;
-  justify-self: end;
   width: auto;
   min-width: 124px;
   height: 46px;
@@ -7470,6 +7501,10 @@
   font-size: 0.98rem;
   font-weight: 700;
   letter-spacing: -0.01em;
+}
+
+.kalambury-playtopbar__skip-draw {
+  height: 46px;
 }
 
 .kalambury-stage-shell--fullstage {

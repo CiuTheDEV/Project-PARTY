@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { createTajniacyBridge } from "../shared/bridge.ts";
-import type { TajniacyPresence } from "../shared/bridge.ts";
+import type { TajniacyChannel, TajniacyPresence } from "../shared/bridge.ts";
 
 import {
   type TajniacyHubMode,
@@ -27,15 +27,17 @@ import {
   updateTeamAvatar,
   updateTeamName,
 } from "../shared/state-machine.ts";
+import { loadUsedWords, saveUsedWords, isPoolExhausted } from "../shared/words.ts";
 import { PlayScreen } from "./PlayScreen.tsx";
 import { SetupScreen } from "./SetupScreen.tsx";
 import { TajniacyPairingModal } from "./PairingModal.tsx";
 
 type TajniacyHostAppProps = {
   sessionCode?: string;
+  transportChannel?: TajniacyChannel;
 };
 
-export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
+export function TajniacyHostApp({ sessionCode, transportChannel }: TajniacyHostAppProps) {
   const hubContent = getTajniacyHubContent();
 
   // Hub state
@@ -58,6 +60,8 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
   });
   // Whether the game is paused due to a captain disconnecting
   const [isCaptainDisconPaused, setIsCaptainDisconPaused] = useState(false);
+  // Whether pool was just auto-reset (triggers info modal on next round start)
+  const [poolJustReset, setPoolJustReset] = useState(false);
   // Presence at the moment the match started — so we know if two captains were connected
   const [startPresence, setStartPresence] = useState<TajniacyPresence | null>(null);
 
@@ -80,6 +84,7 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
 
   const [bridge] = useState(() =>
     sessionCode ? createTajniacyBridge(sessionCode, "host", {
+      channel: transportChannel,
       onRevealRequest: (index) => callbacksRef.current.onRevealRequest(index),
       onHintRequest: (word, count, teamId) => callbacksRef.current.onHintRequest(word, count, teamId),
       onHintClearRequest: (teamId) => callbacksRef.current.onHintClearRequest(teamId),
@@ -146,6 +151,21 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
   const handleRoundsToWinChange = (rounds: number) =>
     setMatchState((s) => updateRoundsToWin(s, rounds));
 
+  // Shared helper — prepares and launches a round, detects pool exhaustion
+  const launchRound = (prepare: (s: MatchState) => MatchState) => {
+    setMatchState((s) => {
+      const category = s.settings.category!;
+      const exhausted = isPoolExhausted(category);
+      if (exhausted) setPoolJustReset(true);
+      const usedWords = loadUsedWords(category);
+      const next = startNewRound(prepare(s), usedWords);
+      const boardWords = next.round!.board.map((c) => c.word);
+      // After getWordPool auto-reset, localStorage is empty — save only boardWords
+      saveUsedWords(category, exhausted ? boardWords : [...usedWords, ...boardWords]);
+      return next;
+    });
+  };
+
   const handleStartMatch = (skipConfirm = false) => {
     const captainsCount = (presence.captainRed ? 1 : 0) + (presence.captainBlue ? 1 : 0);
     const spectatorCount = presence.spectatorCaptain ? 1 : 0;
@@ -167,7 +187,7 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
 
     setStartPresence(presence);
     setIsCaptainDisconPaused(false);
-    setMatchState((s) => startNewRound(s));
+    launchRound((s) => s);
     setIsSetupOpen(false);
     setActiveScreen("play");
   };
@@ -180,7 +200,7 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
     setMatchState((s) => resolveAssassin(s, clickedBy));
 
   const handleNextRound = () => {
-    setMatchState((s) => startNewRound(returnToSetup(s)));
+    launchRound(returnToSetup);
   };
 
   const handleSendHint = (word: string, count: number, teamId: TeamId) => {
@@ -202,7 +222,7 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
   };
 
   const handleReplay = () => {
-    setMatchState((s) => startNewRound(resetMatch(s)));
+    launchRound(resetMatch);
   };
 
   const handleReturnToSetup = () => {
@@ -223,6 +243,8 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
           onResetMatch={handleResetMatch}
           onReplay={handleReplay}
           onReturnToSetup={handleReturnToSetup}
+          poolJustReset={poolJustReset}
+          onPoolResetAck={() => setPoolJustReset(false)}
         />
         {/* Captain disconnect pause overlay */}
         {isCaptainDisconPaused && (

@@ -87,3 +87,61 @@ Checklist:
 - uruchom `pnpm test`
 - sprawdź `packages/shared/src/catalog.test.ts`
 - sprawdź `packages/shared/src/session.test.ts`
+
+---
+
+## Cloudflare / produkcja
+
+### Host nie widzi połączenia telefonu
+
+Symptoms:
+- telefon wchodzi do sesji, ale host nie pokazuje połączenia / pairingu
+- działa lokalnie, nie działa na Cloudflare
+
+Checklist:
+- czy `SetupScreen` (lub inny ekran setupu) dostaje `channel` jako prop z `createRuntime`? Bez tego tworzy lokalny `BroadcastChannel` który nie przechodzi między urządzeniami
+- czy `HostApp` przekazuje `transportChannel` do `SetupScreen`?
+- czy `createRuntime` tworzy `presenterTransportChannel` z `context.transport` i przekazuje go do `HostApp`?
+
+Szczegóły: `docs/CLOUDFLARE_GAME_DEPLOY.md` sekcja 14.
+
+### "To miejsce jest już zajęte" / host-rejected mimo braku połączenia
+
+Symptoms:
+- nowy telefon dostaje ekran "zajęte" zaraz po otwarciu
+- żadne urządzenie nie jest aktualnie połączone
+
+Przyczyna:
+- stary `pairedDeviceId` zapisany w storage jest ładowany przy starcie hosta
+- host wysyła `host-probe`, stary telefon nie odpowiada, ale blokuje nowe połączenia dopóki nie minie timeout
+
+Fix:
+- nie persistuj `pairedDeviceId` w storage (patrz `docs/CLOUDFLARE_GAME_DEPLOY.md` sekcja 15)
+- przy ładowaniu draftu zawsze inicjalizuj `pairedDeviceId: null`
+
+### WebSocket nie łączy się (ciągle "Zakończone" w DevTools)
+
+Symptoms:
+- Network tab → WS → status "Zakończone", 0,0 kB transferu
+- transport wraca na polling, latency ~1.5-3s
+
+Możliwe przyczyny:
+
+1. **Zła kolejność routingu w `http.ts`** — handler `GET /api/sessions/:code` przechwytuje `/ws` zanim dojdzie do właściwego handlera. Handler `/ws` musi być **przed** ogólnym handler sesji.
+
+2. **WebSocket przez Service Binding** — web worker proxy (`env.API.fetch`) nie przepuszcza WebSocket upgrade. Klient musi łączyć się bezpośrednio do API workera. Sprawdź `VITE_API_BASE` w `apps/web/.env.production`.
+
+3. **Brak `acceptWebSocket` w DO** — sprawdź czy `SessionDurableObject` implementuje `webSocketMessage` i `webSocketClose` (wymagane przez Hibernation API).
+
+Weryfikacja: otwórz DevTools → Network → WS → kliknij połączenie → zakładka Headers. Kod 101 = sukces. Brak nagłówków odpowiedzi = połączenie odrzucone przed DO.
+
+### Duże opóźnienie między hostem a telefonem na produkcji
+
+Symptoms:
+- synchronizacja działa, ale z opóźnieniem 1-3 sekund
+
+Przyczyna:
+- WebSocket nie jest aktywny → transport używa HTTP polling (domyślnie co 1500ms)
+- patrz wyżej: "WebSocket nie łączy się"
+
+Gdy WS działa poprawnie, latency powinno wynosić <200ms.

@@ -8,6 +8,7 @@ import { createSession } from "./index.ts";
 import {
   getSessionByCode,
   getSessionEventsAfter,
+  getSessionStub,
   joinSession,
   publishSessionEvent,
 } from "./session-store.ts";
@@ -105,6 +106,26 @@ export async function handleRequest(
     }
 
     return Response.json(eventRecord, { status: 201 });
+  }
+
+  if (
+    request.method === "GET" &&
+    url.pathname.startsWith("/api/sessions/") &&
+    url.pathname.endsWith("/ws")
+  ) {
+    const sessionCode = normalizeSessionCode(
+      url.pathname.replace("/api/sessions/", "").replace("/ws", ""),
+    );
+    const stub = getSessionStub(sessionCode, env);
+
+    if (!stub) {
+      return Response.json({ error: "WebSocket requires Durable Objects" }, { status: 501 });
+    }
+
+    return stub.fetch(new Request("https://session.internal/ws", {
+      method: "GET",
+      headers: request.headers,
+    }));
   }
 
   if (request.method === "GET" && url.pathname.startsWith("/api/sessions/")) {

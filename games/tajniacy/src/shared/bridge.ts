@@ -1,5 +1,11 @@
-
 import type { MatchState, TeamId } from "./types";
+import { devTrack } from "./dev-stats.ts";
+
+export type TajniacyChannel = {
+  postMessage: (message: TajniacyBridgeMessage) => void | Promise<void>;
+  subscribe: (handler: (message: TajniacyBridgeMessage) => void) => () => void;
+  close?: () => void;
+};
 
 export type TajniacyBridgeRole =
   | "host"
@@ -29,6 +35,7 @@ export type TajniacyPresence = {
 };
 
 type BridgeOptions = {
+  channel?: TajniacyChannel;
   onStateSync?: (state: MatchState) => void;
   onRoleAssigned?: (role: TajniacyBridgeRole) => void;
   onRevealRequest?: (index: number) => void;
@@ -41,16 +48,57 @@ type BridgeOptions = {
   onCaptainDisconnect?: () => void;
 };
 
+function createBroadcastChannel(sessionCode: string): TajniacyChannel | null {
+  if (typeof BroadcastChannel === "undefined") return null;
+
+  const bc = new BroadcastChannel(`project-party.tajniacy.${sessionCode.toUpperCase()}`);
+  let handler: ((message: TajniacyBridgeMessage) => void) | null = null;
+
+  bc.onmessage = (event: MessageEvent<TajniacyBridgeMessage>) => {
+    handler?.(event.data);
+  };
+
+  return {
+    postMessage(message) {
+      bc.postMessage(message);
+    },
+    subscribe(h) {
+      handler = h;
+      return () => { handler = null; };
+    },
+    close() {
+      bc.close();
+    },
+  };
+}
+
 export function createTajniacyBridge(
   sessionCode: string,
   role: TajniacyBridgeRole,
   options: BridgeOptions = {}
 ) {
-  if (typeof BroadcastChannel === "undefined") return null;
+  const rawChannel = options.channel ?? createBroadcastChannel(sessionCode);
+  if (!rawChannel) return null;
 
-  const channelName = `project-party.tajniacy.${sessionCode.toUpperCase()}`;
-  const channel = new BroadcastChannel(channelName);
+  // Wrap channel to track sent/received counts in dev
+  const channel: TajniacyChannel = {
+    postMessage(message) {
+      devTrack("messagesSent");
+      return rawChannel.postMessage(message);
+    },
+    subscribe(handler) {
+      return rawChannel.subscribe((message) => {
+        devTrack("messagesReceived");
+        handler(message);
+      });
+    },
+    close: rawChannel.close,
+  };
+
   const deviceId = `device-${Math.random().toString(36).slice(2, 10)}`;
+
+  // Track whether this device has been acknowledged by host (device-assigned received)
+  let isAssigned = false;
 
   // Host-side presence tracking
   // Map: deviceId → role, with timestamps for heartbeat detection
@@ -70,9 +118,7 @@ export function createTajniacyBridge(
     options.onPresenceUpdate?.(computePresence());
   }
 
-  channel.onmessage = (event: MessageEvent<TajniacyBridgeMessage>) => {
-    const msg = event.data;
-
+  const unsubscribe = channel.subscribe((msg) => {
     switch (msg.type) {
       case "state-sync":
         options.onStateSync?.(msg.state);
@@ -80,6 +126,7 @@ export function createTajniacyBridge(
 
       case "device-assigned":
         if (msg.deviceId === deviceId) {
+          isAssigned = true;
           options.onRoleAssigned?.(msg.role);
         }
         break;
@@ -141,6 +188,14 @@ export function createTajniacyBridge(
         // Controllers respond with a pong so host can track presence
         if (role !== "host") {
           channel.postMessage({ type: "presence-pong", deviceId, role });
+          // Re-announce only if we had a real role (captain/player) and lost assignment
+          // (e.g. after WS reconnect + host timeout). Skipped for passive listener
+          // (player-view on selection screen) to avoid spamming device-ready every 4s.
+          const isRealRole = role === "captain-red" || role === "captain-blue" || role === "spectator-captain";
+          if (!isAssigned && isRealRole) {
+            devTrack("reannounces");
+            channel.postMessage({ type: "device-ready", role, deviceId });
+          }
         }
         break;
 
@@ -167,7 +222,7 @@ export function createTajniacyBridge(
         }
         break;
     }
-  };
+  });
 
   // ── Periodic presence check (host only) ────────────────────────
   let pingInterval: ReturnType<typeof setInterval> | null = null;
@@ -229,6 +284,7 @@ export function createTajniacyBridge(
     },
     /** Controller announces it has joined and requests a role */
     announceReady(requestedRole: TajniacyBridgeRole) {
+      isAssigned = false;
       channel.postMessage({ type: "device-ready", role: requestedRole, deviceId });
     },
     /** Emergency - disconnect all controllers */
@@ -243,7 +299,8 @@ export function createTajniacyBridge(
     },
     destroy() {
       if (pingInterval) clearInterval(pingInterval);
-      channel.close();
+      unsubscribe();
+      channel.close?.();
     },
   };
 }

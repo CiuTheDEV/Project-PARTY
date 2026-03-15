@@ -36,7 +36,7 @@ type SessionEventsResponse = {
   nextOffset: number;
 };
 
-function getSessionStub(
+export function getSessionStub(
   sessionCode: string,
   env?: SessionStoreEnv,
 ): DurableObjectStubLike | null {

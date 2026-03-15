@@ -108,13 +108,68 @@ export const uncensoredWords: string[] = [
   "CHAOS", "DESTRUKCJA", "DEMOLKA", "AWANTURA", "AFERA",
 ];
 
+// ──────────────────────────────────────────────
+// Tajniacy – persystencja puli haseł (localStorage)
+// ──────────────────────────────────────────────
+
+const STORAGE_KEYS: Record<"standard" | "uncensored", string> = {
+  standard: "tajniacy_used_words_standard",
+  uncensored: "tajniacy_used_words_uncensored",
+};
+
+export function loadUsedWords(category: "standard" | "uncensored"): string[] {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS[category]);
+    if (!raw) return [];
+    return JSON.parse(raw) as string[];
+  } catch {
+    return [];
+  }
+}
+
+export function saveUsedWords(category: "standard" | "uncensored", usedWords: string[]): void {
+  try {
+    localStorage.setItem(STORAGE_KEYS[category], JSON.stringify(usedWords));
+  } catch {
+    // localStorage może być niedostępny
+  }
+}
+
+export function resetUsedWords(category: "standard" | "uncensored"): void {
+  try {
+    localStorage.removeItem(STORAGE_KEYS[category]);
+  } catch {
+    // localStorage może być niedostępny
+  }
+}
+
+/**
+ * Zwraca true jeśli dostępnych haseł jest mniej niż 25 (pula wyczerpana).
+ */
+export function isPoolExhausted(category: "standard" | "uncensored"): boolean {
+  const base = category === "uncensored" ? uncensoredWords : standardWords;
+  const used = loadUsedWords(category);
+  return base.filter((w) => !used.includes(w)).length < 25;
+}
+
 /**
  * Pobiera pulę haseł dla wybranej kategorii.
+ * Odfiltruje usedWords — słowa, które już padły w poprzednich rundach.
+ * Jeśli pula wyczerpana — resetuje localStorage i zwraca pełną pulę.
  * Zwraca nową kopię tablicy, żeby shuffle nie mutował oryginału.
  */
-export function getWordPool(category: "standard" | "uncensored"): string[] {
-  if (category === "uncensored") {
-    return [...uncensoredWords];
+export function getWordPool(
+  category: "standard" | "uncensored",
+  usedWords: string[] = [],
+): string[] {
+  const base = category === "uncensored" ? uncensoredWords : standardWords;
+  const available = base.filter((w) => !usedWords.includes(w));
+
+  if (available.length >= 25) {
+    return available;
   }
-  return [...standardWords];
+
+  // Pula wyczerpana — resetuj i zwróć pełną pulę
+  resetUsedWords(category);
+  return [...base];
 }

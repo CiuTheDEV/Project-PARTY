@@ -27,6 +27,8 @@ export type KalamburyPresenterMessage =
   | { type: "host-paired"; deviceId: string }
   | { type: "host-rejected"; deviceId: string }
   | { type: "host-reset" }
+  | { type: "host-ping"; deviceId: string }
+  | { type: "controller-pong"; deviceId: string }
   | { type: "host-preview-start"; deviceId: string }
   | { type: "host-preview-finish"; deviceId: string }
   | { type: "host-preview-reset"; deviceId: string }
@@ -55,6 +57,9 @@ type HostBridgeOptions = {
   BroadcastChannelImpl?: BroadcastChannelConstructor;
   channel?: KalamburyPresenterChannel;
   initialPairedDeviceId?: string | null;
+  probeTimeoutMs?: number;
+  pingIntervalMs?: number;
+  pingTimeoutMs?: number;
   onPairingChange?: (state: KalamburyPresenterPairState) => void;
   onRevealRequest?: (state: { deviceId: string }) => void;
   onRerollRequest?: (state: { deviceId: string }) => void;
@@ -159,29 +164,76 @@ export function createKalamburyPresenterHostBridge(
   const shouldCloseChannel = !options.channel;
   let pairedDeviceId = options.initialPairedDeviceId ?? null;
   let unsubscribe = () => undefined;
+  let probeTimer: ReturnType<typeof setTimeout> | null = null;
+  let pingInterval: ReturnType<typeof setInterval> | null = null;
+  let lastPongTime = 0;
+
+  const PING_INTERVAL_MS = options.pingIntervalMs ?? 4000;
+  const PING_TIMEOUT_MS = options.pingTimeoutMs ?? 8000;
 
   function emitPairingChange(connected: boolean) {
     options.onPairingChange?.({ connected, pairedDeviceId });
   }
 
+  function clearProbeTimer() {
+    if (probeTimer) {
+      clearTimeout(probeTimer);
+      probeTimer = null;
+    }
+  }
+
+  function startHeartbeat() {
+    if (pingInterval) return;
+    lastPongTime = Date.now();
+    pingInterval = setInterval(() => {
+      if (!pairedDeviceId) {
+        stopHeartbeat();
+        return;
+      }
+      void channel?.postMessage({ type: "host-ping", deviceId: pairedDeviceId });
+      setTimeout(() => {
+        if (pairedDeviceId && Date.now() - lastPongTime > PING_TIMEOUT_MS) {
+          pairedDeviceId = null;
+          stopHeartbeat();
+          emitPairingChange(false);
+        }
+      }, PING_INTERVAL_MS / 2);
+    }, PING_INTERVAL_MS);
+  }
+
+  function stopHeartbeat() {
+    if (pingInterval) {
+      clearInterval(pingInterval);
+      pingInterval = null;
+    }
+  }
+
   if (channel) {
     unsubscribe = channel.subscribe((message) => {
+      if (message.type === "controller-pong" && message.deviceId === pairedDeviceId) {
+        lastPongTime = Date.now();
+      }
+
       if (message.type === "controller-ready") {
         if (!pairedDeviceId) {
           pairedDeviceId = message.deviceId;
+          clearProbeTimer();
           void channel.postMessage({
             type: "host-paired",
             deviceId: message.deviceId,
           } satisfies KalamburyPresenterMessage);
+          startHeartbeat();
           emitPairingChange(true);
           return;
         }
 
         if (pairedDeviceId === message.deviceId) {
+          clearProbeTimer();
           void channel.postMessage({
             type: "host-paired",
             deviceId: message.deviceId,
           } satisfies KalamburyPresenterMessage);
+          lastPongTime = Date.now();
           emitPairingChange(true);
           return;
         }
@@ -197,6 +249,7 @@ export function createKalamburyPresenterHostBridge(
         pairedDeviceId === message.deviceId
       ) {
         pairedDeviceId = null;
+        stopHeartbeat();
         emitPairingChange(false);
       }
 
@@ -220,6 +273,15 @@ export function createKalamburyPresenterHostBridge(
         type: "host-probe",
         deviceId: pairedDeviceId,
       } satisfies KalamburyPresenterMessage);
+
+      // If the previously paired device doesn't respond within the timeout,
+      // reset pairing so any new device can connect.
+      const probeTimeoutMs = options.probeTimeoutMs ?? 5000;
+      probeTimer = setTimeout(() => {
+        probeTimer = null;
+        pairedDeviceId = null;
+        emitPairingChange(false);
+      }, probeTimeoutMs);
     }
   }
 
@@ -279,6 +341,8 @@ export function createKalamburyPresenterHostBridge(
       } satisfies KalamburyPresenterMessage);
     },
     destroy() {
+      clearProbeTimer();
+      stopHeartbeat();
       unsubscribe();
       if (shouldCloseChannel) {
         channel?.close?.();
@@ -343,6 +407,13 @@ export function createKalamburyPresenterControllerBridge(
     unsubscribe = channel.subscribe((message) => {
       if (message.type === "host-probe" && message.deviceId === deviceId) {
         postReady();
+      }
+
+      if (message.type === "host-ping" && message.deviceId === deviceId) {
+        void channel?.postMessage({
+          type: "controller-pong",
+          deviceId,
+        } satisfies KalamburyPresenterMessage);
       }
 
       if (message.type === "host-paired" && message.deviceId === deviceId) {
