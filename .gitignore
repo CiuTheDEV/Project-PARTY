@@ -1,16 +1,37 @@
+# Dependencies and caches
 node_modules
 .pnpm-store
 .turbo
 .dist
-coverage
-.env
-.env.local
-.DS_Store
-*.log
 dist
+coverage
 output
 .npm-cache
+
+# Environment files
+.env
+.env.local
+
+# OS metadata
+.DS_Store
+*:Zone.Identifier
+*Zone.Identifier
+
+# Logs and local browser tooling
+*.log
 .playwright-browsers
 .playwright-tools
 .playwright-tmp
-*:Zone.Identifier
+.playwright-mcp/
+
+# Local Codex workspace data
+.codex/
+
+# Local debug captures kept at repo root
+/final_polish_check.png
+/screenshot.png
+/screenshot_avatars_fix.png
+/screenshot_new_setup.png
+/tajniacy_board_v2.png
+/tajniacy_hub.png
+/tajniacy_setup_popup.png
