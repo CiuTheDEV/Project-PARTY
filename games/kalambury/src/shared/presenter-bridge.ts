@@ -64,6 +64,7 @@ type ControllerBridgeOptions = {
   BroadcastChannelImpl?: BroadcastChannelConstructor;
   channel?: KalamburyPresenterChannel;
   deviceId?: string;
+  readyRetryMs?: number;
   onPhraseChange?: (payload: KalamburyPresenterPhrasePayload | null) => void;
   onPreviewStateChange?: (state: KalamburyPresenterPreviewState) => void;
   onConnectionStateChange?: (
@@ -272,10 +273,10 @@ export function createKalamburyPresenterHostBridge(
     },
     disconnectPresenterDevice() {
       pairedDeviceId = null;
+      emitPairingChange(false);
       void channel?.postMessage({
         type: "host-reset",
       } satisfies KalamburyPresenterMessage);
-      emitPairingChange(false);
     },
     destroy() {
       unsubscribe();
@@ -297,6 +298,35 @@ export function createKalamburyPresenterControllerBridge(
   const deviceId = options.deviceId ?? createDeviceId();
   let isDestroyed = false;
   let unsubscribe = () => undefined;
+  let readyRetryTimer: ReturnType<typeof setInterval> | null = null;
+
+  function stopReadyRetry() {
+    if (readyRetryTimer) {
+      clearInterval(readyRetryTimer);
+      readyRetryTimer = null;
+    }
+  }
+
+  function startReadyRetry() {
+    if (readyRetryTimer || isDestroyed) {
+      return;
+    }
+
+    readyRetryTimer = setInterval(() => {
+      postReady();
+    }, options.readyRetryMs ?? 1200);
+  }
+
+  function setConnectionState(state: KalamburyControllerConnectionState) {
+    options.onConnectionStateChange?.(state);
+
+    if (state === "pending") {
+      startReadyRetry();
+      return;
+    }
+
+    stopReadyRetry();
+  }
 
   function postReady() {
     if (isDestroyed) {
@@ -316,14 +346,15 @@ export function createKalamburyPresenterControllerBridge(
       }
 
       if (message.type === "host-paired" && message.deviceId === deviceId) {
-        options.onConnectionStateChange?.("connected");
+        setConnectionState("connected");
       }
 
       if (message.type === "host-rejected" && message.deviceId === deviceId) {
-        options.onConnectionStateChange?.("rejected");
+        setConnectionState("rejected");
       }
 
       if (message.type === "host-reset") {
+        stopReadyRetry();
         options.onConnectionStateChange?.("pending");
         options.onPreviewStateChange?.("pending-reveal");
         options.onPhraseChange?.(null);
@@ -379,7 +410,7 @@ export function createKalamburyPresenterControllerBridge(
       if (isDestroyed) {
         return;
       }
-      options.onConnectionStateChange?.("pending");
+      setConnectionState("pending");
       options.onPreviewStateChange?.("pending-reveal");
       postReady();
     },
@@ -409,6 +440,7 @@ export function createKalamburyPresenterControllerBridge(
       }
 
       isDestroyed = true;
+      stopReadyRetry();
       unsubscribe();
       void channel?.postMessage({
         type: "controller-disconnected",

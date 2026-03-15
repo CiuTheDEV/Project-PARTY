@@ -360,3 +360,39 @@ test("host bridge can reset the presenter back to pending reveal for the next tu
 
   assert.deepEqual(previewStates, ["hidden-live", "pending-reveal"]);
 });
+
+test("controller bridge retries ready handshake until a late host subscribes", async () => {
+  FakeBroadcastChannel.reset();
+
+  const controllerStates: Array<string> = [];
+  const controllerBridge = createKalamburyPresenterControllerBridge("LATE01", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "device-a",
+    readyRetryMs: 10,
+    onConnectionStateChange: (state) => {
+      controllerStates.push(state);
+    },
+  });
+
+  controllerBridge.announceReady();
+
+  await new Promise((resolve) => setTimeout(resolve, 25));
+
+  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const hostBridge = createKalamburyPresenterHostBridge("LATE01", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    onPairingChange: (state) => {
+      pairingStates.push(state);
+    },
+  });
+
+  await new Promise((resolve) => setTimeout(resolve, 30));
+
+  hostBridge.destroy();
+  controllerBridge.destroy();
+
+  assert.deepEqual(pairingStates, [
+    { connected: true, pairedDeviceId: "device-a" },
+  ]);
+  assert.equal(controllerStates.includes("connected"), true);
+});
