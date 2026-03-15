@@ -217,6 +217,7 @@ export function TajniacyHostApp({ sessionCode }: TajniacyHostAppProps) {
       <>
         <PlayScreen
           state={matchState}
+          presence={presence}
           onRevealCard={handleRevealCard}
           onAssassinResolve={handleAssassinResolve}
           onNextRound={handleNextRound}
