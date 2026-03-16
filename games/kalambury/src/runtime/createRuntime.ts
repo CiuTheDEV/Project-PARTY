@@ -10,16 +10,21 @@ import {
   type KalamburyPresenterChannel,
   isPresenterMessage,
 } from "../shared/presenter-bridge";
+import {
+  createKalamburyTransportAsync,
+  getTransportMode,
+} from "../transport/index";
 
 function createPresenterTransportChannel(
-  context: GameRuntimeContext,
+  send: GameRuntimeContext["transport"]["send"],
+  on: GameRuntimeContext["transport"]["on"],
 ): KalamburyPresenterChannel {
   return {
     postMessage(message) {
-      return context.transport.send("kalambury.presenter", message);
+      return send("kalambury.presenter", message);
     },
     subscribe(handler) {
-      return context.transport.on("kalambury.presenter", (payload) => {
+      return on("kalambury.presenter", (payload) => {
         if (isPresenterMessage(payload)) {
           handler(payload);
         }
@@ -31,15 +36,25 @@ function createPresenterTransportChannel(
 export function createKalamburyRuntime(
   context: GameRuntimeContext,
 ): GameRuntimeHandle {
-  const presenterTransportChannel = createPresenterTransportChannel(context);
-
   return {
-    start() {
+    async start() {
+      const mode = getTransportMode();
+      const transport = await createKalamburyTransportAsync(
+        mode,
+        context.sessionCode,
+        context.transport,
+      );
+
       context.storage.set("kalambury:last-session-id", context.sessionId);
-      context.transport.send("kalambury/runtime-started", {
+      transport.send("kalambury/runtime-started", {
         role: context.role,
         device: context.device,
       });
+
+      const presenterTransportChannel = createPresenterTransportChannel(
+        transport.send.bind(transport),
+        transport.on.bind(transport),
+      );
 
       if (context.role === "controller" || context.role === "player") {
         context.ui.mount(
@@ -52,7 +67,7 @@ export function createKalamburyRuntime(
         return;
       }
 
-        context.ui.mount(
+      context.ui.mount(
         createElement(KalamburyHostApp, {
           sessionCode: context.sessionCode,
           transportChannel: presenterTransportChannel,
