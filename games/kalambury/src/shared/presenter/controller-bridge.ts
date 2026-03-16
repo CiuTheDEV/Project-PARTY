@@ -6,10 +6,10 @@ import {
   type KalamburyControllerConnectionState,
   type KalamburyPresenterChannel,
   type KalamburyPresenterMessage,
-} from "./types";
+} from "./types.ts";
 
 function resolveBroadcastChannel(
-  BroadcastChannelImpl?: import("./types").BroadcastChannelConstructor,
+  BroadcastChannelImpl?: import("./types.ts").BroadcastChannelConstructor,
 ) {
   if (BroadcastChannelImpl) return BroadcastChannelImpl;
   if (typeof BroadcastChannel === "undefined") return null;
@@ -22,7 +22,7 @@ function getChannelName(sessionCode: string) {
 
 function createPresenterChannel(
   sessionCode: string,
-  BroadcastChannelImpl?: import("./types").BroadcastChannelConstructor,
+  BroadcastChannelImpl?: import("./types.ts").BroadcastChannelConstructor,
 ): KalamburyPresenterChannel | null {
   const Channel = resolveBroadcastChannel(BroadcastChannelImpl);
   if (!Channel || !sessionCode) return null;
@@ -178,8 +178,10 @@ export function createKalamburyPresenterControllerBridge(
     deviceId,
     announceReady() {
       if (isDestroyed) return;
-      setConnectionState("pending");
-      options.onPreviewStateChange?.("pending-reveal");
+      if (connectionState !== "connected") {
+        setConnectionState("pending");
+        options.onPreviewStateChange?.("pending-reveal");
+      }
       postReady();
     },
     revealPhrase() {

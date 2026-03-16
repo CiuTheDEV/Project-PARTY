@@ -13,7 +13,7 @@
     "react-router-dom": "^7.3.0"
   },
   "scripts": {
-    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts src/manifest/*.test.ts src/shared/*.test.ts src/runtime/*.test.ts src/transport/*.test.ts src/host/*.test.js src/controller/*.test.js",
+    "test": "node ../../scripts/run-node-test.mjs src/*.test.ts src/manifest/*.test.ts src/shared/*.test.ts src/shared/**/*.test.ts src/runtime/*.test.ts src/transport/*.test.ts src/host/*.test.js src/controller/*.test.js",
     "check": "node ../../scripts/run-tool.mjs tsc --noEmit",
     "typecheck": "node ../../scripts/run-tool.mjs tsc --noEmit",
     "lint": "node ../../scripts/run-tool.mjs biome check .",

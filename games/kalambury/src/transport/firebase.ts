@@ -101,10 +101,18 @@ export async function createFirebaseAdapter(
     destroy() {
       handlers.clear();
       if (sharedUnsubscribe) {
-        sharedUnsubscribe();
+        try {
+          sharedUnsubscribe();
+        } catch (err) {
+          console.error("[firebase transport] Failed to unsubscribe:", err);
+        }
         sharedUnsubscribe = null;
       }
-      off(sessionRef);
+      try {
+        off(sessionRef);
+      } catch (err) {
+        console.error("[firebase transport] Failed to detach listener:", err);
+      }
     },
   };
 }

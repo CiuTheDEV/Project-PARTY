@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 
-import { createKalamburyPresenterHostBridge } from "../../shared/presenter/host-bridge";
+import { createKalamburyPresenterHostBridge } from "../../shared/presenter/host-bridge.ts";
 import type {
   KalamburyPresenterChannel,
   KalamburyPresenterPairState,
   KalamburyPresenterPhrasePayload,
-} from "../../shared/presenter/types";
+} from "../../shared/presenter/types.ts";
 
 type UsePresenterHostBridgeOptions = {
   sessionCode: string | undefined;

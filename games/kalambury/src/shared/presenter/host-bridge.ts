@@ -7,7 +7,7 @@ import {
   type KalamburyPresenterChannel,
   type KalamburyPresenterMessage,
   type KalamburyPresenterPairState,
-} from "./types";
+} from "./types.ts";
 
 function resolveBroadcastChannel(
   BroadcastChannelImpl?: BroadcastChannelConstructor,
@@ -233,6 +233,8 @@ export function createKalamburyPresenterHostBridge(
           type: "controller-disconnected",
           deviceId: pairedDeviceId,
         } satisfies KalamburyPresenterMessage);
+        pairedDeviceId = null;
+        emitPairingChange(false);
       }
       if (shouldCloseChannel) channel?.close?.();
     },
