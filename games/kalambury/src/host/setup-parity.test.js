@@ -97,7 +97,7 @@ test("setup screen keeps presenter pairing and exposes manual disconnect separat
 
 test("setup screen keeps the presenter host bridge stable after pairing", () => {
   assert.equal(
-    setupScreenSource.includes("}, [presenterDeviceEnabled, sessionCode]);"),
+    setupScreenSource.includes("usePresenterHostBridge"),
     true,
   );
   assert.equal(

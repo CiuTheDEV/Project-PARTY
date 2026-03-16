@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { CSSProperties } from "react";
 
 import type { KalamburySetupPayload } from "../runtime/state-machine";
-import {
-  type KalamburyPresenterChannel,
-  createKalamburyPresenterHostBridge,
-} from "../shared/presenter-bridge";
+import type { KalamburyPresenterChannel } from "../shared/presenter/types";
+import { usePresenterHostBridge } from "./hooks/usePresenterHostBridge";
 import {
   type KalamburyModeSection,
   type KalamburyModeSettings,
@@ -102,8 +100,6 @@ export function SetupScreen({
   const [presenterDeviceEnabled, setPresenterDeviceEnabled] = useState(
     initialKalamburySetupState.presenterDeviceEnabled,
   );
-  const [presenterDeviceConnected, setPresenterDeviceConnected] =
-    useState(false);
   const [pairedPresenterDeviceId, setPairedPresenterDeviceId] = useState<
     string | null
   >(initialKalamburySetupState.pairedPresenterDeviceId);
@@ -126,9 +122,6 @@ export function SetupScreen({
   const [setupFeedback, setSetupFeedback] = useState("");
   const [isDraftHydrated, setIsDraftHydrated] = useState(false);
   const [isPresenterQrOpen, setIsPresenterQrOpen] = useState(false);
-  const presenterBridgeRef = useRef<ReturnType<
-    typeof createKalamburyPresenterHostBridge
-  > | null>(null);
 
   useEffect(() => {
     let isCancelled = false;
@@ -196,34 +189,28 @@ export function SetupScreen({
     storage,
   ]);
 
-  useEffect(() => {
-    if (!presenterDeviceEnabled || !sessionCode) {
-      setPresenterDeviceConnected(false);
-      presenterBridgeRef.current = null;
-      return;
-    }
-
-    setPresenterDeviceConnected(false);
-    const bridge = createKalamburyPresenterHostBridge(sessionCode, {
-      channel,
+  const { pairState: presenterPairState, bridge: presenterBridge } =
+    usePresenterHostBridge({
+      sessionCode,
+      enabled: presenterDeviceEnabled,
       initialPairedDeviceId: pairedPresenterDeviceId,
-      onPairingChange: ({ connected, pairedDeviceId: nextPairedDeviceId }) => {
-        setPresenterDeviceConnected(connected);
-        setPairedPresenterDeviceId(nextPairedDeviceId);
-        if (connected && nextPairedDeviceId) {
-          setIsPresenterQrOpen(false);
-        }
-      },
+      channel,
     });
-    presenterBridgeRef.current = bridge;
 
-    return () => {
-      if (presenterBridgeRef.current === bridge) {
-        presenterBridgeRef.current = null;
-      }
-      bridge.destroy();
-    };
-  }, [presenterDeviceEnabled, sessionCode]);
+  const presenterDeviceConnected = presenterPairState.connected;
+
+  useEffect(() => {
+    if (presenterPairState.connected && presenterPairState.pairedDeviceId) {
+      setPairedPresenterDeviceId(presenterPairState.pairedDeviceId);
+      setIsPresenterQrOpen(false);
+    }
+  }, [presenterPairState.connected, presenterPairState.pairedDeviceId]);
+
+  useEffect(() => {
+    if (!presenterDeviceEnabled) {
+      setPairedPresenterDeviceId(null);
+    }
+  }, [presenterDeviceEnabled]);
 
   useEffect(() => {
     if (!isModeSettingsOpen && !isAddPlayerOpen) {
@@ -354,12 +341,11 @@ export function SetupScreen({
     return storage?.setItem(REUSABLE_RUNTIME_SESSION_KEY, JSON.stringify(null));
   }
 
-  async function disconnectPresenterDevice() {
-    presenterBridgeRef.current?.disconnectPresenterDevice();
-    await clearReusableSession();
-    setPresenterDeviceConnected(false);
+  function disconnectPresenterDevice() {
+    presenterBridge.disconnectPresenterDevice();
     setPairedPresenterDeviceId(null);
     setIsPresenterQrOpen(false);
+    void clearReusableSession();
   }
 
   return (
@@ -432,7 +418,7 @@ export function SetupScreen({
             setIsPresenterQrOpen(true);
           }}
           onDisconnectPresenterDevice={() => {
-            void disconnectPresenterDevice();
+            disconnectPresenterDevice();
           }}
         />
 
@@ -547,7 +533,7 @@ export function SetupScreen({
         onClose={() => setIsPresenterQrOpen(false)}
         connected={presenterDeviceConnected}
         onDisconnect={() => {
-          void disconnectPresenterDevice();
+          disconnectPresenterDevice();
         }}
       />
     </main>
