@@ -29,6 +29,7 @@ export type KalamburyHubModeDirection = "next" | "previous";
 export type KalamburyHubSettingsTabId =
   | "sound"
   | "animations"
+  | "connection"
   | "data"
   | "controls"
   | "about";
@@ -68,7 +69,7 @@ export type KalamburyHubContent = {
       icon: KalamburySymbolName;
       title: string;
       description: string;
-      items: string[];
+      items?: string[];
     }>;
   };
   footerStatus: {
@@ -141,6 +142,14 @@ const settingsTabs: KalamburyHubContent["settingsPanel"]["tabs"] = [
       "Tryb spokojniejszy dla dlugiej sesji na TV.",
       "Opcja szybkiego ograniczenia motion bez zmiany layoutu.",
     ],
+  },
+  {
+    id: "connection",
+    label: "Połączenie",
+    icon: "wifi",
+    title: "Tryb połączenia",
+    description: "Wybierz sposób w jaki urządzenia łączą się podczas rozgrywki.",
+    // items intentionally omitted — HostApp renders ConnectionModePanel for this tab
   },
   {
     id: "data",
