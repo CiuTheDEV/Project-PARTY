@@ -175,8 +175,10 @@ games/<game-id>/
 |  |  |- do-ws.ts         # wrapper na context.transport (DO + WebSocket)
 |  |  `- firebase.ts      # Firebase RTDB adapter (lazy init)
 |  |- host/
+|  |  `- hooks/              # opcjonalne — React hooks wyciągające logikę z komponentów
 |  |- controller/
 |  |- shared/
+|  |  `- presenter/          # opcjonalne — podzielony most komunikacyjny (types, host-bridge, controller-bridge)
 |  `- assets/
 |- package.json
 |- tsconfig.json

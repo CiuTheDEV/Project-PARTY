@@ -37,6 +37,14 @@ Cichy fallback maskuje błędy konfiguracji. Jawny błąd z instrukcją daje uż
 
 ---
 
+### Decision
+Presenter bridge podzielony na `shared/presenter/types.ts`, `host-bridge.ts`, `controller-bridge.ts` + hook `host/hooks/usePresenterHostBridge.ts`.
+
+### Reason
+Monolityczny `shared/presenter-bridge.ts` (544 linie) łączył dwie niezależne odpowiedzialności (host i controller) i zawierał logikę bridge rozrzuconą po komponentach jako lokalne useEffect. Podział daje izolowane testy dla każdej strony protokołu, hook eliminuje stale closure workaroundy (`playStateRef`, `presenterRevealStageRef`) i upraszcza komponenty.
+
+---
+
 ## 2026-03-13
 
 ### Decision
