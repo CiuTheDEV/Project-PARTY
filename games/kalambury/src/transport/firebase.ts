@@ -50,6 +50,32 @@ export async function createFirebaseAdapter(
   // Remember join timestamp — do not replay history
   const joinTimestamp = Date.now();
 
+  // Single shared listener that fans out to per-event handlers
+  const handlers = new Map<string, Set<(payload: unknown) => void>>();
+  let sharedUnsubscribe: (() => void) | null = null;
+
+  function ensureSharedListener() {
+    if (sharedUnsubscribe) return;
+    const unsub = onChildAdded(sessionRef, (snapshot) => {
+      const data = snapshot.val() as {
+        event: string;
+        payload: unknown;
+        createdAt: number;
+      } | null;
+
+      if (!data) return;
+      if (data.createdAt < joinTimestamp) return;
+
+      const eventHandlers = handlers.get(data.event);
+      if (!eventHandlers) return;
+
+      for (const handler of eventHandlers) {
+        handler(data.payload);
+      }
+    });
+    sharedUnsubscribe = unsub;
+  }
+
   return {
     send(event, payload) {
       push(sessionRef, {
@@ -62,22 +88,22 @@ export async function createFirebaseAdapter(
     },
 
     on(event, handler) {
-      return onChildAdded(sessionRef, (snapshot) => {
-        const data = snapshot.val() as {
-          event: string;
-          payload: unknown;
-          createdAt: number;
-        } | null;
-
-        if (!data) return;
-        if (data.createdAt < joinTimestamp) return;
-        if (data.event !== event) return;
-
-        handler(data.payload);
-      });
+      ensureSharedListener();
+      if (!handlers.has(event)) {
+        handlers.set(event, new Set());
+      }
+      handlers.get(event)!.add(handler);
+      return () => {
+        handlers.get(event)?.delete(handler);
+      };
     },
 
     destroy() {
+      handlers.clear();
+      if (sharedUnsubscribe) {
+        sharedUnsubscribe();
+        sharedUnsubscribe = null;
+      }
       off(sessionRef);
     },
   };

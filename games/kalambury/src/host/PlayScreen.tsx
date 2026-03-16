@@ -426,6 +426,8 @@ export function PlayScreen({
       channel: transportChannel,
       initialPairedDeviceId:
         setupPayload.presenterDevice?.pairedDeviceId ?? null,
+      pingIntervalMs: 3000,
+      pingTimeoutMs: 5000,
       onPairingChange: setPresenterPairState,
       onRevealRequest: () => {
         if (playStateRef.current?.stage !== "PRZYGOTOWANIE") {
