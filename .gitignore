@@ -11,6 +11,7 @@ output
 # Environment files
 .env
 .env.local
+env
 
 # OS metadata
 .DS_Store
