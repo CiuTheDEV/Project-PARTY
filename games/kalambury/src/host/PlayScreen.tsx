@@ -329,6 +329,14 @@ export function PlayScreen({
   const presenterBridgeRef = useRef<ReturnType<
     typeof createKalamburyPresenterHostBridge
   > | null>(null);
+  const playStateRef = useRef(playState);
+  const presenterRevealStageRef = useRef<PresenterRevealStage>("pending");
+  useEffect(() => {
+    playStateRef.current = playState;
+  });
+  useEffect(() => {
+    presenterRevealStageRef.current = presenterRevealStage;
+  });
   const [presenterPairState, setPresenterPairState] =
     useState<KalamburyPresenterPairState>({
       connected: setupPayload.presenterDevice?.connected ?? false,
@@ -420,7 +428,7 @@ export function PlayScreen({
         setupPayload.presenterDevice?.pairedDeviceId ?? null,
       onPairingChange: setPresenterPairState,
       onRevealRequest: () => {
-        if (playState?.stage !== "PRZYGOTOWANIE") {
+        if (playStateRef.current?.stage !== "PRZYGOTOWANIE") {
           return;
         }
 
@@ -430,8 +438,8 @@ export function PlayScreen({
       },
       onRerollRequest: () => {
         if (
-          playState?.stage !== "PRZYGOTOWANIE" ||
-          presenterRevealStage !== "preview"
+          playStateRef.current?.stage !== "PRZYGOTOWANIE" ||
+          presenterRevealStageRef.current !== "preview"
         ) {
           return;
         }
@@ -451,11 +459,7 @@ export function PlayScreen({
       }
     };
   }, [
-    playState?.stage,
-    presenterRevealStage,
     sessionCode,
-    setupPayload.presenterDevice?.enabled,
-    setupPayload.presenterDevice?.pairedDeviceId,
     setupPayload,
     transportChannel,
   ]);
