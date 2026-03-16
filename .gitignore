@@ -28,6 +28,7 @@ output
 # Local Codex workspace data
 .codex/
 
+
 # Local debug captures kept at repo root
 /final_polish_check.png
 /screenshot.png
