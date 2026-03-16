@@ -241,6 +241,7 @@ export function createKalamburyPresenterHostBridge(
             deviceId: message.deviceId,
           } satisfies KalamburyPresenterMessage);
           lastPongTime = Date.now();
+          startHeartbeat();
           emitPairingChange(true);
           return;
         }
