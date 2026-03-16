@@ -5,9 +5,10 @@
   "type": "module",
   "main": "./src/index.ts",
   "dependencies": {
-    "@project-party/game-sdk": "workspace:*",
     "@project-party/game-runtime": "workspace:*",
+    "@project-party/game-sdk": "workspace:*",
     "@project-party/types": "workspace:*",
+    "firebase": "^12.10.0",
     "react": "^19.0.0",
     "react-router-dom": "^7.3.0"
   },
