@@ -167,6 +167,13 @@ games/<game-id>/
 |  |  |- createRuntime.ts
 |  |  |- events.ts
 |  |  `- state-machine.ts
+|  |- transport/          # opcjonalny — tylko jeśli gra zarządza własnym transportem
+|  |  |- index.ts         # createGameTransportAsync(mode, sessionCode, contextTransport)
+|  |  |- types.ts         # GameTransport interface, tryby transportu
+|  |  |- transport-storage.ts  # persystencja wyboru w localStorage
+|  |  |- broadcast.ts     # BroadcastChannel adapter
+|  |  |- do-ws.ts         # wrapper na context.transport (DO + WebSocket)
+|  |  `- firebase.ts      # Firebase RTDB adapter (lazy init)
 |  |- host/
 |  |- controller/
 |  |- shared/
@@ -178,6 +185,8 @@ games/<game-id>/
 
 Nie wszystkie katalogi są obowiązkowe.
 Nie rób folderowego cosplayu, jeśli gra ich realnie nie potrzebuje.
+
+Katalog `transport/` jest przeznaczony dla gier, które muszą obsługiwać alternatywne środki transportu (np. fallback na Firebase gdy DO niedostępne). Platforma (`mountRuntime.ts`) o nim nie wie — gra zarządza nim samodzielnie wewnątrz `createRuntime`.
 
 ## Zasady
 

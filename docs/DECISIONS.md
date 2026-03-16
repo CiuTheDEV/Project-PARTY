@@ -11,6 +11,32 @@ Operational source of truth lives in:
 
 Treat `docs/plans/` and `docs/PRD/` as historical context, not the primary operational docs.
 
+## 2026-03-16
+
+### Decision
+Kalambury zarządza własnym wyborem transportu w module gry (`games/kalambury/src/transport/`), nie na poziomie platformy.
+
+### Reason
+Platforma nie powinna znać szczegółów transportowych konkretnej gry. Kalambury potrzebuje fallbacku na Firebase gdy Cloudflare DO osiąga limity — to problem Kalambury, nie platformy. Wzorzec `transport/` może być wzorcem dla przyszłych gier jeśli zajdzie potrzeba.
+
+---
+
+### Decision
+Firebase RTDB jako opcjonalny transport fallback w Kalambury — tylko transport (send/on), nie storage sesji.
+
+### Reason
+Storage sesji pozostaje w DO. Firebase zastępuje tylko kanał komunikacji między urządzeniami. Oddzielenie odpowiedzialności pozwala na minimalną integrację i łatwe wyłączenie.
+
+---
+
+### Decision
+Brak cichego fallbacku przy wyborze Firebase bez aktywnej sesji — zamiast tego throw z komunikatem kierującym użytkownika do Ustawień.
+
+### Reason
+Cichy fallback maskuje błędy konfiguracji. Jawny błąd z instrukcją daje użytkownikowi actionable feedback i zapobiega puzzlowaniu się "czemu gra działa lokalnie".
+
+---
+
 ## 2026-03-13
 
 ### Decision

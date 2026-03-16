@@ -57,6 +57,20 @@ Dlatego:
 - lokalny transport może być prostszy niż produkcyjny,
 - runtime contract nie może zakładać tylko jednego backend transportu.
 
+### Multi-transport w grze (Kalambury)
+
+Kalambury wprowadza własny system wyboru transportu, niezależny od platformy:
+
+| Tryb | Opis | Zastosowanie |
+|---|---|---|
+| `do-ws` | DO + WebSocket (domyślny) | Produkcja |
+| `firebase` | Firebase Realtime Database | Fallback gdy DO niedostępne |
+| `broadcast` | BroadcastChannel | Lokalnie, jedno urządzenie |
+
+Tryb persystowany w `localStorage` (`kalambury:transport-mode`). Wybór w UI: Ustawienia → Tryb połączenia.
+
+**Ważne ograniczenie architektoniczne:** moduł `transport/` w Kalambury NIE importuje z `apps/` — tylko z `packages/`. Platforma (`mountRuntime.ts`) nie wie o tym mechanizmie.
+
 ## Strategia testów
 
 Repo powinno testować trzy warstwy:
