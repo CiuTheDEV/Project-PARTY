@@ -68,7 +68,7 @@ games/kalambury/src/runtime/create-runtime.ts # Użycie createKalamburyTransport
 export type KalamburyTransportMode = "firebase" | "do-ws" | "broadcast"
 
 export interface KalamburyTransport {
-  send: (event: string, payload: unknown) => void
+  send: (event: string, payload?: unknown) => Promise<void> | void  // zgodny z GameRuntimeContext["transport"]["send"]
   on: (event: string, handler: (payload: unknown) => void) => () => void
   destroy: () => void
 }
@@ -85,15 +85,16 @@ export interface KalamburyTransport {
 - `destroy`: `channel.close()`
 
 ### `do-ws.ts`
-- Importuje `createSessionTransport` z `apps/web/src/runtime/session-transport.ts`
-- Opakowuje wynik w `KalamburyTransport` interface
-- Zero duplikacji logiki (reconnect, deduplication, envelope format zostają w platformie)
+- **Nie importuje z `apps/`** — game modules nigdy nie importują z platform app layer
+- Otrzymuje `context.transport` jako argument i opakowuje go w `KalamburyTransport` interface
+- `context.transport` jest już transportem DO+WS w produkcji — zero duplikacji logiki
+- Sygnatura fabryki dla tego adaptera: `createDoWsAdapter(transport: GameRuntimeContext["transport"]): KalamburyTransport`
 
 ### `firebase.ts`
 - Lazy init: `initializeApp` tylko gdy tryb = firebase
 - Credentials z `import.meta.env.VITE_FIREBASE_*`
 - Struktura RTDB: `/sessions/{sessionCode}/events/{pushId}` → `{ event, payload, createdAt }`
-- `send`: `push()` nowego eventu
+- `send`: `push()` nowego eventu — błędy sieciowe logowane przez `console.error` (nie rzucane, nie przerywają gry)
 - `on`: `onChildAdded()` z filtrem `createdAt >= joinTimestamp` (nie odtwarza historii)
 - `destroy`: `off()` na listenerach + opcjonalne czyszczenie starych eventów
 
@@ -110,10 +111,13 @@ export function setTransportMode(mode: KalamburyTransportMode): void
 ```ts
 export function createKalamburyTransport(
   mode: KalamburyTransportMode,
-  sessionCode: string
+  sessionCode: string,
+  contextTransport: GameRuntimeContext["transport"]
 ): KalamburyTransport
 ```
 Switch po `mode`, zwraca odpowiedni adapter.
+
+**Guard na brak `sessionCode`:** Gdy `sessionCode` jest pusty lub `undefined` i tryb = `"firebase"`, fabryka rzuca błąd (firebase wymaga sessionCode do ścieżki RTDB). W takiej sytuacji runtime powinien fallbackować do `"broadcast"` lub uniemożliwić uruchomienie.
 
 ---
 
@@ -122,15 +126,30 @@ Switch po `mode`, zwraca odpowiedni adapter.
 ### Lokalizacja
 Panel Ustawienia gry → tab "Tryb połączenia" (pozycja 3, po "Animacje", przed "Dane").
 
-### `hub-content.ts` — nowy tab
+### `hub-content.ts` — zmiany wymagane
+
+1. **Rozszerzenie unii `KalamburyHubSettingsTabId`:**
+```ts
+export type KalamburyHubSettingsTabId =
+  | "sound"
+  | "animations"
+  | "connection"   // ← nowe
+  | "data"
+  | "controls"
+  | "about"
+```
+
+2. **Pole `items` w typie taba** — zmienić z `items: string[]` na `items?: string[]` (opcjonalne), aby tab "connection" mógł mieć puste `items` bez fałszywych założeń.
+
+3. **Nowy wpis w `settingsTabs`** (pozycja 3, po "animations"):
 ```ts
 {
   id: "connection",
   label: "Połączenie",
-  icon: "wifi",
+  icon: "wifi",       // Material Symbols — poprawna nazwa w zestawie outlined
   title: "Tryb połączenia",
   description: "Wybierz sposób w jaki urządzenia łączą się podczas rozgrywki.",
-  items: [] // nieużywane — tab ma własny komponent
+  items: []           // nieużywane — HostApp.tsx renderuje ConnectionModePanel dla tego taba
 }
 ```
 
@@ -163,7 +182,16 @@ W `games/kalambury/src/runtime/create-runtime.ts` (lub odpowiednik):
 
 ```ts
 const mode = getTransportMode()
-const transport = createKalamburyTransport(mode, context.sessionCode ?? "local")
+const sessionCode = context.sessionCode
+
+// Guard: Firebase wymaga sessionCode
+const resolvedMode = (mode === "firebase" && !sessionCode) ? "broadcast" : mode
+
+const transport = createKalamburyTransport(
+  resolvedMode,
+  sessionCode ?? "",
+  context.transport  // przekazywany do do-ws adaptera
+)
 // transport używany zamiast context.transport przez resztę runtime
 ```
 
@@ -174,7 +202,20 @@ Platforma (`mountRuntime.ts`) nie jest modyfikowana.
 ## Firebase — setup
 
 1. Nowy projekt Firebase (Realtime Database)
-2. Reguły RTDB: zapis i odczyt tylko dla znanych `sessionCode` (lub tymczasowo open podczas dev)
+2. Reguły RTDB — minimalna produkcyjna reguła (wymagane przed deploy):
+   ```json
+   {
+     "rules": {
+       "sessions": {
+         "$sessionCode": {
+           ".read": true,
+           ".write": true
+         }
+       }
+     }
+   }
+   ```
+   Na etapie dev reguły mogą być open (`".read": true, ".write": true` na root). **Przed deployem na produkcję** reguły muszą być zawężone do ścieżki `/sessions/$sessionCode`.
 3. Credentials w `.env.local`:
    ```
    VITE_FIREBASE_API_KEY=...
