@@ -13,6 +13,7 @@ import type { KalamburyPresenterChannel } from "../shared/presenter-bridge";
 import { KalamburySymbolIcon } from "../shared/SymbolIcon";
 import { getKalamburySetupModeContent } from "../shared/setup-content";
 import type { KalamburyStorageLike } from "../shared/setup-storage";
+import { ConnectionModePanel } from "./ConnectionModePanel";
 import { PlayScreen } from "./PlayScreen";
 import { SetupScreen } from "./SetupScreen";
 
@@ -364,11 +365,15 @@ export function KalamburyHostApp({
                     <p>{selectedSettingsTab.description}</p>
                   </div>
 
-                  <ul className="kal-hub-settings__list">
-                    {selectedSettingsTab.items.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
+                  {selectedSettingsTab.id === "connection" ? (
+                    <ConnectionModePanel />
+                  ) : (
+                    <ul className="kal-hub-settings__list">
+                      {selectedSettingsTab.items?.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  )}
                 </article>
               </section>
             )}
