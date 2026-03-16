@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 
-import {
-  type KalamburyPresenterChannel,
-  type KalamburyPresenterPhrasePayload,
-  type KalamburyPresenterPreviewState,
-  createKalamburyPresenterControllerBridge,
-} from "../shared/presenter-bridge";
+import type {
+  KalamburyPresenterChannel,
+  KalamburyPresenterPhrasePayload,
+  KalamburyPresenterPreviewState,
+} from "../shared/presenter/types";
+import { createKalamburyPresenterControllerBridge } from "../shared/presenter/controller-bridge";
 
 const PRESENTER_DEVICE_ID_STORAGE_KEY =
   "project-party.kalambury.presenter-device-id";

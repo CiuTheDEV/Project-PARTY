@@ -6,10 +6,7 @@ import { createElement } from "react";
 
 import { KalamburyControllerApp } from "../controller/ControllerApp";
 import { KalamburyHostApp } from "../host/HostApp";
-import {
-  type KalamburyPresenterChannel,
-  isPresenterMessage,
-} from "../shared/presenter-bridge";
+import { isPresenterMessage, type KalamburyPresenterChannel } from "../shared/presenter/types";
 import {
   createKalamburyTransportAsync,
   getTransportMode,
