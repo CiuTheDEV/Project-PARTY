@@ -10,6 +10,7 @@ import {
   type KalamburyPresenterChannel,
   isPresenterMessage,
 } from "../shared/presenter-bridge";
+import type { KalamburyTransport } from "../transport/types";
 import {
   createKalamburyTransportAsync,
   getTransportMode,
@@ -36,10 +37,12 @@ function createPresenterTransportChannel(
 export function createKalamburyRuntime(
   context: GameRuntimeContext,
 ): GameRuntimeHandle {
+  let transport: KalamburyTransport | null = null;
+
   return {
     async start() {
       const mode = getTransportMode();
-      const transport = await createKalamburyTransportAsync(
+      transport = await createKalamburyTransportAsync(
         mode,
         context.sessionCode,
         context.transport,
@@ -80,6 +83,8 @@ export function createKalamburyRuntime(
       );
     },
     destroy() {
+      transport?.destroy();
+      transport = null;
       context.ui.unmount();
     },
   };
