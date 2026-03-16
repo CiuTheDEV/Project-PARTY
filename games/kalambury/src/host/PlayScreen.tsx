@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 
-import { KalamburyPresenterQrModal } from "./setup-modals";
 import {
   type KalamburyPlayState,
   type KalamburySetupPayload,
@@ -24,6 +23,7 @@ import {
   type KalamburyPresenterPairState,
   createKalamburyPresenterHostBridge,
 } from "../shared/presenter-bridge";
+import { KalamburyPresenterQrModal } from "./setup-modals";
 
 type PlayScreenProps = {
   setupPayload: KalamburySetupPayload;
@@ -416,7 +416,8 @@ export function PlayScreen({
 
     const bridge = createKalamburyPresenterHostBridge(sessionCode, {
       channel: transportChannel,
-      initialPairedDeviceId: setupPayload.presenterDevice?.pairedDeviceId ?? null,
+      initialPairedDeviceId:
+        setupPayload.presenterDevice?.pairedDeviceId ?? null,
       onPairingChange: setPresenterPairState,
       onRevealRequest: () => {
         if (playState?.stage !== "PRZYGOTOWANIE") {
@@ -470,7 +471,9 @@ export function PlayScreen({
 
     if (presenterRevealCountdown <= 0) {
       presenterBridgeRef.current?.finishPreviewWindow();
-      setPlayState((current) => (current ? startKalamburyTurn(current) : current));
+      setPlayState((current) =>
+        current ? startKalamburyTurn(current) : current,
+      );
       return;
     }
 
@@ -656,7 +659,7 @@ export function PlayScreen({
   }, [playState, setupPayload.players]);
   const presenterPhraseChangeRemaining =
     presenter && playState
-      ? playState.phraseChangeRemainingByPlayerId[presenter.id] ?? 0
+      ? (playState.phraseChangeRemainingByPlayerId[presenter.id] ?? 0)
       : 0;
   const presenterPhraseChangeAllowed = presenterPhraseChangeRemaining !== 0;
 
@@ -697,7 +700,7 @@ export function PlayScreen({
         ? "kalambury-order-grid kalambury-order-grid--compact"
         : turnOrderPlayers.length % 2 === 1
           ? "kalambury-order-grid kalambury-order-grid--orphan"
-        : "kalambury-order-grid";
+          : "kalambury-order-grid";
 
   const hostHintChips = useMemo(() => {
     if (!playState) {
@@ -978,8 +981,11 @@ export function PlayScreen({
 
       <section className="hero hero--kalambury-play hero--kalambury-playwide">
         <header className="kalambury-playtopbar kalambury-playbar">
-          {Boolean(setupPayload.presenterDevice?.enabled) && (
-            <div className="kalambury-playtopbar__left">
+          <div className="kalambury-playtopbar__left">
+            <span className="kalambury-stage-pill">
+              {getStageLabel(playState.stage)}
+            </span>
+            {Boolean(setupPayload.presenterDevice?.enabled) && (
               <span
                 className={
                   presenterPairState.connected
@@ -993,14 +999,13 @@ export function PlayScreen({
                 }
               >
                 <span className="material-symbols-outlined" aria-hidden="true">
-                  {presenterPairState.connected ? "smartphone" : "smartphone_off"}
+                  {presenterPairState.connected
+                    ? "smartphone"
+                    : "phonelink_off"}
                 </span>
               </span>
-            </div>
-          )}
-          <span className="kalambury-stage-pill">
-            {getStageLabel(playState.stage)}
-          </span>
+            )}
+          </div>
           <div className="kalambury-playtopbar__actions">
             {isDrawAnimating && setup.players.length > 4 ? (
               <button
@@ -1229,12 +1234,13 @@ export function PlayScreen({
                     {presenterReconnectRequired ? (
                       <div className="kalambury-host-status__copy kalambury-host-status__copy--reconnect">
                         <h2>
-                          Gra wstrzymana do czasu ponownego podlaczenia urzadzenia
-                          prezentera
+                          Gra wstrzymana do czasu ponownego podlaczenia
+                          urzadzenia prezentera
                         </h2>
                         <p>
-                          Podlacz telefon prezentera ponownie, aby wznowic ture bez
-                          utraty czasu i zsynchronizowac haslo na nowym urzadzeniu.
+                          Podlacz telefon prezentera ponownie, aby wznowic ture
+                          bez utraty czasu i zsynchronizowac haslo na nowym
+                          urzadzeniu.
                         </p>
                       </div>
                     ) : null}
@@ -1439,8 +1445,8 @@ export function PlayScreen({
             <div className="kalambury-verdict-strip__bonus">
               <span className="kalambury-verdict-strip__plus">+1</span>
               <span>
-                punkt dla prezentera: <strong>{presenter?.name ?? "-"}</strong>
-                , jesli uwazacie, ze zasluzyl/a
+                punkt dla prezentera: <strong>{presenter?.name ?? "-"}</strong>,
+                jesli uwazacie, ze zasluzyl/a
               </span>
             </div>
             <div className="kalambury-verdict-actions">
@@ -1498,7 +1504,9 @@ export function PlayScreen({
           isOpen={presenterReconnectRequired}
           sessionCode={sessionCode}
           controllerHref={
-            sessionCode ? `/games/kalambury/controller/${sessionCode}` : undefined
+            sessionCode
+              ? `/games/kalambury/controller/${sessionCode}`
+              : undefined
           }
           dismissible={false}
           onClose={() => {}}

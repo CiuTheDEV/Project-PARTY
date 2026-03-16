@@ -18,16 +18,27 @@ test("kalambury module ships its own game-specific stylesheet", () => {
   assert.equal(stylesSource.includes(".kal-hub-sidebar__exit"), true);
   assert.equal(stylesSource.includes(".kal-hub-sidebar__exit-link"), true);
   assert.equal(
-    stylesSource.includes(".kalambury-order-card__name,\n.kalambury-presenter-hero__name"),
+    stylesSource.includes(
+      ".kalambury-order-card__name,\n.kalambury-presenter-hero__name",
+    ),
     true,
   );
   assert.equal(stylesSource.includes(".kalambury-order-grid--orphan"), true);
   assert.equal(stylesSource.includes(".kalambury-persona-card"), true);
   assert.equal(stylesSource.includes(".kalambury-persona-card__avatar"), true);
-  assert.equal(stylesSource.includes(".kalambury-persona-card__nameplate"), true);
+  assert.equal(
+    stylesSource.includes(".kalambury-persona-card__nameplate"),
+    true,
+  );
   assert.equal(stylesSource.includes(".kalambury-persona-card__badge"), true);
-  assert.equal(stylesSource.includes(".kalambury-player-name-input--female"), true);
-  assert.equal(stylesSource.includes(".kalambury-player-name-input--male"), true);
+  assert.equal(
+    stylesSource.includes(".kalambury-player-name-input--female"),
+    true,
+  );
+  assert.equal(
+    stylesSource.includes(".kalambury-player-name-input--male"),
+    true,
+  );
   assert.equal(
     stylesSource.includes(".kalambury-play__timer.kalambury-play__timer--act"),
     true,
@@ -54,7 +65,9 @@ test("kalambury module ships its own game-specific stylesheet", () => {
   assert.equal(stylesSource.includes(".app-shell.app-shell--embedded"), true);
   assert.equal(stylesSource.includes("margin: auto;"), true);
   assert.equal(
-    stylesSource.includes(".kalambury-stage-panel--order {\n  width: min(100%, 1500px);\n  min-height: 0;\n  height: 100%;\n  display: grid;\n  background: transparent;\n  border: 0;\n  box-shadow: none;\n}"),
+    stylesSource.includes(
+      ".kalambury-stage-panel--order {\n  width: min(100%, 1500px);\n  min-height: 0;\n  height: 100%;\n  display: grid;\n  background: transparent;\n  border: 0;\n  box-shadow: none;\n}",
+    ),
     true,
   );
 });

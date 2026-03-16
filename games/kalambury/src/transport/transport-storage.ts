@@ -2,7 +2,11 @@ import type { KalamburyTransportMode } from "./types";
 
 const KEY = "kalambury:transport-mode";
 const DEFAULT: KalamburyTransportMode = "do-ws";
-const VALID_MODES: KalamburyTransportMode[] = ["do-ws", "firebase", "broadcast"];
+const VALID_MODES: KalamburyTransportMode[] = [
+  "do-ws",
+  "firebase",
+  "broadcast",
+];
 
 export function getTransportMode(): KalamburyTransportMode {
   try {

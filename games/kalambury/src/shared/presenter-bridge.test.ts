@@ -53,7 +53,10 @@ class FakeBroadcastChannel {
 test("host bridge flips connection state when controller joins and leaves", () => {
   FakeBroadcastChannel.reset();
 
-  const connectionStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const connectionStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   const hostBridge = createKalamburyPresenterHostBridge("ABC123", {
     BroadcastChannelImpl: FakeBroadcastChannel,
     onPairingChange: (state) => connectionStates.push(state),
@@ -157,7 +160,10 @@ test("controller bridge clears the private phrase when the host resets the turn"
 test("host bridge rejects a second presenter device while keeping the original pair", () => {
   FakeBroadcastChannel.reset();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   let rejectionReason: string | null = null;
 
   const hostBridge = createKalamburyPresenterHostBridge("LOCK01", {
@@ -195,7 +201,10 @@ test("host bridge rejects a second presenter device while keeping the original p
 test("host bridge manual disconnect clears the pair and lets a new device connect", () => {
   FakeBroadcastChannel.reset();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   const hostBridge = createKalamburyPresenterHostBridge("RESET02", {
     BroadcastChannelImpl: FakeBroadcastChannel,
     onPairingChange: (state) => pairingStates.push(state),
@@ -228,7 +237,10 @@ test("host bridge manual disconnect clears the pair and lets a new device connec
 test("host bridge releases the presenter slot after disconnect so another device can reconnect", () => {
   FakeBroadcastChannel.reset();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   const hostBridge = createKalamburyPresenterHostBridge("REJOIN1", {
     BroadcastChannelImpl: FakeBroadcastChannel,
     onPairingChange: (state) => pairingStates.push(state),
@@ -271,7 +283,10 @@ test("host bridge rehydrates an already-open presenter device for the same sessi
   controllerBridge.announceReady();
   initialHostBridge.destroy();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   const resumedHostBridge = createKalamburyPresenterHostBridge("REUSE1", {
     BroadcastChannelImpl: FakeBroadcastChannel,
     initialPairedDeviceId: "device-a",
@@ -378,7 +393,10 @@ test("controller bridge retries ready handshake until a late host subscribes", a
 
   await new Promise((resolve) => setTimeout(resolve, 25));
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
   const hostBridge = createKalamburyPresenterHostBridge("LATE01", {
     BroadcastChannelImpl: FakeBroadcastChannel,
     onPairingChange: (state) => {
@@ -400,7 +418,10 @@ test("controller bridge retries ready handshake until a late host subscribes", a
 test("host bridge detects controller disconnect via heartbeat timeout", async () => {
   FakeBroadcastChannel.reset();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
 
   const hostBridge = createKalamburyPresenterHostBridge("HB01", {
     BroadcastChannelImpl: FakeBroadcastChannel,
@@ -425,7 +446,10 @@ test("host bridge detects controller disconnect via heartbeat timeout", async ()
   hostBridge.destroy();
 
   // Powinny być: connected=true, następnie connected=false
-  assert.ok(pairingStates.length >= 2, `Expected >= 2 pairing state changes, got ${pairingStates.length}`);
+  assert.ok(
+    pairingStates.length >= 2,
+    `Expected >= 2 pairing state changes, got ${pairingStates.length}`,
+  );
   assert.equal(pairingStates[0].connected, true);
   assert.equal(pairingStates[pairingStates.length - 1].connected, false);
 });
@@ -433,7 +457,10 @@ test("host bridge detects controller disconnect via heartbeat timeout", async ()
 test("controller bridge re-pairs after host heartbeat timeout clears the slot", async () => {
   FakeBroadcastChannel.reset();
 
-  const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
+  const pairingStates: Array<{
+    connected: boolean;
+    pairedDeviceId: string | null;
+  }> = [];
 
   const hostBridge = createKalamburyPresenterHostBridge("HB02", {
     BroadcastChannelImpl: FakeBroadcastChannel,

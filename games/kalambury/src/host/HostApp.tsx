@@ -9,8 +9,8 @@ import {
   isKalamburyHubModePlayable,
 } from "../manifest/hub-content";
 import type { KalamburySetupPayload } from "../runtime/state-machine";
-import type { KalamburyPresenterChannel } from "../shared/presenter-bridge";
 import { KalamburySymbolIcon } from "../shared/SymbolIcon";
+import type { KalamburyPresenterChannel } from "../shared/presenter-bridge";
 import { getKalamburySetupModeContent } from "../shared/setup-content";
 import type { KalamburyStorageLike } from "../shared/setup-storage";
 import { ConnectionModePanel } from "./ConnectionModePanel";
@@ -151,7 +151,9 @@ export function KalamburyHostApp({
                     aria-pressed={activeSection === item.id}
                     onClick={() => setActiveSection(item.id)}
                   >
-                    <span className="material-symbols-outlined">{item.icon}</span>
+                    <span className="material-symbols-outlined">
+                      {item.icon}
+                    </span>
                     <span>{item.label}</span>
                   </button>
                 ))}
@@ -160,7 +162,7 @@ export function KalamburyHostApp({
 
             <div className="kal-hub-sidebar__exit">
               <Link className="kal-hub-sidebar__exit-link" to="/">
-                <span className="material-symbols-outlined">logout</span>
+                <KalamburySymbolIcon className="material-symbols-outlined" name="logout" />
                 <span>Wroc do lobby</span>
               </Link>
             </div>
@@ -217,7 +219,9 @@ export function KalamburyHostApp({
                     aria-label="Pokaz poprzedni tryb"
                     onClick={() => cycleMode(-1)}
                   >
-                    <span className="material-symbols-outlined">chevron_left</span>
+                    <span className="material-symbols-outlined">
+                      chevron_left
+                    </span>
                   </button>
 
                   <div className="kal-hub-cards">
@@ -298,7 +302,9 @@ export function KalamburyHostApp({
                     aria-label="Pokaz nastepny tryb"
                     onClick={() => cycleMode(1)}
                   >
-                    <span className="material-symbols-outlined">chevron_right</span>
+                    <span className="material-symbols-outlined">
+                      chevron_right
+                    </span>
                   </button>
                 </div>
 
@@ -344,7 +350,9 @@ export function KalamburyHostApp({
                         aria-controls={`kal-hub-tabpanel-${tab.id}`}
                         onClick={() => setSelectedSettingsTabId(tab.id)}
                       >
-                        <span className="material-symbols-outlined">{tab.icon}</span>
+                        <span className="material-symbols-outlined">
+                          {tab.icon}
+                        </span>
                         <span>{tab.label}</span>
                       </button>
                     );
@@ -379,7 +387,6 @@ export function KalamburyHostApp({
             )}
           </section>
         </div>
-
       </div>
 
       {isSetupOpen ? (

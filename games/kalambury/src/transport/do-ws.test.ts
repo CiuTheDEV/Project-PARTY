@@ -1,5 +1,5 @@
-import { describe, it } from "node:test";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import type { PlatformTransport } from "./types";
 
 const { createDoWsAdapter } = await import("./do-ws.ts");
@@ -32,7 +32,9 @@ describe("do-ws adapter", () => {
     const mock = createMockPlatformTransport();
     const adapter = createDoWsAdapter(mock);
     adapter.send("test.event", { x: 1 });
-    assert.deepEqual(mock.sentEvents, [{ event: "test.event", payload: { x: 1 } }]);
+    assert.deepEqual(mock.sentEvents, [
+      { event: "test.event", payload: { x: 1 } },
+    ]);
   });
 
   it("delegates on to platform transport and returns unsubscribe", () => {

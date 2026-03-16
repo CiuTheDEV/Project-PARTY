@@ -13,37 +13,117 @@ type IconProps = {
 
 function Pencil({ size = 16, strokeWidth = 2.1 }: IconProps) {
   return (
-    <svg aria-hidden="true" fill="none" height={size} viewBox="0 0 24 24" width={size}>
-      <path d="M12 20h9" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
-      <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path
+        d="M12 20h9"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+      <path
+        d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
     </svg>
   );
 }
 
 function X({ size = 16, strokeWidth = 2.2 }: IconProps) {
   return (
-    <svg aria-hidden="true" fill="none" height={size} viewBox="0 0 24 24" width={size}>
-      <path d="m18 6-12 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
-      <path d="m6 6 12 12" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path
+        d="m18 6-12 12"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+      <path
+        d="m6 6 12 12"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
     </svg>
   );
 }
 
 function UserRoundCog({ size = 18, strokeWidth = 2.1 }: IconProps) {
   return (
-    <svg aria-hidden="true" fill="none" height={size} viewBox="0 0 24 24" width={size}>
-      <path d="M10 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
-      <path d="M3 20a7 7 0 0 1 10.6-6" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
-      <path d="M18.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
-      <path d="m18.5 14.5.5 1 .9.2-.7.8.1 1 .8.5-.8.5-.1 1 .7.8-.9.2-.5 1-.5-1-.9-.2.7-.8-.1-1-.8-.5.8-.5.1-1-.7-.8.9-.2Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={strokeWidth} />
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <path
+        d="M10 14a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+      <path
+        d="M3 20a7 7 0 0 1 10.6-6"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+      <path
+        d="M18.5 20a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
+      <path
+        d="m18.5 14.5.5 1 .9.2-.7.8.1 1 .8.5-.8.5-.1 1 .7.8-.9.2-.5 1-.5-1-.9-.2.7-.8-.1-1-.8-.5.8-.5.1-1-.7-.8.9-.2Z"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={strokeWidth}
+      />
     </svg>
   );
 }
 
 function Dice({ size = 18, strokeWidth = 2.1 }: IconProps) {
   return (
-    <svg aria-hidden="true" fill="none" height={size} viewBox="0 0 24 24" width={size}>
-      <rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" strokeWidth={strokeWidth} />
+    <svg
+      aria-hidden="true"
+      fill="none"
+      height={size}
+      viewBox="0 0 24 24"
+      width={size}
+    >
+      <rect
+        x="4"
+        y="4"
+        width="16"
+        height="16"
+        rx="4"
+        stroke="currentColor"
+        strokeWidth={strokeWidth}
+      />
       <circle cx="9" cy="9" r="1.2" fill="currentColor" />
       <circle cx="15" cy="9" r="1.2" fill="currentColor" />
       <circle cx="9" cy="15" r="1.2" fill="currentColor" />
@@ -104,7 +184,9 @@ export function KalamburyPlayersPanel({
               }
               data-gender={player.gender}
               tabIndex={actionsOpen ? 0 : undefined}
-              onClick={actionsOpen ? () => onTogglePlayerActions(player.id) : undefined}
+              onClick={
+                actionsOpen ? () => onTogglePlayerActions(player.id) : undefined
+              }
               onKeyDown={
                 actionsOpen
                   ? (event) => {
@@ -118,7 +200,10 @@ export function KalamburyPlayersPanel({
             >
               <div className="kalambury-player-card__top">
                 <div className="kalambury-player-card__avatar-wrap">
-                  <div className="kalambury-persona-card__avatar kalambury-player-card__avatar" aria-hidden="true">
+                  <div
+                    className="kalambury-persona-card__avatar kalambury-player-card__avatar"
+                    aria-hidden="true"
+                  >
                     {player.avatar}
                   </div>
                 </div>
@@ -160,18 +245,32 @@ export function KalamburyPlayersPanel({
                   )}
                 </div>
               </div>
-              <p className="kalambury-persona-card__nameplate kalambury-player-card__name">{player.name}</p>
+              <p className="kalambury-persona-card__nameplate kalambury-player-card__name">
+                {player.name}
+              </p>
             </article>
           );
         })}
 
         {players.length < maxPlayers ? (
           <article className="kalambury-player-card kalambury-player-card--add">
-            <button className="kalambury-player-card__add-primary" type="button" aria-label="Dodaj gracza" onClick={onAddPlayer}>
-              <span className="kalambury-player-card__plus" aria-hidden="true">+</span>
+            <button
+              className="kalambury-player-card__add-primary"
+              type="button"
+              aria-label="Dodaj gracza"
+              onClick={onAddPlayer}
+            >
+              <span className="kalambury-player-card__plus" aria-hidden="true">
+                +
+              </span>
               <span>Dodaj</span>
             </button>
-            <button className="kalambury-player-card__dice" type="button" aria-label="Dodaj losowego gracza" onClick={onAddRandomPlayer}>
+            <button
+              className="kalambury-player-card__dice"
+              type="button"
+              aria-label="Dodaj losowego gracza"
+              onClick={onAddRandomPlayer}
+            >
               <Dice />
             </button>
           </article>
@@ -186,11 +285,20 @@ type KalamburyModeSummaryPanelProps = {
   onOpenSettings: () => void;
 };
 
-export function KalamburyModeSummaryPanel({ summaries, onOpenSettings }: KalamburyModeSummaryPanelProps) {
+export function KalamburyModeSummaryPanel({
+  summaries,
+  onOpenSettings,
+}: KalamburyModeSummaryPanelProps) {
   return (
     <>
-      <button type="button" style={modeSettingsButtonStyle} onClick={onOpenSettings}>
-        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>settings</span>
+      <button
+        type="button"
+        style={modeSettingsButtonStyle}
+        onClick={onOpenSettings}
+      >
+        <span className="material-symbols-outlined" style={{ fontSize: 20 }}>
+          settings
+        </span>
         Ustawienia trybu
       </button>
 
@@ -221,7 +329,9 @@ export function KalamburyPresenterDevicePanel({
 }: KalamburyPresenterDevicePanelProps) {
   const statusLabel = presenterDeviceConnected ? "Polaczono" : "Niepolaczono";
   const statusColor = presenterDeviceConnected ? "#4ade80" : "#52525b";
-  const statusBackground = presenterDeviceConnected ? "rgba(74,222,128,0.12)" : "rgba(82,82,91,0.15)";
+  const statusBackground = presenterDeviceConnected
+    ? "rgba(74,222,128,0.12)"
+    : "rgba(82,82,91,0.15)";
   const helperText = presenterDeviceBlockingStart
     ? "Podlacz telefon prezentera, aby rozpoczac runde."
     : "Podlacz telefon prezentera. Po zeskanowaniu kodu urzadzenie pokaze prywatne haslo i kontrolki tylko dla tej osoby.";
@@ -233,18 +343,30 @@ export function KalamburyPresenterDevicePanel({
           <span style={summaryLabelStyle}>DODATKOWE URZADZENIE</span>
           <p style={pairingDescriptionStyle}>{helperText}</p>
         </div>
-        <span style={{ ...pairingStatusStyle, color: statusColor, background: statusBackground }}>{statusLabel}</span>
+        <span
+          style={{
+            ...pairingStatusStyle,
+            color: statusColor,
+            background: statusBackground,
+          }}
+        >
+          {statusLabel}
+        </span>
       </div>
 
       <button
         type="button"
         style={pairingButtonStyle}
-        onClick={presenterDeviceConnected ? onDisconnectPresenterDevice : onOpenPresenterQr}
+        onClick={
+          presenterDeviceConnected
+            ? onDisconnectPresenterDevice
+            : onOpenPresenterQr
+        }
       >
         <span className="material-symbols-outlined" style={{ fontSize: 18 }}>
           {presenterDeviceConnected ? "link_off" : "add_link"}
         </span>
-        {presenterDeviceConnected ? "Rozlacz urzadzenie" : "Dodaj urzadzenie"}
+        {presenterDeviceConnected ? "Rozlacz urzadzenie" : "Podlacz urzadzenie"}
       </button>
     </div>
   );
@@ -257,7 +379,10 @@ type KalamburyCategoriesPanelProps = {
   activeCategory: KalamburyCategoryOption | undefined;
   onToggleExpanded: () => void;
   onToggleCategory: (categoryId: string) => void;
-  onToggleDifficulty: (categoryId: string, difficulty: KalamburyCategoryDifficulty) => void;
+  onToggleDifficulty: (
+    categoryId: string,
+    difficulty: KalamburyCategoryDifficulty,
+  ) => void;
   onSelectAll: () => void;
   onRandomize: () => void;
   onClear: () => void;
@@ -277,10 +402,16 @@ export function KalamburyCategoriesPanel({
 }: KalamburyCategoriesPanelProps) {
   return (
     <div style={sectionStyle}>
-      <button type="button" style={accordionHeaderStyle} onClick={onToggleExpanded}>
+      <button
+        type="button"
+        style={accordionHeaderStyle}
+        onClick={onToggleExpanded}
+      >
         <div>
           <span style={sectionTitleStyle}>Kategorie</span>
-          <span style={sectionSubtitleStyle}>Wybrane: {selectedCategoriesCount}</span>
+          <span style={sectionSubtitleStyle}>
+            Wybrane: {selectedCategoriesCount}
+          </span>
         </div>
         <span style={chevronStyle}>{isExpanded ? "▲" : "+"}</span>
       </button>
@@ -298,7 +429,12 @@ export function KalamburyCategoriesPanel({
 
               return (
                 <div className="kalambury-category-stack" key={category.id}>
-                  <button className={chipClassName} type="button" aria-pressed={category.isSelected} onClick={() => onToggleCategory(category.id)}>
+                  <button
+                    className={chipClassName}
+                    type="button"
+                    aria-pressed={category.isSelected}
+                    onClick={() => onToggleCategory(category.id)}
+                  >
                     {category.label}
                   </button>
                   {category.isSelected || isOpened ? (
@@ -336,14 +472,33 @@ export function KalamburyCategoriesPanel({
 
           {selectedCategoriesCount === 0 ? (
             <p className="kalambury-setup__empty-state">
-              Kliknij kategorie, aby pokazac chipy Latwe / Trudne i wybrac pule gry.
+              Kliknij kategorie, aby pokazac chipy Latwe / Trudne i wybrac pule
+              gry.
             </p>
           ) : null}
 
           <div className="kalambury-category-actions">
-            <button className="kalambury-secondary-action" type="button" onClick={onSelectAll}>Wszystkie</button>
-            <button className="kalambury-secondary-action" type="button" onClick={onRandomize}>Losowo</button>
-            <button className="kalambury-secondary-action" type="button" onClick={onClear}>Wyczysc</button>
+            <button
+              className="kalambury-secondary-action"
+              type="button"
+              onClick={onSelectAll}
+            >
+              Wszystkie
+            </button>
+            <button
+              className="kalambury-secondary-action"
+              type="button"
+              onClick={onRandomize}
+            >
+              Losowo
+            </button>
+            <button
+              className="kalambury-secondary-action"
+              type="button"
+              onClick={onClear}
+            >
+              Wyczysc
+            </button>
           </div>
         </div>
       ) : null}
@@ -357,12 +512,20 @@ type KalamburySetupFooterProps = {
   onStart: () => void;
 };
 
-export function KalamburySetupFooter({ canStart, startLabel, onStart }: KalamburySetupFooterProps) {
+export function KalamburySetupFooter({
+  canStart,
+  startLabel,
+  onStart,
+}: KalamburySetupFooterProps) {
   return (
     <div style={actionsStyle}>
       <button
         type="button"
-        style={{ ...startButtonStyle, opacity: canStart ? 1 : 0.4, cursor: canStart ? "pointer" : "not-allowed" }}
+        style={{
+          ...startButtonStyle,
+          opacity: canStart ? 1 : 0.4,
+          cursor: canStart ? "pointer" : "not-allowed",
+        }}
         disabled={!canStart}
         onClick={onStart}
       >

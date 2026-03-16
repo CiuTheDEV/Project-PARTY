@@ -1,9 +1,6 @@
 import { useState } from "react";
+import { getTransportMode, setTransportMode } from "../transport/index";
 import type { KalamburyTransportMode } from "../transport/types";
-import {
-  getTransportMode,
-  setTransportMode,
-} from "../transport/index";
 
 type ModeOption = {
   id: KalamburyTransportMode;
@@ -34,9 +31,8 @@ const MODE_OPTIONS: ModeOption[] = [
 ];
 
 export function ConnectionModePanel() {
-  const [selected, setSelected] = useState<KalamburyTransportMode>(
-    getTransportMode,
-  );
+  const [selected, setSelected] =
+    useState<KalamburyTransportMode>(getTransportMode);
 
   function handleSelect(mode: KalamburyTransportMode) {
     setSelected(mode);

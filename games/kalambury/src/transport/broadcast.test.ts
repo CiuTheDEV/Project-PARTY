@@ -1,5 +1,5 @@
-import { describe, it, before } from "node:test";
 import assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
 
 class MockBroadcastChannel {
   static channels: Map<string, MockBroadcastChannel[]> = new Map();
@@ -22,7 +22,10 @@ class MockBroadcastChannel {
 
   close() {
     const list = MockBroadcastChannel.channels.get(this.name) ?? [];
-    MockBroadcastChannel.channels.set(this.name, list.filter((ch) => ch !== this));
+    MockBroadcastChannel.channels.set(
+      this.name,
+      list.filter((ch) => ch !== this),
+    );
   }
 }
 

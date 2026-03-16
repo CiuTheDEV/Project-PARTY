@@ -21,7 +21,9 @@ function getPresenterDeviceId() {
     return `presenter-${Math.random().toString(36).slice(2, 10)}`;
   }
 
-  const existingDeviceId = localStorage.getItem(PRESENTER_DEVICE_ID_STORAGE_KEY);
+  const existingDeviceId = localStorage.getItem(
+    PRESENTER_DEVICE_ID_STORAGE_KEY,
+  );
   if (existingDeviceId) {
     return existingDeviceId;
   }
@@ -232,7 +234,9 @@ export function KalamburyControllerApp({
                 className="kalambury-controller-button"
                 type="button"
                 disabled={!phraseChangeAllowed}
-                onClick={() => controllerBridgeRef.current?.requestPhraseChange()}
+                onClick={() =>
+                  controllerBridgeRef.current?.requestPhraseChange()
+                }
               >
                 {changeButtonLabel}
               </button>

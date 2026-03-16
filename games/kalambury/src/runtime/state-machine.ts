@@ -181,13 +181,12 @@ function getNextSelectedCategory(
     return categories[0] ?? null;
   }
 
-  return categories[(currentIndex + 1) % categories.length] ?? categories[0] ?? null;
+  return (
+    categories[(currentIndex + 1) % categories.length] ?? categories[0] ?? null
+  );
 }
 
-function getNextPhraseInCategory(
-  categoryId: string,
-  currentPhrase: string,
-) {
+function getNextPhraseInCategory(categoryId: string, currentPhrase: string) {
   const phrases = phraseCatalog[categoryId] ?? ["Kalambury"];
   const currentIndex = phrases.findIndex((phrase) => phrase === currentPhrase);
   const nextIndex =
@@ -440,9 +439,11 @@ export function rerollKalamburyPhrase(
   const shouldChangeCategory = phraseChange.rerollWordAndCategory;
   const nextCategory = shouldChangeCategory
     ? getNextSelectedCategory(payload, state.phraseCategoryId)
-    : getSelectedCategories(payload).find(
+    : (getSelectedCategories(payload).find(
         (category) => category.id === state.phraseCategoryId,
-      ) ?? getSelectedCategories(payload)[0] ?? null;
+      ) ??
+      getSelectedCategories(payload)[0] ??
+      null);
 
   if (!nextCategory) {
     return state;

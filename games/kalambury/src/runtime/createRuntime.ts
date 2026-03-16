@@ -10,11 +10,12 @@ import {
   type KalamburyPresenterChannel,
   isPresenterMessage,
 } from "../shared/presenter-bridge";
-import type { KalamburyTransport } from "../transport/types";
 import {
   createKalamburyTransportAsync,
   getTransportMode,
+  setTransportMode,
 } from "../transport/index";
+import type { KalamburyTransport } from "../transport/types";
 
 function createPresenterTransportChannel(
   send: GameRuntimeContext["transport"]["send"],
@@ -41,6 +42,16 @@ export function createKalamburyRuntime(
 
   return {
     async start() {
+      // If a transport query param is present in the URL (e.g. controller opened
+      // via QR with ?transport=firebase), sync it into localStorage so this
+      // device uses the correct transport without manual configuration.
+      if (typeof window !== "undefined") {
+        const urlTransport = new URLSearchParams(window.location.search).get("transport");
+        const VALID_MODES = ["do-ws", "firebase", "broadcast"] as const;
+        if (urlTransport && (VALID_MODES as readonly string[]).includes(urlTransport)) {
+          setTransportMode(urlTransport as (typeof VALID_MODES)[number]);
+        }
+      }
       const mode = getTransportMode();
       transport = await createKalamburyTransportAsync(
         mode,

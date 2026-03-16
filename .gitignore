@@ -27,6 +27,7 @@ output
 
 # Local Codex workspace data
 .codex/
+.claude/
 
 
 # Local debug captures kept at repo root

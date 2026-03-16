@@ -26,7 +26,10 @@ test("controller app uses Kalambury-specific presenter phone shell", () => {
   assert.equal(controllerSource.includes("Tura trwa"), true);
   assert.equal(controllerSource.includes("kalambury-controller-shell"), true);
   assert.equal(controllerSource.includes("kalambury-controller-card"), true);
-  assert.equal(controllerSource.includes("kalambury-controller-card__countdown"), true);
+  assert.equal(
+    controllerSource.includes("kalambury-controller-card__countdown"),
+    true,
+  );
   assert.equal(controllerSource.includes("presenterName"), true);
   assert.equal(controllerSource.includes("phraseChangeRemaining"), true);
 });

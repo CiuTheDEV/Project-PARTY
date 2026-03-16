@@ -2,7 +2,9 @@ import type { KalamburyTransport } from "./types";
 
 type MessageEnvelope = { event: string; payload: unknown };
 
-export function createBroadcastAdapter(sessionCode: string): KalamburyTransport {
+export function createBroadcastAdapter(
+  sessionCode: string,
+): KalamburyTransport {
   const channel = new BroadcastChannel(`kalambury:${sessionCode}`);
   const handlers = new Map<string, Set<(payload: unknown) => void>>();
 

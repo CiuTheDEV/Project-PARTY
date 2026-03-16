@@ -148,7 +148,8 @@ const settingsTabs: KalamburyHubContent["settingsPanel"]["tabs"] = [
     label: "Połączenie",
     icon: "wifi",
     title: "Tryb połączenia",
-    description: "Wybierz sposób w jaki urządzenia łączą się podczas rozgrywki.",
+    description:
+      "Wybierz sposób w jaki urządzenia łączą się podczas rozgrywki.",
     // items intentionally omitted — HostApp renders ConnectionModePanel for this tab
   },
   {

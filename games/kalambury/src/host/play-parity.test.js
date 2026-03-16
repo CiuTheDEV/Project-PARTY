@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
-import test from "node:test";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
+import test from "node:test";
 
 const playScreenSource = readFileSync(
   resolve(import.meta.dirname, "./PlayScreen.tsx"),
@@ -9,25 +9,18 @@ const playScreenSource = readFileSync(
 );
 
 test("play screen pauses presenter stages and reuses the presenter connect modal after disconnect", () => {
+  assert.equal(playScreenSource.includes("KalamburyPresenterQrModal"), true);
+  assert.equal(playScreenSource.includes("presenterReconnectRequired"), true);
   assert.equal(
-    playScreenSource.includes("KalamburyPresenterQrModal"),
-    true,
-  );
-  assert.equal(
-    playScreenSource.includes("presenterReconnectRequired"),
-    true,
-  );
-  assert.equal(
-    playScreenSource.includes("Gra wstrzymana do czasu ponownego podlaczenia urzadzenia prezentera"),
+    playScreenSource.includes(
+      "Gra wstrzymana do czasu ponownego podlaczenia urzadzenia prezentera",
+    ),
     true,
   );
 });
 
 test("play screen models presenter reveal as pending and preview stages before the live turn", () => {
-  assert.equal(
-    playScreenSource.includes("presenterRevealStage"),
-    true,
-  );
+  assert.equal(playScreenSource.includes("presenterRevealStage"), true);
   assert.equal(
     playScreenSource.includes("Karta czeka na odkrycie na telefonie"),
     true,
@@ -36,10 +29,7 @@ test("play screen models presenter reveal as pending and preview stages before t
     playScreenSource.includes("Prezenter zapoznaje sie z haslem"),
     true,
   );
-  assert.equal(
-    playScreenSource.includes("10"),
-    true,
-  );
+  assert.equal(playScreenSource.includes("10"), true);
   assert.equal(
     playScreenSource.includes("kalambury-prepare-presenter-column"),
     true,
@@ -64,14 +54,19 @@ test("play screen models presenter reveal as pending and preview stages before t
 
 test("play screen marks odd two-column turn orders so the orphan card can span the full row", () => {
   assert.equal(
-    playScreenSource.includes('"kalambury-order-grid kalambury-order-grid--orphan"'),
+    playScreenSource.includes(
+      '"kalambury-order-grid kalambury-order-grid--orphan"',
+    ),
     true,
   );
 });
 
 test("play screen uses one shared player card anatomy across gameplay variants", () => {
   assert.equal(playScreenSource.includes("kalambury-persona-card"), true);
-  assert.equal(playScreenSource.includes("kalambury-persona-card__avatar"), true);
+  assert.equal(
+    playScreenSource.includes("kalambury-persona-card__avatar"),
+    true,
+  );
   assert.equal(
     playScreenSource.includes("kalambury-persona-card__nameplate"),
     true,
@@ -80,7 +75,10 @@ test("play screen uses one shared player card anatomy across gameplay variants",
     playScreenSource.includes("kalambury-persona-card__badge"),
     true,
   );
-  assert.equal(playScreenSource.includes("data-gender={presenter.gender}"), true);
+  assert.equal(
+    playScreenSource.includes("data-gender={presenter.gender}"),
+    true,
+  );
   assert.equal(playScreenSource.includes("data-gender={player.gender}"), true);
   assert.equal(
     playScreenSource.includes("kalambury-verdict-player-card__score"),

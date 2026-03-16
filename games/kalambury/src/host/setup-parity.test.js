@@ -77,7 +77,10 @@ test("presenter device flow uses QR modal with local scan simulation", () => {
   assert.equal(setupModalsSource.includes("window.open"), true);
 });
 
-const hostAppSource = readFileSync(new URL("./HostApp.tsx", import.meta.url), "utf8");
+const hostAppSource = readFileSync(
+  new URL("./HostApp.tsx", import.meta.url),
+  "utf8",
+);
 
 test("host app renders a dedicated sidebar exit back to the platform lobby", () => {
   assert.equal(hostAppSource.includes('to="/"'), true);
@@ -107,7 +110,10 @@ test("setup screen keeps the presenter host bridge stable after pairing", () => 
 
 test("setup screen uses the shared player card anatomy for setup roster cards", () => {
   assert.equal(setupSectionsSource.includes("kalambury-persona-card"), true);
-  assert.equal(setupSectionsSource.includes("data-gender={player.gender}"), true);
+  assert.equal(
+    setupSectionsSource.includes("data-gender={player.gender}"),
+    true,
+  );
   assert.equal(
     setupSectionsSource.includes("kalambury-persona-card__avatar"),
     true,
@@ -116,9 +122,15 @@ test("setup screen uses the shared player card anatomy for setup roster cards", 
     setupSectionsSource.includes("kalambury-persona-card__nameplate"),
     true,
   );
-  assert.equal(setupSectionsSource.includes("kalambury-player-card__dice"), true);
+  assert.equal(
+    setupSectionsSource.includes("kalambury-player-card__dice"),
+    true,
+  );
   assert.equal(setupSectionsSource.includes("onAddRandomPlayer"), true);
-  assert.equal(setupScreenSource.includes("addRandomKalamburySetupPlayer"), true);
+  assert.equal(
+    setupScreenSource.includes("addRandomKalamburySetupPlayer"),
+    true,
+  );
 });
 
 test("add player modal colors the name field border by selected gender", () => {

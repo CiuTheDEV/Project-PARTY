@@ -3,11 +3,15 @@ import type { CSSProperties } from "react";
 
 import type { KalamburySetupPayload } from "../runtime/state-machine";
 import {
-  addRandomKalamburySetupPlayer,
+  type KalamburyPresenterChannel,
+  createKalamburyPresenterHostBridge,
+} from "../shared/presenter-bridge";
+import {
   type KalamburyModeSection,
   type KalamburyModeSettings,
   type KalamburyPlayerDraft,
   type KalamburyPlayerGender,
+  addRandomKalamburySetupPlayer,
   clearKalamburyCategories,
   createInitialKalamburyPlayerDraft,
   createInitialKalamburySetupState,
@@ -28,11 +32,8 @@ import {
   loadKalamburySetupDraft,
   saveKalamburySetupDraft,
 } from "../shared/setup-storage";
+import { getTransportMode } from "../transport/index";
 import { cloneModeSettings, normalizeModeSettings } from "../shared/setup-ui";
-import {
-  type KalamburyPresenterChannel,
-  createKalamburyPresenterHostBridge,
-} from "../shared/presenter-bridge";
 import {
   KalamburyAddPlayerModal,
   KalamburyModeSettingsModal,
@@ -48,6 +49,22 @@ import {
 
 const initialKalamburySetupState = createInitialKalamburySetupState();
 const REUSABLE_RUNTIME_SESSION_KEY = "reusable-session";
+
+function buildControllerHref(sessionCode: string | undefined): string | undefined {
+  const mode = getTransportMode();
+  // broadcast is local-only (same device), QR pairing doesn't apply
+  if (mode === "broadcast") {
+    return undefined;
+  }
+  if (!sessionCode) {
+    return undefined;
+  }
+  if (mode === "firebase") {
+    return `/games/kalambury/controller/${sessionCode}?transport=firebase`;
+  }
+  // do-ws (default)
+  return `/games/kalambury/controller/${sessionCode}`;
+}
 
 type SetupScreenProps = {
   embedded?: boolean;
@@ -326,18 +343,15 @@ export function SetupScreen({
     setPlayers((currentPlayers) =>
       editingPlayerId
         ? currentPlayers.map((player) =>
-          player.id === editingPlayerId ? nextPlayer : player,
-        )
+            player.id === editingPlayerId ? nextPlayer : player,
+          )
         : [...currentPlayers, nextPlayer],
     );
     closeAddPlayerModal();
   }
 
   function clearReusableSession() {
-    return storage?.setItem(
-      REUSABLE_RUNTIME_SESSION_KEY,
-      JSON.stringify(null),
-    );
+    return storage?.setItem(REUSABLE_RUNTIME_SESSION_KEY, JSON.stringify(null));
   }
 
   async function disconnectPresenterDevice() {
@@ -529,9 +543,7 @@ export function SetupScreen({
       <KalamburyPresenterQrModal
         isOpen={isPresenterQrOpen}
         sessionCode={sessionCode}
-        controllerHref={
-          sessionCode ? `/games/kalambury/controller/${sessionCode}` : undefined
-        }
+        controllerHref={buildControllerHref(sessionCode)}
         onClose={() => setIsPresenterQrOpen(false)}
         connected={presenterDeviceConnected}
         onDisconnect={() => {

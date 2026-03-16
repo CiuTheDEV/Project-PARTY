@@ -34,7 +34,10 @@ export type KalamburyPresenterMessage =
   | { type: "host-preview-start"; deviceId: string }
   | { type: "host-preview-finish"; deviceId: string }
   | { type: "host-preview-reset"; deviceId: string }
-  | ({ type: "presenter-phrase"; deviceId: string } & KalamburyPresenterPhrasePayload)
+  | ({
+      type: "presenter-phrase";
+      deviceId: string;
+    } & KalamburyPresenterPhrasePayload)
   | { type: "presenter-clear"; deviceId: string | null };
 
 type BroadcastChannelLike = {
@@ -46,9 +49,7 @@ type BroadcastChannelLike = {
 type BroadcastChannelConstructor = new (name: string) => BroadcastChannelLike;
 
 export type KalamburyPresenterChannel = {
-  postMessage: (
-    message: KalamburyPresenterMessage,
-  ) => void | Promise<void>;
+  postMessage: (message: KalamburyPresenterMessage) => void | Promise<void>;
   subscribe: (
     handler: (message: KalamburyPresenterMessage) => void,
   ) => () => void;
@@ -74,9 +75,7 @@ type ControllerBridgeOptions = {
   readyRetryMs?: number;
   onPhraseChange?: (payload: KalamburyPresenterPhrasePayload | null) => void;
   onPreviewStateChange?: (state: KalamburyPresenterPreviewState) => void;
-  onConnectionStateChange?: (
-    state: KalamburyControllerConnectionState,
-  ) => void;
+  onConnectionStateChange?: (state: KalamburyControllerConnectionState) => void;
 };
 
 function resolveBroadcastChannel(
@@ -192,7 +191,10 @@ export function createKalamburyPresenterHostBridge(
         stopHeartbeat();
         return;
       }
-      void channel?.postMessage({ type: "host-ping", deviceId: pairedDeviceId });
+      void channel?.postMessage({
+        type: "host-ping",
+        deviceId: pairedDeviceId,
+      });
       setTimeout(() => {
         if (pairedDeviceId && Date.now() - lastPongTime > PING_TIMEOUT_MS) {
           pairedDeviceId = null;
@@ -212,7 +214,10 @@ export function createKalamburyPresenterHostBridge(
 
   if (channel) {
     unsubscribe = channel.subscribe((message) => {
-      if (message.type === "controller-pong" && message.deviceId === pairedDeviceId) {
+      if (
+        message.type === "controller-pong" &&
+        message.deviceId === pairedDeviceId
+      ) {
         lastPongTime = Date.now();
       }
 

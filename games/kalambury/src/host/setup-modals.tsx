@@ -149,14 +149,33 @@ type ToggleRowProps = {
 
 function ToggleRow({ label, description, active, onClick }: ToggleRowProps) {
   return (
-    <button type="button" onClick={onClick} style={{ ...toggleRowStyle, ...(active ? toggleRowActiveStyle : {}) }}>
+    <button
+      type="button"
+      onClick={onClick}
+      style={{ ...toggleRowStyle, ...(active ? toggleRowActiveStyle : {}) }}
+    >
       <span style={toggleCopyStyle}>
         <strong style={toggleLabelStyle}>{label}</strong>
-        {description ? <small style={toggleDescriptionStyle}>{description}</small> : null}
+        {description ? (
+          <small style={toggleDescriptionStyle}>{description}</small>
+        ) : null}
       </span>
-      <span aria-hidden="true" style={{ ...toggleSwitchStyle, ...(active ? toggleSwitchActiveStyle : {}) }}>
-        <span style={toggleSwitchTextStyle}>{active ? "WLACZONE" : "WYLACZONE"}</span>
-        <span style={{ ...toggleThumbStyle, ...(active ? toggleThumbActiveStyle : {}) }} />
+      <span
+        aria-hidden="true"
+        style={{
+          ...toggleSwitchStyle,
+          ...(active ? toggleSwitchActiveStyle : {}),
+        }}
+      >
+        <span style={toggleSwitchTextStyle}>
+          {active ? "WLACZONE" : "WYLACZONE"}
+        </span>
+        <span
+          style={{
+            ...toggleThumbStyle,
+            ...(active ? toggleThumbActiveStyle : {}),
+          }}
+        />
       </span>
     </button>
   );
@@ -214,13 +233,25 @@ function ModeSliderCard({
             }
           }}
         />
-        <div aria-hidden="true" style={{ ...sliderLabelsStyle, gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}>
+        <div
+          aria-hidden="true"
+          style={{
+            ...sliderLabelsStyle,
+            gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))`,
+          }}
+        >
           {options.map((option, index) => {
             const optionLabel = renderOption(option);
             const active = index === selectedIndex;
 
             return (
-              <span key={String(option)} style={{ ...sliderLabelStyle, ...(active ? sliderLabelActiveStyle : {}) }}>
+              <span
+                key={String(option)}
+                style={{
+                  ...sliderLabelStyle,
+                  ...(active ? sliderLabelActiveStyle : {}),
+                }}
+              >
                 {optionLabel}
               </span>
             );
@@ -265,11 +296,16 @@ export function KalamburyModeSettingsModal({
     modeSections[0];
 
   return (
-    <div style={modalOverlayShellStyle} role="presentation" onKeyDown={(event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    }} onClick={onClose}>
+    <div
+      style={modalOverlayShellStyle}
+      role="presentation"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          onClose();
+        }
+      }}
+      onClick={onClose}
+    >
       <dialog
         open
         aria-labelledby="kalambury-mode-settings-title"
@@ -278,21 +314,31 @@ export function KalamburyModeSettingsModal({
         onClick={(event) => event.stopPropagation()}
       >
         <div style={tajniacyModalTitlebarStyle}>
-          <h2 id="kalambury-mode-settings-title" style={tajniacyModalTitleStyle}>
+          <h2
+            id="kalambury-mode-settings-title"
+            style={tajniacyModalTitleStyle}
+          >
             Ustawienia trybu
           </h2>
         </div>
 
         <div style={tajniacyModalLayoutStyle}>
-          <nav style={tajniacyModalSidebarStyle} aria-label="Sekcje ustawien trybu">
+          <nav
+            style={tajniacyModalSidebarStyle}
+            aria-label="Sekcje ustawien trybu"
+          >
             {modeSections.map((section) => (
               <button
                 key={section.id}
                 type="button"
                 style={{
                   ...tajniacyModalNavButtonStyle,
-                  ...(resolvedActiveModeSection === section.id ? tajniacyActiveModalNavButtonStyle : {}),
-                  ...(section.disabled ? tajniacyDisabledModalNavButtonStyle : {}),
+                  ...(resolvedActiveModeSection === section.id
+                    ? tajniacyActiveModalNavButtonStyle
+                    : {}),
+                  ...(section.disabled
+                    ? tajniacyDisabledModalNavButtonStyle
+                    : {}),
                 }}
                 disabled={Boolean(section.disabled)}
                 aria-disabled={section.disabled ? "true" : undefined}
@@ -303,12 +349,17 @@ export function KalamburyModeSettingsModal({
                 }}
               >
                 <span style={navLabelRowStyle}>
-                  <span className="material-symbols-outlined" style={navIconStyle}>
+                  <span
+                    className="material-symbols-outlined"
+                    style={navIconStyle}
+                  >
                     {getModeSectionIcon(section.id)}
                   </span>
                   <span>{section.label}</span>
                 </span>
-                {section.badge ? <span style={navBadgeStyle}>{section.badge}</span> : null}
+                {section.badge ? (
+                  <span style={navBadgeStyle}>{section.badge}</span>
+                ) : null}
               </button>
             ))}
           </nav>
@@ -341,7 +392,9 @@ export function KalamburyModeSettingsModal({
 
                   <section style={settingsCardStyle}>
                     <div style={settingsLocklineStyle}>
-                      <span style={settingsCardLabelStyle}>Warunek zwyciestwa</span>
+                      <span style={settingsCardLabelStyle}>
+                        Warunek zwyciestwa
+                      </span>
                       <strong style={settingsCardValueStyle}>Rundy</strong>
                     </div>
                     <p style={settingsHintStyle}>
@@ -584,11 +637,16 @@ export function KalamburyAddPlayerModal({
   }
 
   return (
-    <div style={modalOverlayShellStyle} role="presentation" onKeyDown={(event) => {
-      if (event.key === "Escape") {
-        onClose();
-      }
-    }} onClick={onClose}>
+    <div
+      style={modalOverlayShellStyle}
+      role="presentation"
+      onKeyDown={(event) => {
+        if (event.key === "Escape") {
+          onClose();
+        }
+      }}
+      onClick={onClose}
+    >
       <dialog
         open
         aria-labelledby="kalambury-add-player-title"
@@ -596,7 +654,9 @@ export function KalamburyAddPlayerModal({
         onKeyDown={(event) => event.stopPropagation()}
         onClick={(event) => event.stopPropagation()}
       >
-        <h2 id="kalambury-add-player-title" style={avatarModalTitleStyle}>{title}</h2>
+        <h2 id="kalambury-add-player-title" style={avatarModalTitleStyle}>
+          {title}
+        </h2>
 
         <div style={playerPreviewLayoutStyle}>
           <div style={playerPreviewPanelStyle}>
@@ -612,6 +672,13 @@ export function KalamburyAddPlayerModal({
             <label style={playerPreviewFieldStyle}>
               <span style={playerPreviewFieldLabelStyle}>Nazwa gracza</span>
               <input
+                className={
+                  playerDraft.gender === "female"
+                    ? "kalambury-player-name-input kalambury-player-name-input--female"
+                    : playerDraft.gender === "male"
+                      ? "kalambury-player-name-input kalambury-player-name-input--male"
+                      : "kalambury-player-name-input"
+                }
                 style={{
                   ...playerNameInputStyle,
                   ...(playerDraft.gender === "female"
@@ -657,7 +724,9 @@ export function KalamburyAddPlayerModal({
                     aria-label={option.label}
                     style={{
                       ...genderChipStyle,
-                      ...(playerDraft.gender === option.id ? genderChipActiveStyle : {}),
+                      ...(playerDraft.gender === option.id
+                        ? genderChipActiveStyle
+                        : {}),
                     }}
                     onClick={() =>
                       setPlayerDraft((current) => ({
@@ -832,8 +901,8 @@ export function KalamburyPresenterQrModal({
             <p style={modalEyebrowStyle}>Tryb: Prezenter</p>
             <strong style={modalSessionStyle}>Sesja: {sessionCode}</strong>
             <p style={modalHintStyle}>
-              Zeskanuj telefonem prezentera, aby otworzyć prywatny widok
-              hasła i sterowanie tylko dla tej osoby.
+              Zeskanuj telefonem prezentera, aby otworzyć prywatny widok hasła i
+              sterowanie tylko dla tej osoby.
             </p>
             <div style={modalPresenceStyle}>
               <span
@@ -861,10 +930,14 @@ export function KalamburyPresenterQrModal({
               window.open(controllerUrl, "_blank", "noopener,noreferrer")
             }
           >
-            Otwórz link
+            Symuluj skan
           </button>
           {dismissible ? (
-            <button type="button" style={modalCloseActionStyle} onClick={onClose}>
+            <button
+              type="button"
+              style={modalCloseActionStyle}
+              onClick={onClose}
+            >
               Zamknij
             </button>
           ) : (
