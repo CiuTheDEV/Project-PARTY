@@ -10,7 +10,7 @@ import {
 } from "../manifest/hub-content";
 import type { KalamburySetupPayload } from "../runtime/state-machine";
 import { KalamburySymbolIcon } from "../shared/SymbolIcon";
-import type { KalamburyPresenterChannel } from "../shared/presenter-bridge";
+import type { KalamburyPresenterChannel } from "../shared/presenter/types";
 import { getKalamburySetupModeContent } from "../shared/setup-content";
 import type { KalamburyStorageLike } from "../shared/setup-storage";
 import { ConnectionModePanel } from "./ConnectionModePanel";
