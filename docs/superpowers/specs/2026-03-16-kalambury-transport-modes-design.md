@@ -184,11 +184,15 @@ W `games/kalambury/src/runtime/create-runtime.ts` (lub odpowiednik):
 const mode = getTransportMode()
 const sessionCode = context.sessionCode
 
-// Guard: Firebase wymaga sessionCode
-const resolvedMode = (mode === "firebase" && !sessionCode) ? "broadcast" : mode
+// Guard: Firebase wymaga sessionCode — brak sessionCode = błąd, nie cichy fallback
+if (mode === "firebase" && !sessionCode) {
+  throw new Error(
+    "Tryb Firebase wymaga aktywnej sesji sieciowej. Zmień tryb połączenia w Ustawieniach."
+  )
+}
 
 const transport = createKalamburyTransport(
-  resolvedMode,
+  mode,
   sessionCode ?? "",
   context.transport  // przekazywany do do-ws adaptera
 )
