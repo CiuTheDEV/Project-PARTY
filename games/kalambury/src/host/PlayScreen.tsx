@@ -18,11 +18,8 @@ import {
   resolveKalamburyScore,
   startKalamburyTurn,
 } from "../runtime/state-machine";
-import {
-  type KalamburyPresenterChannel,
-  type KalamburyPresenterPairState,
-  createKalamburyPresenterHostBridge,
-} from "../shared/presenter-bridge";
+import type { KalamburyPresenterChannel, KalamburyPresenterPairState } from "../shared/presenter/types";
+import { usePresenterHostBridge } from "./hooks/usePresenterHostBridge";
 import { KalamburyPresenterQrModal } from "./setup-modals";
 
 type PlayScreenProps = {
@@ -326,22 +323,7 @@ export function PlayScreen({
   });
   const drawAnimationTimerRef = useRef<number | null>(null);
   const drawSequenceRef = useRef<HTMLDivElement | null>(null);
-  const presenterBridgeRef = useRef<ReturnType<
-    typeof createKalamburyPresenterHostBridge
-  > | null>(null);
-  const playStateRef = useRef(playState);
-  const presenterRevealStageRef = useRef<PresenterRevealStage>("pending");
-  useEffect(() => {
-    playStateRef.current = playState;
-  });
-  useEffect(() => {
-    presenterRevealStageRef.current = presenterRevealStage;
-  });
-  const [presenterPairState, setPresenterPairState] =
-    useState<KalamburyPresenterPairState>({
-      connected: setupPayload.presenterDevice?.connected ?? false,
-      pairedDeviceId: setupPayload.presenterDevice?.pairedDeviceId ?? null,
-    });
+  const lastRerollRef = useRef(0);
   const [presenterRevealStage, setPresenterRevealStage] =
     useState<PresenterRevealStage>("pending");
   const [presenterRevealCountdown, setPresenterRevealCountdown] = useState(
@@ -355,10 +337,6 @@ export function PlayScreen({
 
   useEffect(() => {
     setPlayState(createKalamburyPlayState(setupPayload));
-    setPresenterPairState({
-      connected: setupPayload.presenterDevice?.connected ?? false,
-      pairedDeviceId: setupPayload.presenterDevice?.pairedDeviceId ?? null,
-    });
     setPresenterRevealStage("pending");
     setPresenterRevealCountdown(PRESENTER_REVEAL_PREVIEW_SECONDS);
   }, [setupPayload]);
@@ -401,7 +379,7 @@ export function PlayScreen({
     return () => {
       window.clearInterval(intervalId);
     };
-  }, [playState, presenterReconnectRequired]);
+  }, [playState?.stage, presenterReconnectRequired]);
 
   useEffect(() => {
     if (!playState || playState.stage !== "SCORE") {
@@ -412,59 +390,49 @@ export function PlayScreen({
     }
   }, [playState]);
 
-  useEffect(() => {
-    if (!setupPayload.presenterDevice?.enabled || !sessionCode) {
-      presenterBridgeRef.current = null;
-      setPresenterPairState({
-        connected: false,
-        pairedDeviceId: setupPayload.presenterDevice?.pairedDeviceId ?? null,
-      });
-      return;
-    }
-
-    const bridge = createKalamburyPresenterHostBridge(sessionCode, {
-      channel: transportChannel,
+  const { pairState: presenterPairState, bridge: presenterBridge } =
+    usePresenterHostBridge({
+      sessionCode,
+      enabled: setupPayload.presenterDevice?.enabled ?? false,
       initialPairedDeviceId:
         setupPayload.presenterDevice?.pairedDeviceId ?? null,
+      channel: transportChannel,
       pingIntervalMs: 3000,
       pingTimeoutMs: 5000,
-      onPairingChange: setPresenterPairState,
       onRevealRequest: () => {
-        if (playStateRef.current?.stage !== "PRZYGOTOWANIE") {
+        // These values come from the latest render's closure — safe because the hook
+        // stores onRevealRequest in a ref and reads .current at call time.
+        if (playState?.stage !== "PRZYGOTOWANIE") {
           return;
         }
 
         setPresenterRevealStage("preview");
         setPresenterRevealCountdown(PRESENTER_REVEAL_PREVIEW_SECONDS);
-        bridge.startPreviewWindow();
+        presenterBridge.startPreviewWindow();
       },
       onRerollRequest: () => {
         if (
-          playStateRef.current?.stage !== "PRZYGOTOWANIE" ||
-          presenterRevealStageRef.current !== "preview"
+          playState?.stage !== "PRZYGOTOWANIE" ||
+          presenterRevealStage !== "preview"
         ) {
           return;
         }
+
+        if (Date.now() - lastRerollRef.current < 1000) return;
+        lastRerollRef.current = Date.now();
 
         setPlayState((current) =>
           current ? rerollKalamburyPhrase(current, setupPayload) : current,
         );
       },
     });
-    presenterBridgeRef.current = bridge;
 
+  // Clear presenter phrase when PlayScreen unmounts
+  useEffect(() => {
     return () => {
-      bridge.clearPhrase();
-      bridge.destroy();
-      if (presenterBridgeRef.current === bridge) {
-        presenterBridgeRef.current = null;
-      }
+      presenterBridge.clearPhrase();
     };
-  }, [
-    sessionCode,
-    setupPayload,
-    transportChannel,
-  ]);
+  }, [presenterBridge]);
 
   useEffect(() => {
     if (
@@ -476,7 +444,7 @@ export function PlayScreen({
     }
 
     if (presenterRevealCountdown <= 0) {
-      presenterBridgeRef.current?.finishPreviewWindow();
+      presenterBridge.finishPreviewWindow();
       setPlayState((current) =>
         current ? startKalamburyTurn(current) : current,
       );
@@ -755,12 +723,6 @@ export function PlayScreen({
   } as CSSProperties;
 
   useEffect(() => {
-    const bridge = presenterBridgeRef.current;
-
-    if (!bridge) {
-      return;
-    }
-
     if (
       !playState ||
       !presenter ||
@@ -768,11 +730,11 @@ export function PlayScreen({
       !presenterPairState.connected ||
       !presenterPairState.pairedDeviceId
     ) {
-      bridge.clearPhrase();
+      presenterBridge.clearPhrase();
       return;
     }
 
-    bridge.publishPhrase({
+    presenterBridge.publishPhrase({
       phrase: playState.phrase,
       categoryLabel: playState.phraseCategoryLabel,
       wordCount: playState.wordCount,
@@ -786,26 +748,22 @@ export function PlayScreen({
     presenterPairState,
     presenterPhraseChangeAllowed,
     presenterPhraseChangeRemaining,
+    presenterBridge,
   ]);
 
   useEffect(() => {
-    const bridge = presenterBridgeRef.current;
-
-    if (!bridge || !playState || !presenterPairState.connected) {
+    if (!playState || !presenterPairState.connected) {
       return;
     }
 
     if (playState.stage === "ACT") {
-      bridge.finishPreviewWindow();
-      bridge.clearPhrase();
+      presenterBridge.finishPreviewWindow();
+      presenterBridge.clearPhrase();
     }
-  }, [playState, presenterPairState.connected]);
+  }, [playState, presenterPairState.connected, presenterBridge]);
 
   useEffect(() => {
-    const bridge = presenterBridgeRef.current;
-
     if (
-      !bridge ||
       !playState ||
       playState.stage !== "PRZYGOTOWANIE" ||
       !presenterPairState.connected
@@ -814,9 +772,9 @@ export function PlayScreen({
     }
 
     if (presenterRevealStage === "pending") {
-      bridge.resetPreviewWindow();
+      presenterBridge.resetPreviewWindow();
     }
-  }, [playState, presenterPairState.connected, presenterRevealStage]);
+  }, [playState, presenterPairState.connected, presenterRevealStage, presenterBridge]);
 
   if (!playState) {
     return null;
