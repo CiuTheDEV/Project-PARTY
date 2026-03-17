@@ -1,5 +1,6 @@
 import type { KalamburySetupPayload } from "../../runtime/state-machine";
 import { PRESENTER_REVEAL_PREVIEW_SECONDS } from "../../settings/constants";
+import { formatKalamburyTimerValue } from "./play-utils";
 
 type PresenterRevealStage = "pending" | "preview";
 
@@ -11,10 +12,6 @@ export type PreparePhaseProps = {
   presenterReconnectRequired: boolean;
 };
 
-function formatKalamburyTimerValue(seconds: number) {
-  return Math.max(0, Math.trunc(seconds)).toString();
-}
-
 export function PreparePhase({
   presenter,
   currentTurnLabel,
@@ -22,7 +19,6 @@ export function PreparePhase({
   presenterRevealCountdown,
   presenterReconnectRequired,
 }: PreparePhaseProps) {
-  void PRESENTER_REVEAL_PREVIEW_SECONDS;
 
   return (
     <div className="kalambury-stage-panel kalambury-stage-panel--prepare">
@@ -74,7 +70,7 @@ export function PreparePhase({
             {presenterReconnectRequired
               ? "Podlacz ponownie telefon prezentera. Runda wznowi sie dokladnie z tego miejsca po sparowaniu nowego lub tego samego urzadzenia."
               : presenterRevealStage === "preview"
-                ? "Po 10 sekundach runda rozpocznie sie automatycznie. Host nadal nie widzi hasla."
+                ? `Po ${PRESENTER_REVEAL_PREVIEW_SECONDS} sekundach runda rozpocznie sie automatycznie. Host nadal nie widzi hasla.`
                 : "Prezenter musi odkryc karte na telefonie. Dopiero wtedy zacznie sie okno na zapoznanie z haslem."}
           </p>
         </div>

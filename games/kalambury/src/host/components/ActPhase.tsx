@@ -2,6 +2,7 @@ import type {
   KalamburyPlayState,
   KalamburySetupPayload,
 } from "../../runtime/state-machine";
+import { formatKalamburyTimerValue } from "./play-utils";
 
 export type ActPhaseProps = {
   playState: KalamburyPlayState;
@@ -12,10 +13,6 @@ export type ActPhaseProps = {
   eventLabel: string | null;
   onStop: () => void;
 };
-
-function formatKalamburyTimerValue(seconds: number) {
-  return Math.max(0, Math.trunc(seconds)).toString();
-}
 
 export function ActPhase({
   playState,

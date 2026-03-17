@@ -86,6 +86,7 @@ export function PlayScreen({
   useEffect(() => {
     if (
       playState?.stage !== "LOSOWANIE" &&
+      playState?.stage !== "KOLEJNOSC" &&
       pendingDrawState !== null
     ) {
       setPendingDrawState(null);
@@ -223,23 +224,6 @@ export function PlayScreen({
       : 0;
   const presenterPhraseChangeAllowed = presenterPhraseChangeRemaining !== 0;
 
-  const turnOrderPlayers = useMemo(
-    () =>
-      playState
-        ? playState.turnOrderIds.reduce<
-            Array<KalamburySetupPayload["players"][number]>
-          >((accumulator, playerId) => {
-            const player = setupPayload.players.find(
-              (candidate) => candidate.id === playerId,
-            );
-            if (player) {
-              accumulator.push(player);
-            }
-            return accumulator;
-          }, [])
-        : [],
-    [playState, setupPayload],
-  );
 
   const sortedScoreboard = useMemo(
     () =>
@@ -404,7 +388,8 @@ export function PlayScreen({
 
   function handleDrawComplete(finalState: KalamburyPlayState) {
     setPlayState(finalState);
-    setPendingDrawState(null);
+    // Keep pendingDrawState so DrawSequence stays mounted to display KOLEJNOSC.
+    // The effect above will clear it when we advance past KOLEJNOSC.
   }
 
   function handleSkipDraw() {
@@ -412,7 +397,8 @@ export function PlayScreen({
       return;
     }
     setPlayState(pendingDrawState);
-    setPendingDrawState(null);
+    // Keep pendingDrawState so DrawSequence stays mounted to display KOLEJNOSC.
+    // The effect above will clear it when we advance past KOLEJNOSC.
   }
 
   function handleShowPreparation() {
@@ -537,43 +523,6 @@ export function PlayScreen({
                   <div className="kalambury-card-stack__card kalambury-card-stack__card--front">
                     <span>KALAMBURY</span>
                   </div>
-                </div>
-              </div>
-            ) : null}
-
-            {playState.stage === "KOLEJNOSC" ? (
-              <div className="kalambury-stage-panel kalambury-stage-panel--order">
-                <div
-                  className={
-                    turnOrderPlayers.length >= 9
-                      ? "kalambury-order-grid kalambury-order-grid--dense"
-                      : turnOrderPlayers.length >= 5
-                        ? "kalambury-order-grid kalambury-order-grid--compact"
-                        : turnOrderPlayers.length % 2 === 1
-                          ? "kalambury-order-grid kalambury-order-grid--orphan"
-                          : "kalambury-order-grid"
-                  }
-                >
-                  {turnOrderPlayers.map((player, index) => (
-                    <article
-                      className="kalambury-persona-card kalambury-persona-card--order kalambury-order-card"
-                      data-gender={player.gender}
-                      key={player.id}
-                    >
-                      <span className="kalambury-persona-card__badge kalambury-order-card__index">
-                        {index + 1}
-                      </span>
-                      <div
-                        className="kalambury-persona-card__avatar kalambury-order-card__avatar"
-                        aria-hidden="true"
-                      >
-                        {player.avatar}
-                      </div>
-                      <strong className="kalambury-persona-card__nameplate kalambury-order-card__name">
-                        {player.name}
-                      </strong>
-                    </article>
-                  ))}
                 </div>
               </div>
             ) : null}
