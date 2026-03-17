@@ -931,7 +931,6 @@ git commit -m "refactor(kalambury): split PlayScreen into phase components"
 
 **Files:**
 - Modify: `games/kalambury/src/runtime/state-machine.test.ts`
-- Modify: `games/kalambury/src/transport/firebase.test.ts`
 - Modify: `games/kalambury/src/shared/setup-storage.test.ts`
 
 ### 6a: state-machine edge cases
@@ -1040,52 +1039,9 @@ pnpm --filter @project-party/game-kalambury test 2>&1 | tail -10
 
 Oczekiwane: pass
 
-### 6b: firebase error handling
+### 6b: firebase — POMINIĘTY
 
-- [ ] **Step 3: Sprawdź obecne testy firebase**
-
-```bash
-grep -n "error\|fail\|reject\|push" "C:/Users/Mateo/Desktop/PROJECT PARTY/games/kalambury/src/transport/firebase.test.ts" | head -10
-```
-
-- [ ] **Step 4: Dodaj testy do firebase.test.ts**
-
-**Ważne:** Export w `firebase.ts` to `createFirebaseAdapter` (nie `createFirebaseKalamburyAdapter`). Firebase wymaga prawdziwego SDK i konfiguracji env vars — nie da się go łatwo zmockować w testach jednostkowych.
-
-Sprawdź jak istniejące testy w `firebase.test.ts` obsługują brak Firebase SDK, a następnie dodaj test przez warstwę `index.ts` (która jest już przetestowana):
-
-```typescript
-// Dodaj do firebase.test.ts — weryfikuje że warstwa index.ts odrzuca brakujący sessionCode
-// dla trybu firebase, co jest jedynym przypadkiem który możemy przetestować bez Firebase SDK
-test("createKalamburyTransportAsync rejects firebase mode when sessionCode is undefined", async () => {
-  const { createKalamburyTransportAsync } = await import("./index.ts");
-  await assert.rejects(
-    () => createKalamburyTransportAsync("firebase", undefined, {
-      send: async () => {},
-      on: () => () => {},
-    }),
-    (err: unknown) => {
-      // Powinno rzucić błąd z wzmianką o sessionCode
-      return err instanceof Error && err.message.toLowerCase().includes("session");
-    },
-  );
-});
-
-test("createKalamburyTransportAsync rejects firebase mode when sessionCode is empty string", async () => {
-  const { createKalamburyTransportAsync } = await import("./index.ts");
-  await assert.rejects(
-    () => createKalamburyTransportAsync("firebase", "", {
-      send: async () => {},
-      on: () => () => {},
-    }),
-    (err: unknown) => {
-      return err instanceof Error;
-    },
-  );
-});
-```
-
-> Jeśli istniejące testy firebase.test.ts już pokrywają te przypadki (sprawdź przez `grep -n "undefined\|empty" firebase.test.ts`), pomiń ten krok.
+Przypadki testowe `firebase mode rejects on empty/undefined sessionCode` są już w pełni pokryte przez `games/kalambury/src/transport/index.test.ts` (testy "rejects when mode is firebase and sessionCode is empty" oraz "rejects when mode is firebase and sessionCode is undefined"). Nie ma `firebase.test.ts` i nie trzeba go tworzyć.
 
 - [ ] **Step 5: Uruchom testy**
 
@@ -1161,9 +1117,8 @@ Oczekiwane: pass
 ```bash
 cd "C:/Users/Mateo/Desktop/PROJECT PARTY"
 git add games/kalambury/src/runtime/state-machine.test.ts
-git add games/kalambury/src/transport/firebase.test.ts
 git add games/kalambury/src/shared/setup-storage.test.ts
-git commit -m "test(kalambury): add edge case tests for state-machine, firebase, setup-storage"
+git commit -m "test(kalambury): add edge case tests for state-machine and setup-storage"
 ```
 
 ---
