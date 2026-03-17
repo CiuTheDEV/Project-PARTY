@@ -32,11 +32,9 @@ import {
 } from "../shared/setup-storage";
 import { getTransportMode } from "../transport/index";
 import { cloneModeSettings, normalizeModeSettings } from "../shared/setup-ui";
-import {
-  KalamburyAddPlayerModal,
-  KalamburyModeSettingsModal,
-  KalamburyPresenterQrModal,
-} from "./setup-modals";
+import { KalamburyModeSettingsModal } from "./modals/ModeSettingsModal.tsx";
+import { KalamburyAddPlayerModal } from "./modals/AddPlayerModal.tsx";
+import { KalamburyPresenterQrModal } from "./modals/PresenterQrModal.tsx";
 import {
   KalamburyCategoriesPanel,
   KalamburyModeSummaryPanel,

@@ -21,7 +21,7 @@ import {
 import type { KalamburyPresenterChannel, KalamburyPresenterPairState } from "../shared/presenter/types";
 import { PRESENTER_REVEAL_PREVIEW_SECONDS } from "../settings/constants";
 import { usePresenterHostBridge } from "./hooks/usePresenterHostBridge";
-import { KalamburyPresenterQrModal } from "./setup-modals";
+import { KalamburyPresenterQrModal } from "./modals/PresenterQrModal.tsx";
 
 type PlayScreenProps = {
   setupPayload: KalamburySetupPayload;

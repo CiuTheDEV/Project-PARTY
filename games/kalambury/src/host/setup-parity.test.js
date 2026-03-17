@@ -6,8 +6,16 @@ const setupSectionsSource = readFileSync(
   new URL("./setup-sections.tsx", import.meta.url),
   "utf8",
 );
-const setupModalsSource = readFileSync(
-  new URL("./setup-modals.tsx", import.meta.url),
+const addPlayerModalSource = readFileSync(
+  new URL("./modals/AddPlayerModal.tsx", import.meta.url),
+  "utf8",
+);
+const presenterQrModalSource = readFileSync(
+  new URL("./modals/PresenterQrModal.tsx", import.meta.url),
+  "utf8",
+);
+const modeSettingsModalSource = readFileSync(
+  new URL("./modals/ModeSettingsModal.tsx", import.meta.url),
   "utf8",
 );
 const setupScreenSource = readFileSync(
@@ -25,12 +33,12 @@ test("player cards keep icon-based legacy actions instead of text placeholders",
 });
 
 test("setup modals keep legacy iconography for infinity and gender chips", () => {
-  assert.equal(setupModalsSource.includes("function InfinityIcon"), true);
-  assert.equal(setupModalsSource.includes("function Venus"), true);
-  assert.equal(setupModalsSource.includes("function Mars"), true);
-  assert.equal(setupModalsSource.includes("<InfinityIcon"), true);
-  assert.equal(setupModalsSource.includes("icon: Venus"), true);
-  assert.equal(setupModalsSource.includes("icon: Mars"), true);
+  assert.equal(modeSettingsModalSource.includes("function InfinityIcon"), true);
+  assert.equal(addPlayerModalSource.includes("function Venus"), true);
+  assert.equal(addPlayerModalSource.includes("function Mars"), true);
+  assert.equal(modeSettingsModalSource.includes("<InfinityIcon"), true);
+  assert.equal(addPlayerModalSource.includes("icon: Venus"), true);
+  assert.equal(addPlayerModalSource.includes("icon: Mars"), true);
 });
 
 test("setup screen keeps legacy shell accents and feedback copy", () => {
@@ -72,9 +80,9 @@ test("setup screen renders presenter device join entry with session code", () =>
 });
 
 test("presenter device flow uses QR modal with local scan simulation", () => {
-  assert.equal(setupModalsSource.includes("QR"), true);
-  assert.equal(setupModalsSource.includes("Symuluj skan"), true);
-  assert.equal(setupModalsSource.includes("window.open"), true);
+  assert.equal(presenterQrModalSource.includes("QR"), true);
+  assert.equal(presenterQrModalSource.includes("Symuluj skan"), true);
+  assert.equal(presenterQrModalSource.includes("window.open"), true);
 });
 
 const hostAppSource = readFileSync(
@@ -135,13 +143,13 @@ test("setup screen uses the shared player card anatomy for setup roster cards", 
 
 test("add player modal colors the name field border by selected gender", () => {
   assert.equal(
-    setupModalsSource.includes(
+    addPlayerModalSource.includes(
       '? "kalambury-player-name-input kalambury-player-name-input--female"',
     ),
     true,
   );
   assert.equal(
-    setupModalsSource.includes(
+    addPlayerModalSource.includes(
       ': playerDraft.gender === "male"\n                      ? "kalambury-player-name-input kalambury-player-name-input--male"',
     ),
     true,
