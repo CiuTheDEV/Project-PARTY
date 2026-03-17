@@ -77,3 +77,42 @@ test("supports runtime storage adapters that return promises", async () => {
   assert.equal(restored.pairedPresenterDeviceId, "device-a");
   assert.equal(restored.activeCategoryId, "muzyka");
 });
+
+test("loadKalamburySetupDraft returns baseState when storage returns null for the key", async () => {
+  const baseState = createInitialKalamburySetupState();
+  const storage = createMemoryStorage(); // pusta — getItem zwróci null
+  const storageKey = createKalamburySetupDraftStorageKey("test-game");
+
+  const result = await loadKalamburySetupDraft(storage, storageKey, baseState);
+  assert.deepEqual(result, baseState);
+});
+
+test("loadKalamburySetupDraft returns baseState when storage is null", async () => {
+  const baseState = createInitialKalamburySetupState();
+  const result = await loadKalamburySetupDraft(null, "any-key", baseState);
+  assert.deepEqual(result, baseState);
+});
+
+test("saveKalamburySetupDraft does not throw when storage is null", async () => {
+  const state = createInitialKalamburySetupState();
+  // Should resolve without throwing
+  await saveKalamburySetupDraft(null, "any-key", state);
+});
+
+test("saveKalamburySetupDraft does not catch errors from setItem", async () => {
+  const throwingStorage = {
+    getItem: () => Promise.resolve(null),
+    setItem: () => { throw new Error("storage full"); },
+    removeItem: () => {},
+  };
+  const state = createInitialKalamburySetupState();
+  const storageKey = createKalamburySetupDraftStorageKey("test-game");
+  // saveKalamburySetupDraft does not have error handling — errors propagate
+  try {
+    await saveKalamburySetupDraft(throwingStorage, storageKey, state);
+    assert.fail("should have thrown");
+  } catch (err: unknown) {
+    const error = err as Error;
+    assert.match(error.message, /storage full/);
+  }
+});
