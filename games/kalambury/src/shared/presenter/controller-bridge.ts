@@ -4,7 +4,6 @@ import { createPresenterChannel } from "./channel-utils.ts";
 import {
   type ControllerBridgeOptions,
   type KalamburyControllerConnectionState,
-  type KalamburyPresenterChannel,
   type KalamburyPresenterMessage,
 } from "./types.ts";
 

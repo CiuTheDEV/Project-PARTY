@@ -4,7 +4,6 @@ import { createPresenterChannel } from "./channel-utils.ts";
 import {
   type HostBridgeOptions,
   type KalamburyPresenterMessage,
-  type KalamburyPresenterPairState,
 } from "./types.ts";
 
 export function createKalamburyPresenterHostBridge(
