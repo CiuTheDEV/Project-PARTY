@@ -113,7 +113,7 @@ test("host bridge: second device is rejected while first is paired", () => {
   assert.ok(states.includes("rejected"), `expected rejected, got ${JSON.stringify(states)}`);
 });
 
-test("host bridge: destroy() sends controller-disconnected to paired device", () => {
+test("host bridge: destroy() sends host-reset to paired device and emits onPairingChange(false)", () => {
   FakeBroadcastChannel.reset();
   const pairingStates: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];
 
@@ -127,7 +127,7 @@ test("host bridge: destroy() sends controller-disconnected to paired device", ()
   });
 
   ctrl.announceReady();
-  host.destroy(); // sends controller-disconnected to dev-a → host emits onPairingChange(false)
+  host.destroy(); // sends host-reset → controller goes pending, host emits onPairingChange(false)
 
   assert.deepEqual(pairingStates, [
     { connected: true, pairedDeviceId: "dev-a" },

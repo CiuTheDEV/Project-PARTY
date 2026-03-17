@@ -182,6 +182,26 @@ Checklist:
 - [ ] testy obejmują local i remote path
 - [ ] docs są zaktualizowane, jeśli rozszerzasz kontrakt platformy
 
+### Opcjonalny fallback Firebase (wzorzec z Kalambury)
+
+Jeśli gra potrzebuje dodatkowego fallbacku gdy Durable Objects są niedostępne, może zarządzać własnym wyborem transportu w katalogu `transport/` — tak jak robi to Kalambury.
+
+Wzorzec:
+- `transport/index.ts` — fabryka `createGameTransportAsync(mode, sessionCode, contextTransport)`
+- `transport/types.ts` — interfejs `GameTransport`, enum trybów
+- `transport/broadcast.ts` — adapter BroadcastChannel
+- `transport/do-ws.ts` — wrapper na `context.transport` (DO + WebSocket)
+- `transport/firebase.ts` — Firebase RTDB adapter (lazy init)
+- `transport/transport-storage.ts` — persystencja wyboru w `localStorage`
+
+**Ważne:**
+- Platforma (`mountRuntime.ts`) nie wie o tym mechanizmie.
+- Firebase zastępuje tylko kanał komunikacji (send/on) — storage sesji pozostaje w DO.
+- Tryb persystowany w `localStorage` (np. `kalambury:transport-mode`).
+- Wybór transportu zawsze należy do gry, nie do platformy.
+
+Referencja: `games/kalambury/src/transport/`, `docs/DECISIONS.md` (2026-03-16).
+
 ## 12. Minimalna walidacja przed deployem
 
 Uruchom:

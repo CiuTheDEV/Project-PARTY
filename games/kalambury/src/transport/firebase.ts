@@ -37,7 +37,7 @@ export async function createFirebaseAdapter(
   sessionCode: string,
 ): Promise<KalamburyTransport> {
   const app = await getFirebaseApp();
-  const { getDatabase, ref, push, onChildAdded, off } = await import(
+  const { getDatabase, ref, push, onChildAdded, get, query, orderByKey, limitToLast, startAfter } = await import(
     "firebase/database"
   );
 
@@ -47,8 +47,20 @@ export async function createFirebaseAdapter(
     `sessions/${sessionCode}/events`,
   );
 
-  // Remember join timestamp — do not replay history
-  const joinTimestamp = Date.now();
+  // Find the key of the last existing record so onChildAdded only delivers
+  // events pushed after this adapter was created — regardless of clock skew
+  // between devices.
+  let afterKey: string | null = null;
+  try {
+    const lastSnap = await get(query(sessionRef, orderByKey(), limitToLast(1)));
+    if (lastSnap.exists()) {
+      lastSnap.forEach((child) => {
+        afterKey = child.key;
+      });
+    }
+  } catch {
+    // If the read fails we fall back to receiving all — acceptable degradation.
+  }
 
   // Single shared listener that fans out to per-event handlers
   const handlers = new Map<string, Set<(payload: unknown) => void>>();
@@ -56,15 +68,16 @@ export async function createFirebaseAdapter(
 
   function ensureSharedListener() {
     if (sharedUnsubscribe) return;
-    const unsub = onChildAdded(sessionRef, (snapshot) => {
+    const listenQuery = afterKey
+      ? query(sessionRef, orderByKey(), startAfter(afterKey))
+      : query(sessionRef, orderByKey());
+    const unsub = onChildAdded(listenQuery, (snapshot) => {
       const data = snapshot.val() as {
         event: string;
         payload: unknown;
-        createdAt: number;
       } | null;
 
       if (!data) return;
-      if (data.createdAt < joinTimestamp) return;
 
       const eventHandlers = handlers.get(data.event);
       if (!eventHandlers) return;
@@ -81,7 +94,6 @@ export async function createFirebaseAdapter(
       push(sessionRef, {
         event,
         payload: payload ?? null,
-        createdAt: Date.now(),
       }).catch((err: unknown) => {
         console.error("[kalambury/firebase] send error:", err);
       });
@@ -107,11 +119,6 @@ export async function createFirebaseAdapter(
           console.error("[firebase transport] Failed to unsubscribe:", err);
         }
         sharedUnsubscribe = null;
-      }
-      try {
-        off(sessionRef);
-      } catch (err) {
-        console.error("[firebase transport] Failed to detach listener:", err);
       }
     },
   };

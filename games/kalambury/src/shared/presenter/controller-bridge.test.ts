@@ -186,6 +186,44 @@ test("controller bridge: destroy() sends controller-disconnected", () => {
   ]);
 });
 
+test("controller bridge: host-reset does not change state of rejected controller", () => {
+  FakeBroadcastChannel.reset();
+  const states: string[] = [];
+
+  const host = createKalamburyPresenterHostBridge("C08", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+  });
+  // ctrl1 pairs first, ctrl2 gets rejected
+  const ctrl1 = createKalamburyPresenterControllerBridge("C08", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "dev-a",
+  });
+  const ctrl2 = createKalamburyPresenterControllerBridge("C08", {
+    BroadcastChannelImpl: FakeBroadcastChannel,
+    deviceId: "dev-b",
+    onConnectionStateChange: (s) => states.push(s),
+  });
+
+  ctrl1.announceReady(); // dev-a pairs
+  ctrl2.announceReady(); // dev-b rejected
+
+  assert.ok(states.includes("rejected"), `expected rejected before reset`);
+  const statesBeforeReset = [...states];
+
+  // host-reset broadcast — should NOT move rejected ctrl2 back to pending
+  host.disconnectPresenterDevice();
+
+  assert.deepEqual(
+    states,
+    statesBeforeReset,
+    `rejected controller should ignore host-reset, states: ${JSON.stringify(states)}`,
+  );
+
+  host.destroy();
+  ctrl1.destroy();
+  ctrl2.destroy();
+});
+
 test("controller bridge: heartbeat timeout detected by host after reconnect path starts heartbeat", async () => {
   FakeBroadcastChannel.reset();
   const states: Array<{ connected: boolean; pairedDeviceId: string | null }> = [];

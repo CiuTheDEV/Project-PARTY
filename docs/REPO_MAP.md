@@ -20,7 +20,7 @@ Szybka mapa aktywnego repo Project Party.
 
 ## games/
 
-- `games/kalambury/` - referencyjny moduł gry z host/controller/setup/runtime/transport
+- `games/kalambury/` - referencyjny moduł gry z host/controller/setup/runtime/transport (BroadcastChannel, DO+WS, Firebase RTDB fallback)
 - `games/tajniacy/` - drugi moduł gry z odmiennym contentem i wspólnym shell-em wejścia
 
 ## packages/

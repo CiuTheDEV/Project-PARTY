@@ -36,6 +36,7 @@ export function createKalamburyRuntime(
   context: GameRuntimeContext,
 ): GameRuntimeHandle {
   let transport: KalamburyTransport | null = null;
+  let destroyed = false;
 
   return {
     async start() {
@@ -50,11 +51,18 @@ export function createKalamburyRuntime(
         }
       }
       const mode = getTransportMode();
-      transport = await createKalamburyTransportAsync(
+      const t = await createKalamburyTransportAsync(
         mode,
         context.sessionCode,
         context.transport,
       );
+
+      if (destroyed) {
+        t.destroy();
+        return;
+      }
+
+      transport = t;
 
       context.storage.set("kalambury:last-session-id", context.sessionId);
       transport.send("kalambury/runtime-started", {
@@ -91,6 +99,7 @@ export function createKalamburyRuntime(
       );
     },
     destroy() {
+      destroyed = true;
       transport?.destroy();
       transport = null;
       context.ui.unmount();

@@ -145,3 +145,41 @@ Przyczyna:
 - patrz wyżej: "WebSocket nie łączy się"
 
 Gdy WS działa poprawnie, latency powinno wynosić <200ms.
+
+---
+
+## Firebase transport (Kalambury)
+
+### "Firebase: session not found" przy starcie gry
+
+Symptoms:
+- gra nie startuje, błąd w konsoli: brak aktywnej sesji Firebase
+
+Przyczyna:
+- wybrano tryb `firebase` w Ustawieniach → Tryb połączenia, ale nie ma aktywnej sesji Firebase
+
+Fix:
+- tryb Firebase wymaga jawnie skonfigurowanej sesji — cichy fallback celowo nie istnieje (patrz `docs/DECISIONS.md` 2026-03-16)
+- wróć do Ustawień → Tryb połączenia i wybierz `do-ws` albo `broadcast`
+
+### Telefon nie synchronizuje się z hostem mimo Firebase
+
+Symptoms:
+- host i telefon mają różny tryb transportu
+
+Checklist:
+- sprawdź `localStorage` klucz `kalambury:transport-mode` na obu urządzeniach — oba muszą mieć ten sam tryb
+- tryb nie jest propagowany automatycznie przez sesję — każde urządzenie ustawia go lokalnie
+
+### Firebase adapter nie inicjalizuje się
+
+Symptoms:
+- błąd importu / undefined przy próbie użycia Firebase
+
+Przyczyna:
+- Firebase jest lazy-initialized w `games/kalambury/src/transport/firebase.ts`
+- inicjalizacja następuje dopiero przy pierwszym użyciu trybu `firebase`
+
+Checklist:
+- sprawdź czy `firebase` jest w `dependencies` w `games/kalambury/package.json`
+- uruchom `pnpm install` jeśli zależność była ostatnio dodana
