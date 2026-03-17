@@ -1,53 +1,11 @@
 // games/kalambury/src/shared/presenter/host-bridge.ts
 
+import { createPresenterChannel } from "./channel-utils.ts";
 import {
-  isPresenterMessage,
-  type BroadcastChannelConstructor,
   type HostBridgeOptions,
-  type KalamburyPresenterChannel,
   type KalamburyPresenterMessage,
   type KalamburyPresenterPairState,
 } from "./types.ts";
-
-function resolveBroadcastChannel(
-  BroadcastChannelImpl?: BroadcastChannelConstructor,
-) {
-  if (BroadcastChannelImpl) return BroadcastChannelImpl;
-  if (typeof BroadcastChannel === "undefined") return null;
-  return BroadcastChannel;
-}
-
-function getChannelName(sessionCode: string) {
-  return `project-party.kalambury.presenter.${sessionCode.toUpperCase()}`;
-}
-
-function createPresenterChannel(
-  sessionCode: string,
-  BroadcastChannelImpl?: BroadcastChannelConstructor,
-): KalamburyPresenterChannel | null {
-  const Channel = resolveBroadcastChannel(BroadcastChannelImpl);
-  if (!Channel || !sessionCode) return null;
-
-  const channel = new Channel(getChannelName(sessionCode));
-
-  return {
-    postMessage(message) {
-      channel.postMessage(message);
-    },
-    subscribe(handler) {
-      channel.onmessage = (event) => {
-        if (!isPresenterMessage(event.data)) return;
-        handler(event.data);
-      };
-      return () => {
-        channel.onmessage = null;
-      };
-    },
-    close() {
-      channel.close();
-    },
-  };
-}
 
 export function createKalamburyPresenterHostBridge(
   sessionCode: string,
@@ -230,8 +188,7 @@ export function createKalamburyPresenterHostBridge(
       unsubscribe();
       if (pairedDeviceId) {
         void channel?.postMessage({
-          type: "controller-disconnected",
-          deviceId: pairedDeviceId,
+          type: "host-reset",
         } satisfies KalamburyPresenterMessage);
         pairedDeviceId = null;
         emitPairingChange(false);

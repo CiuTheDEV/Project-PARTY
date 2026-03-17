@@ -1,52 +1,12 @@
 // games/kalambury/src/shared/presenter/controller-bridge.ts
 
+import { createPresenterChannel } from "./channel-utils.ts";
 import {
-  isPresenterMessage,
   type ControllerBridgeOptions,
   type KalamburyControllerConnectionState,
   type KalamburyPresenterChannel,
   type KalamburyPresenterMessage,
 } from "./types.ts";
-
-function resolveBroadcastChannel(
-  BroadcastChannelImpl?: import("./types.ts").BroadcastChannelConstructor,
-) {
-  if (BroadcastChannelImpl) return BroadcastChannelImpl;
-  if (typeof BroadcastChannel === "undefined") return null;
-  return BroadcastChannel;
-}
-
-function getChannelName(sessionCode: string) {
-  return `project-party.kalambury.presenter.${sessionCode.toUpperCase()}`;
-}
-
-function createPresenterChannel(
-  sessionCode: string,
-  BroadcastChannelImpl?: import("./types.ts").BroadcastChannelConstructor,
-): KalamburyPresenterChannel | null {
-  const Channel = resolveBroadcastChannel(BroadcastChannelImpl);
-  if (!Channel || !sessionCode) return null;
-
-  const channel = new Channel(getChannelName(sessionCode));
-
-  return {
-    postMessage(message) {
-      channel.postMessage(message);
-    },
-    subscribe(handler) {
-      channel.onmessage = (event) => {
-        if (!isPresenterMessage(event.data)) return;
-        handler(event.data);
-      };
-      return () => {
-        channel.onmessage = null;
-      };
-    },
-    close() {
-      channel.close();
-    },
-  };
-}
 
 function createDeviceId() {
   return `presenter-${Math.random().toString(36).slice(2, 10)}`;
@@ -125,9 +85,11 @@ export function createKalamburyPresenterControllerBridge(
       }
 
       if (message.type === "host-reset") {
-        setConnectionState("pending"); // auto-starts readyRetry
-        options.onPreviewStateChange?.("pending-reveal");
-        options.onPhraseChange?.(null);
+        if (connectionState !== "rejected") {
+          setConnectionState("pending"); // auto-starts readyRetry
+          options.onPreviewStateChange?.("pending-reveal");
+          options.onPhraseChange?.(null);
+        }
       }
 
       if (
