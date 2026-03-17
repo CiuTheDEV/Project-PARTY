@@ -35,13 +35,11 @@ import { cloneModeSettings, normalizeModeSettings } from "../shared/setup-ui";
 import { KalamburyModeSettingsModal } from "./modals/ModeSettingsModal.tsx";
 import { KalamburyAddPlayerModal } from "./modals/AddPlayerModal.tsx";
 import { KalamburyPresenterQrModal } from "./modals/PresenterQrModal.tsx";
-import {
-  KalamburyCategoriesPanel,
-  KalamburyModeSummaryPanel,
-  KalamburyPlayersPanel,
-  KalamburyPresenterDevicePanel,
-  KalamburySetupFooter,
-} from "./setup-sections";
+import { KalamburyPlayersPanel } from "./sections/PlayersPanel.tsx";
+import { KalamburyModeSummaryPanel } from "./sections/ModeSummaryPanel.tsx";
+import { KalamburyPresenterDevicePanel } from "./sections/PresenterDevicePanel.tsx";
+import { KalamburyCategoriesPanel } from "./sections/CategoriesPanel.tsx";
+import { KalamburySetupFooter } from "./sections/SetupFooter.tsx";
 
 const initialKalamburySetupState = createInitialKalamburySetupState();
 const REUSABLE_RUNTIME_SESSION_KEY = "reusable-session";

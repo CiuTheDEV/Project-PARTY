@@ -2,8 +2,12 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
-const setupSectionsSource = readFileSync(
-  new URL("./setup-sections.tsx", import.meta.url),
+const playersPanelSource = readFileSync(
+  new URL("./sections/PlayersPanel.tsx", import.meta.url),
+  "utf8",
+);
+const presenterDevicePanelSource = readFileSync(
+  new URL("./sections/PresenterDevicePanel.tsx", import.meta.url),
   "utf8",
 );
 const addPlayerModalSource = readFileSync(
@@ -24,12 +28,12 @@ const setupScreenSource = readFileSync(
 );
 
 test("player cards keep icon-based legacy actions instead of text placeholders", () => {
-  assert.equal(setupSectionsSource.includes("function Pencil"), true);
-  assert.equal(setupSectionsSource.includes("function UserRoundCog"), true);
-  assert.equal(setupSectionsSource.includes("function X"), true);
-  assert.equal(setupSectionsSource.includes("<Pencil"), true);
-  assert.equal(setupSectionsSource.includes("<UserRoundCog"), true);
-  assert.equal(setupSectionsSource.includes("<X"), true);
+  assert.equal(playersPanelSource.includes("function Pencil"), true);
+  assert.equal(playersPanelSource.includes("function UserRoundCog"), true);
+  assert.equal(playersPanelSource.includes("function X"), true);
+  assert.equal(playersPanelSource.includes("<Pencil"), true);
+  assert.equal(playersPanelSource.includes("<UserRoundCog"), true);
+  assert.equal(playersPanelSource.includes("<X"), true);
 });
 
 test("setup modals keep legacy iconography for infinity and gender chips", () => {
@@ -68,15 +72,15 @@ test("setup screen hydrates persisted draft before autosave runs", () => {
 
 test("setup screen renders presenter device join entry with session code", () => {
   assert.equal(setupScreenSource.includes("sessionCode={sessionCode}"), true);
-  assert.equal(setupSectionsSource.includes("Kod sesji"), false);
-  assert.equal(setupSectionsSource.includes("Do telefonu"), false);
-  assert.equal(setupSectionsSource.includes("Podlacz urzadzenie"), true);
+  assert.equal(presenterDevicePanelSource.includes("Kod sesji"), false);
+  assert.equal(presenterDevicePanelSource.includes("Do telefonu"), false);
+  assert.equal(presenterDevicePanelSource.includes("Podlacz urzadzenie"), true);
   assert.equal(
-    setupSectionsSource.includes('className="kalambury-addon-card__summary"'),
+    presenterDevicePanelSource.includes('className="kalambury-addon-card__summary"'),
     false,
   );
-  assert.equal(setupSectionsSource.includes("Rozlacz urzadzenie"), true);
-  assert.equal(setupSectionsSource.includes("Anuluj dodatek"), false);
+  assert.equal(presenterDevicePanelSource.includes("Anuluj dodatek"), false);
+  assert.equal(presenterDevicePanelSource.includes("Rozlacz urzadzenie"), true);
 });
 
 test("presenter device flow uses QR modal with local scan simulation", () => {
@@ -100,7 +104,7 @@ test("host app renders a dedicated sidebar exit back to the platform lobby", () 
 test("setup screen keeps presenter pairing and exposes manual disconnect separately from addon toggle", () => {
   assert.equal(setupScreenSource.includes("pairedPresenterDeviceId"), true);
   assert.equal(setupScreenSource.includes("onDisconnectPresenterDevice"), true);
-  assert.equal(setupSectionsSource.includes("Rozlacz urzadzenie"), true);
+  assert.equal(presenterDevicePanelSource.includes("Rozlacz urzadzenie"), true);
 });
 
 test("setup screen keeps the presenter host bridge stable after pairing", () => {
@@ -117,24 +121,24 @@ test("setup screen keeps the presenter host bridge stable after pairing", () => 
 });
 
 test("setup screen uses the shared player card anatomy for setup roster cards", () => {
-  assert.equal(setupSectionsSource.includes("kalambury-persona-card"), true);
+  assert.equal(playersPanelSource.includes("kalambury-persona-card"), true);
   assert.equal(
-    setupSectionsSource.includes("data-gender={player.gender}"),
+    playersPanelSource.includes("data-gender={player.gender}"),
     true,
   );
   assert.equal(
-    setupSectionsSource.includes("kalambury-persona-card__avatar"),
+    playersPanelSource.includes("kalambury-persona-card__avatar"),
     true,
   );
   assert.equal(
-    setupSectionsSource.includes("kalambury-persona-card__nameplate"),
+    playersPanelSource.includes("kalambury-persona-card__nameplate"),
     true,
   );
   assert.equal(
-    setupSectionsSource.includes("kalambury-player-card__dice"),
+    playersPanelSource.includes("kalambury-player-card__dice"),
     true,
   );
-  assert.equal(setupSectionsSource.includes("onAddRandomPlayer"), true);
+  assert.equal(playersPanelSource.includes("onAddRandomPlayer"), true);
   assert.equal(
     setupScreenSource.includes("addRandomKalamburySetupPlayer"),
     true,
