@@ -19,6 +19,7 @@ import {
   startKalamburyTurn,
 } from "../runtime/state-machine";
 import type { KalamburyPresenterChannel, KalamburyPresenterPairState } from "../shared/presenter/types";
+import { PRESENTER_REVEAL_PREVIEW_SECONDS } from "../settings/constants";
 import { usePresenterHostBridge } from "./hooks/usePresenterHostBridge";
 import { KalamburyPresenterQrModal } from "./setup-modals";
 
@@ -45,8 +46,6 @@ type DrawSequenceCard = {
 };
 
 type PresenterRevealStage = "pending" | "preview";
-
-const PRESENTER_REVEAL_PREVIEW_SECONDS = 10;
 
 function formatKalamburyTimerValue(seconds: number) {
   return Math.max(0, Math.trunc(seconds)).toString();
@@ -329,12 +328,6 @@ export function PlayScreen({
   const [presenterRevealCountdown, setPresenterRevealCountdown] = useState(
     PRESENTER_REVEAL_PREVIEW_SECONDS,
   );
-  const presenterReconnectRequired =
-    Boolean(setupPayload.presenterDevice?.enabled) &&
-    Boolean(sessionCode) &&
-    (playState?.stage === "PRZYGOTOWANIE" || playState?.stage === "ACT") &&
-    !presenterPairState.connected;
-
   useEffect(() => {
     setPlayState(createKalamburyPlayState(setupPayload));
     setPresenterRevealStage("pending");
@@ -347,39 +340,6 @@ export function PlayScreen({
       setPresenterRevealCountdown(PRESENTER_REVEAL_PREVIEW_SECONDS);
     }
   }, [playState?.stage]);
-
-  useEffect(() => {
-    if (!playState || playState.stage !== "ACT" || presenterReconnectRequired) {
-      return;
-    }
-
-    const intervalId = window.setInterval(() => {
-      setPlayState((current) => {
-        if (!current) {
-          return current;
-        }
-
-        if (current.activeEvent === "rush") {
-          const nextTime = current.timerSeconds + 1;
-          if (nextTime >= 60) {
-            return enterKalamburyScore({ ...current, timerSeconds: 60 });
-          }
-          return { ...current, timerSeconds: nextTime };
-        }
-
-        const nextTime = current.timerSeconds - 1;
-        if (nextTime <= 0) {
-          return enterKalamburyScore({ ...current, timerSeconds: 0 });
-        }
-
-        return { ...current, timerSeconds: nextTime };
-      });
-    }, 1000);
-
-    return () => {
-      window.clearInterval(intervalId);
-    };
-  }, [playState?.stage, presenterReconnectRequired]);
 
   useEffect(() => {
     if (!playState || playState.stage !== "SCORE") {
@@ -426,6 +386,45 @@ export function PlayScreen({
         );
       },
     });
+
+  const presenterReconnectRequired =
+    Boolean(setupPayload.presenterDevice?.enabled) &&
+    Boolean(sessionCode) &&
+    (playState?.stage === "PRZYGOTOWANIE" || playState?.stage === "ACT") &&
+    !presenterPairState.connected;
+
+  useEffect(() => {
+    if (!playState || playState.stage !== "ACT" || presenterReconnectRequired) {
+      return;
+    }
+
+    const intervalId = window.setInterval(() => {
+      setPlayState((current) => {
+        if (!current) {
+          return current;
+        }
+
+        if (current.activeEvent === "rush") {
+          const nextTime = current.timerSeconds + 1;
+          if (nextTime >= 60) {
+            return enterKalamburyScore({ ...current, timerSeconds: 60 });
+          }
+          return { ...current, timerSeconds: nextTime };
+        }
+
+        const nextTime = current.timerSeconds - 1;
+        if (nextTime <= 0) {
+          return enterKalamburyScore({ ...current, timerSeconds: 0 });
+        }
+
+        return { ...current, timerSeconds: nextTime };
+      });
+    }, 1000);
+
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, [playState?.stage, presenterReconnectRequired]);
 
   // Clear presenter phrase when PlayScreen unmounts
   useEffect(() => {
