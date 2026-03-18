@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 pnpm dev              # Run all dev servers in parallel
 pnpm build            # Build all packages
+pnpm check            # Lint + typecheck together
 pnpm lint             # Lint with Biome
 pnpm typecheck        # Full TypeScript type check
 pnpm test             # Run all tests
@@ -133,3 +134,11 @@ Read before touching code:
 Also read `docs/CLOUDFLARE_GAME_DEPLOY.md` for anything involving remote transport, Cloudflare Workers, Durable Objects, or production deployment.
 
 `docs/plans/` and `docs/PRD/` are archives — not current source of truth.
+
+When debugging production issues (WebSocket failures, transport sync, Firebase), check `docs/TROUBLESHOOTING.md` first — it contains known failure patterns and fixes for non-obvious problems (e.g., WS routing order in `http.ts`, `pairedDeviceId` persistence bug, Firebase transport mode mismatch).
+
+## Platform Notes
+
+- This is a **Windows-first** dev environment. Shell commands in `package.json` route through `scripts/run-tool.mjs` for cross-platform compatibility.
+- The presenter phone bridge currently uses `BroadcastChannel` (local-only). Cross-device transport via the worker session layer is not yet complete — see `TODO.md`.
+- Transport mode for Kalambury (`broadcast` | `do-ws` | `firebase`) is set per-device in `localStorage` under `kalambury:transport-mode` — it is not propagated automatically via session.
