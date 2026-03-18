@@ -91,12 +91,12 @@ export function KalamburyCategoriesPanel({
 
               return (
                 <div className="kalambury-category-stack" key={category.id}>
-                  <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
+                  <div style={{ position: "relative" }}>
                     <button
                       className={chipClassName}
                       type="button"
                       aria-pressed={category.isSelected}
-                      style={{ width: "100%" }}
+                      style={{ width: "100%", paddingRight: category.isSelected ? 28 : undefined }}
                       onClick={() => onToggleCategory(category.id)}
                     >
                       {category.label}
