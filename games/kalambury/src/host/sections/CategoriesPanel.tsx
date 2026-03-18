@@ -91,12 +91,12 @@ export function KalamburyCategoriesPanel({
 
               return (
                 <div className="kalambury-category-stack" key={category.id}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 4 }}>
+                  <div style={{ position: "relative", display: "inline-block", width: "100%" }}>
                     <button
                       className={chipClassName}
                       type="button"
                       aria-pressed={category.isSelected}
-                      style={{ flex: 1 }}
+                      style={{ width: "100%" }}
                       onClick={() => onToggleCategory(category.id)}
                     >
                       {category.label}
@@ -106,9 +106,9 @@ export function KalamburyCategoriesPanel({
                         type="button"
                         style={poolIconBtnStyle}
                         title="Pula haseł"
-                        onClick={() => setPoolModalCategoryId(category.id)}
+                        onClick={(e) => { e.stopPropagation(); setPoolModalCategoryId(category.id); }}
                       >
-                        <span className="material-symbols-outlined" style={{ fontSize: 15 }}>bar_chart</span>
+                        <span className="material-symbols-outlined" style={{ fontSize: 12 }}>bar_chart</span>
                       </button>
                     ) : null}
                   </div>
@@ -392,16 +392,19 @@ const accordionBodyStyle: CSSProperties = {
 };
 
 const poolIconBtnStyle: CSSProperties = {
+  position: "absolute",
+  top: 4,
+  right: 4,
   display: "grid",
   placeItems: "center",
-  width: 26,
-  height: 26,
-  borderRadius: 6,
-  border: "1px solid rgba(255,255,255,0.08)",
-  background: "rgba(255,255,255,0.04)",
-  color: "#71717a",
+  width: 20,
+  height: 20,
+  borderRadius: 5,
+  border: "1px solid rgba(255,255,255,0.12)",
+  background: "rgba(0,0,0,0.35)",
+  color: "#a1a1aa",
   cursor: "pointer",
-  flexShrink: 0,
+  backdropFilter: "blur(4px)",
 };
 
 // Modal styles
