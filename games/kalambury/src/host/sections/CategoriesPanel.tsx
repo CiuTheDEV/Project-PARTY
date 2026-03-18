@@ -111,13 +111,15 @@ export function KalamburyCategoriesPanel({
                         Trudne {category.hardCount}
                       </button>
                       {category.isSelected ? (
-                        <CategoryPoolBar
-                          categoryId={category.id}
-                          easyEnabled={category.easyEnabled}
-                          hardEnabled={category.hardEnabled}
-                          resetTick={resetTick}
-                          onReset={handleResetCategory}
-                        />
+                        <div style={{ width: "100%", flexBasis: "100%" }}>
+                          <CategoryPoolBar
+                            categoryId={category.id}
+                            easyEnabled={category.easyEnabled}
+                            hardEnabled={category.hardEnabled}
+                            resetTick={resetTick}
+                            onReset={handleResetCategory}
+                          />
+                        </div>
                       ) : null}
                     </div>
                   ) : null}
