@@ -209,21 +209,13 @@ export function SetupScreen({
   }, [presenterDeviceEnabled]);
 
   useEffect(() => {
-    if (!isModeSettingsOpen && !isAddPlayerOpen) {
-      return;
-    }
-
     function handleKeyDown(event: KeyboardEvent) {
-      if (event.key !== "Escape") {
-        return;
-      }
-
+      if (event.key !== "Escape") return;
       if (isAddPlayerOpen) {
         closeAddPlayerModal();
-        return;
+      } else if (isModeSettingsOpen) {
+        setIsModeSettingsOpen(false);
       }
-
-      setIsModeSettingsOpen(false);
     }
 
     window.addEventListener("keydown", handleKeyDown);
@@ -526,6 +518,7 @@ export function SetupScreen({
         isOpen={isPresenterQrOpen}
         sessionCode={sessionCode}
         controllerHref={buildControllerHref(sessionCode)}
+        transportMode={getTransportMode()}
         onClose={() => setIsPresenterQrOpen(false)}
         connected={presenterDeviceConnected}
         onDisconnect={() => {

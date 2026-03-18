@@ -14,10 +14,19 @@ function buildQrImageUrl(path: string) {
   return `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=16&data=${encodeURIComponent(absoluteUrl)}`;
 }
 
+type KalamburyTransportMode = "do-ws" | "firebase" | "broadcast";
+
+const transportModeLabel: Record<KalamburyTransportMode, string> = {
+  "do-ws": "DO + WS",
+  firebase: "Firebase",
+  broadcast: "Broadcast Channel",
+};
+
 type KalamburyPresenterQrModalProps = {
   isOpen: boolean;
   sessionCode?: string;
   controllerHref?: string;
+  transportMode?: KalamburyTransportMode;
   onClose: () => void;
   onDisconnect?: () => void;
   connected?: boolean;
@@ -28,17 +37,20 @@ export function KalamburyPresenterQrModal({
   isOpen,
   sessionCode,
   controllerHref,
+  transportMode,
   onClose,
   onDisconnect,
   connected = false,
   dismissible = true,
 }: KalamburyPresenterQrModalProps) {
-  if (!isOpen || !sessionCode || !controllerHref) {
+  if (!isOpen || !sessionCode) {
     return null;
   }
 
-  const controllerUrl = buildAbsoluteUrl(controllerHref);
-  const qrImageUrl = buildQrImageUrl(controllerHref);
+  const isBroadcast = transportMode === "broadcast" || !controllerHref;
+  const controllerUrl = controllerHref ? buildAbsoluteUrl(controllerHref) : null;
+  const qrImageUrl = controllerHref ? buildQrImageUrl(controllerHref) : null;
+  const modeLabel = transportMode ? transportModeLabel[transportMode] : null;
 
   return (
     <div
@@ -58,35 +70,80 @@ export function KalamburyPresenterQrModal({
         onClick={(event) => event.stopPropagation()}
       >
         <div style={modalHeaderStyle}>
-          <h2 id="kal-pairing-modal-title" style={modalTitleStyle}>
-            Podłącz urządzenie
-          </h2>
-          {dismissible && (
-            <button
-              type="button"
-              aria-label="Zamknij"
-              onClick={onClose}
-              style={modalCloseBtnStyle}
-            >
-              ×
-            </button>
-          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <h2 id="kal-pairing-modal-title" style={modalTitleStyle}>
+              Podłącz urządzenie
+            </h2>
+            {modeLabel ? (
+              <span style={modalHeaderModeBadgeStyle}>
+                <span className="material-symbols-outlined" style={{ fontSize: 12, verticalAlign: "middle" }}>
+                  {transportMode === "broadcast" ? "broadcast_on_home" : transportMode === "firebase" ? "local_fire_department" : "cloud"}
+                </span>
+                {" "}{modeLabel}
+              </span>
+            ) : null}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            {!isBroadcast && dismissible && (
+              <button
+                type="button"
+                aria-label="Symuluj skan"
+                title="Symuluj skan"
+                onClick={() => {
+                  if (controllerUrl) window.open(controllerUrl, "_blank", "noopener,noreferrer");
+                }}
+                style={modalCloseBtnStyle}
+              >
+                <span className="material-symbols-outlined" style={{ fontSize: 16 }}>open_in_new</span>
+              </button>
+            )}
+            {dismissible && (
+              <button
+                type="button"
+                aria-label="Zamknij"
+                onClick={onClose}
+                style={modalCloseBtnStyle}
+              >
+                ×
+              </button>
+            )}
+          </div>
         </div>
 
         <div style={modalBodyStyle}>
-          <div style={modalQrBoxStyle}>
-            <img
-              src={qrImageUrl}
-              alt={`QR do sesji ${sessionCode}`}
-              style={modalQrImgStyle}
-            />
-          </div>
+          {!isBroadcast && qrImageUrl ? (
+            <div style={modalQrBoxStyle}>
+              <img
+                src={qrImageUrl}
+                alt={`QR do sesji ${sessionCode}`}
+                style={modalQrImgStyle}
+              />
+            </div>
+          ) : (
+            <div style={{ ...modalQrBoxStyle, background: "rgba(255,255,255,0.04)", flexDirection: "column", gap: 6 }}>
+              <span className="material-symbols-outlined" style={{ fontSize: 40, color: "#71717a" }}>
+                broadcast_on_home
+              </span>
+              <span style={{ fontSize: 10, color: "#52525b", textAlign: "center", padding: "0 8px" }}>
+                Broadcast Channel — tylko ta przeglądarka
+              </span>
+            </div>
+          )}
           <div style={modalInfoStyle}>
             <p style={modalEyebrowStyle}>Tryb: Prezenter</p>
+            {modeLabel ? (
+              <p style={modalTransportBadgeStyle}>
+                <span className="material-symbols-outlined" style={{ fontSize: 13, verticalAlign: "middle" }}>
+                  {transportMode === "broadcast" ? "broadcast_on_home" : transportMode === "firebase" ? "local_fire_department" : "cloud"}
+                </span>
+                {" "}{modeLabel}
+              </p>
+            ) : null}
             <strong style={modalSessionStyle}>Sesja: {sessionCode}</strong>
             <p style={modalHintStyle}>
-              Zeskanuj telefonem prezentera, aby otworzyć prywatny widok hasła i
-              sterowanie tylko dla tej osoby.
+              {isBroadcast
+                ? "Tryb Broadcast działa tylko w tej samej przeglądarce. Kliknij poniżej, aby otworzyć widok prezentera w nowej karcie."
+                : "Zeskanuj telefonem prezentera, aby otworzyć prywatny widok hasła i sterowanie tylko dla tej osoby."}
             </p>
             <div style={modalPresenceStyle}>
               <span
@@ -107,15 +164,18 @@ export function KalamburyPresenterQrModal({
         </div>
 
         <div style={modalActionsStyle}>
-          <button
-            type="button"
-            style={modalOpenLinkButtonStyle}
-            onClick={() =>
-              window.open(controllerUrl, "_blank", "noopener,noreferrer")
-            }
-          >
-            Symuluj skan
-          </button>
+          {isBroadcast && (
+            <button
+              type="button"
+              style={modalOpenLinkButtonStyle}
+              onClick={() => {
+                const url = buildAbsoluteUrl(`/games/kalambury/controller/${sessionCode}?transport=broadcast`);
+                window.open(url, "_blank", "noopener,noreferrer");
+              }}
+            >
+              Otwórz widok prezentera
+            </button>
+          )}
           {dismissible ? (
             <button
               type="button"
@@ -255,6 +315,30 @@ const modalEyebrowStyle: CSSProperties = {
   letterSpacing: "0.08em",
   textTransform: "uppercase",
   color: "#ff5bbd",
+};
+
+const modalTransportBadgeStyle: CSSProperties = {
+  margin: 0,
+  fontSize: 11,
+  fontWeight: 600,
+  color: "#a1a1aa",
+  display: "flex",
+  alignItems: "center",
+  gap: 4,
+};
+
+const modalHeaderModeBadgeStyle: CSSProperties = {
+  fontSize: 11,
+  fontWeight: 600,
+  color: "#a1a1aa",
+  background: "rgba(255,255,255,0.07)",
+  border: "1px solid rgba(255,255,255,0.10)",
+  borderRadius: 6,
+  padding: "2px 7px",
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 4,
+  whiteSpace: "nowrap",
 };
 
 const modalSessionStyle: CSSProperties = {

@@ -55,8 +55,6 @@ export function usePresenterHostBridge(
   const onRerollRequestRef = useRef(options.onRerollRequest);
   useEffect(() => {
     onRevealRequestRef.current = options.onRevealRequest;
-  });
-  useEffect(() => {
     onRerollRequestRef.current = options.onRerollRequest;
   });
 

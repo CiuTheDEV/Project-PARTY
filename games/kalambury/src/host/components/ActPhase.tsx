@@ -34,9 +34,6 @@ export function ActPhase({
             className="kalambury-persona-card kalambury-persona-card--presenter kalambury-presenter-hero"
             data-gender={presenter.gender}
           >
-            <span className="kalambury-persona-card__badge kalambury-presenter-hero__badge">
-              {currentTurnLabel}
-            </span>
             <strong className="kalambury-presenter-hero__label">
               PREZENTUJE
             </strong>

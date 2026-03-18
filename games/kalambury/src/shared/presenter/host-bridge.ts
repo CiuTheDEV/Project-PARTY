@@ -148,6 +148,7 @@ export function createKalamburyPresenterHostBridge(
       } satisfies KalamburyPresenterMessage);
     },
     clearPhrase() {
+      if (!pairedDeviceId) return;
       void channel?.postMessage({
         type: "presenter-clear",
         deviceId: pairedDeviceId,

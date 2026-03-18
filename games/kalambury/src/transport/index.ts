@@ -18,8 +18,14 @@ export async function createKalamburyTransportAsync(
         "Tryb Firebase wymaga aktywnej sesji sieciowej. Zmień tryb połączenia w Ustawieniach.",
       );
     }
-    const { createFirebaseAdapter } = await import("./firebase.ts");
-    return createFirebaseAdapter(sessionCode);
+    try {
+      const { createFirebaseAdapter } = await import("./firebase.ts");
+      return createFirebaseAdapter(sessionCode);
+    } catch (err) {
+      throw new Error(
+        `Nie udało się załadować transportu Firebase. Sprawdź połączenie i spróbuj ponownie. (${err instanceof Error ? err.message : String(err)})`,
+      );
+    }
   }
 
   if (mode === "broadcast") {

@@ -170,10 +170,7 @@ export async function loadKalamburySetupDraft(
       players: mergePlayers(baseState, parsed.players),
       modeSettings: mergeModeSettings(baseState, parsed.modeSettings),
       presenterDeviceEnabled: parsed.presenterDeviceEnabled === true,
-      pairedPresenterDeviceId:
-        typeof parsed.pairedPresenterDeviceId === "string"
-          ? parsed.pairedPresenterDeviceId
-          : null,
+      pairedPresenterDeviceId: null,
       categories,
       activeCategoryId,
     };
