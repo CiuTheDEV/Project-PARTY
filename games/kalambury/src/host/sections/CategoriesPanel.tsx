@@ -231,60 +231,100 @@ function CategoryPoolBar({
   const total = easyTotal + hardTotal;
   if (total === 0) return null;
   const pct = Math.round((available / total) * 100);
-  const color = available > Math.floor(total * 0.25) ? "#4ade80" : "#f59e0b";
+
+  const isLow = available <= Math.floor(total * 0.25);
+  const isEmpty = available === 0;
+
+  const barColor = isEmpty
+    ? "#ef4444"
+    : isLow
+      ? "#f59e0b"
+      : "#4ade80";
+
+  const barGradient = isEmpty
+    ? "linear-gradient(90deg, #ef4444, #dc2626)"
+    : isLow
+      ? "linear-gradient(90deg, #f59e0b, #d97706)"
+      : "linear-gradient(90deg, #4ade80, #22d3ee)";
+
+  const statusLabel = isEmpty ? "Wyczerpana" : isLow ? "Prawie pusta" : "Dostępna";
 
   return (
     <div style={poolBarWrapStyle}>
       <div style={poolBarRowStyle}>
-        <span style={{ fontSize: 11, color: "#a1a1aa" }}>
-          Dostępne:{" "}
-          <strong style={{ color }}>{available}</strong>
-          <span style={{ color: "#52525b" }}> / {total}</span>
-        </span>
+        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+          <span style={{
+            width: 6,
+            height: 6,
+            borderRadius: "50%",
+            background: barColor,
+            flexShrink: 0,
+            boxShadow: `0 0 6px ${barColor}88`,
+          }} />
+          <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: "0.06em", color: barColor, textTransform: "uppercase" }}>
+            {statusLabel}
+          </span>
+          <span style={{ fontSize: 10, color: "#52525b", fontVariantNumeric: "tabular-nums" }}>
+            <strong style={{ color: "#a1a1aa" }}>{available}</strong>
+            <span> / {total}</span>
+          </span>
+        </div>
         <button
           type="button"
           style={poolResetBtnStyle}
           title="Reset puli haseł"
           onClick={() => onReset(categoryId)}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: 13 }}>refresh</span>
-          Reset
+          <span className="material-symbols-outlined" style={{ fontSize: 12 }}>restart_alt</span>
+          Resetuj
         </button>
       </div>
       <div style={poolBarTrackStyle}>
-        <div style={{ ...poolBarFillStyle, width: `${pct}%`, background: color }} />
+        <div style={{
+          ...poolBarFillStyle,
+          width: `${pct}%`,
+          background: barGradient,
+          boxShadow: pct > 0 ? `0 0 8px ${barColor}44` : "none",
+        }} />
       </div>
     </div>
   );
 }
 
 const poolBarWrapStyle: CSSProperties = {
-  marginTop: 6,
+  marginTop: 8,
   width: "100%",
+  padding: "8px 10px",
+  borderRadius: 8,
+  background: "rgba(255,255,255,0.03)",
+  border: "1px solid rgba(255,255,255,0.06)",
 };
 
 const poolBarRowStyle: CSSProperties = {
   display: "flex",
   justifyContent: "space-between",
   alignItems: "center",
-  marginBottom: 4,
+  marginBottom: 6,
 };
 
 const poolResetBtnStyle: CSSProperties = {
   display: "inline-flex",
   alignItems: "center",
   gap: 3,
-  background: "none",
-  border: "none",
+  background: "rgba(255,255,255,0.05)",
+  border: "1px solid rgba(255,255,255,0.08)",
   color: "#71717a",
-  fontSize: 11,
+  fontSize: 10,
+  fontWeight: 600,
+  letterSpacing: "0.04em",
   cursor: "pointer",
-  padding: "2px 4px",
-  borderRadius: 4,
+  padding: "3px 7px",
+  borderRadius: 5,
+  transition: "color 0.15s, border-color 0.15s, background 0.15s",
 };
 
 const poolBarTrackStyle: CSSProperties = {
-  height: 4,
+  height: 3,
   borderRadius: 99,
   background: "rgba(255,255,255,0.08)",
   overflow: "hidden",
