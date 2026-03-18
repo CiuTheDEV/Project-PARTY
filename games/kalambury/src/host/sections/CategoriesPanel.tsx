@@ -1,10 +1,15 @@
 // games/kalambury/src/host/sections/CategoriesPanel.tsx
-import type { CSSProperties } from "react";
+import { useState, useCallback, type CSSProperties } from "react";
 
 import type {
   KalamburyCategoryDifficulty,
   KalamburyCategoryOption,
 } from "../../shared/setup-content";
+import {
+  getAvailableCount,
+  getTotalCount,
+  resetAllUsedPhrasesForCategory,
+} from "../../shared/phrase-pool";
 
 type KalamburyCategoriesPanelProps = {
   isExpanded: boolean;
@@ -34,6 +39,14 @@ export function KalamburyCategoriesPanel({
   onRandomize,
   onClear,
 }: KalamburyCategoriesPanelProps) {
+  // Bump to force re-read of localStorage after reset
+  const [resetTick, setResetTick] = useState(0);
+
+  const handleResetCategory = useCallback((categoryId: string) => {
+    resetAllUsedPhrasesForCategory(categoryId);
+    setResetTick((n) => n + 1);
+  }, []);
+
   return (
     <div style={sectionStyle}>
       <button
@@ -97,6 +110,15 @@ export function KalamburyCategoriesPanel({
                       >
                         Trudne {category.hardCount}
                       </button>
+                      {category.isSelected ? (
+                        <CategoryPoolBar
+                          categoryId={category.id}
+                          easyEnabled={category.easyEnabled}
+                          hardEnabled={category.hardEnabled}
+                          resetTick={resetTick}
+                          onReset={handleResetCategory}
+                        />
+                      ) : null}
                     </div>
                   ) : null}
                 </div>
@@ -182,4 +204,92 @@ const chevronStyle: CSSProperties = {
 
 const accordionBodyStyle: CSSProperties = {
   padding: "0 20px 20px",
+};
+
+// ── Pool bar ──────────────────────────────────────────────────────────────────
+
+function CategoryPoolBar({
+  categoryId,
+  easyEnabled,
+  hardEnabled,
+  resetTick: _resetTick,
+  onReset,
+}: {
+  categoryId: string;
+  easyEnabled: boolean;
+  hardEnabled: boolean;
+  resetTick: number;
+  onReset: (id: string) => void;
+}) {
+  const easyAvail = easyEnabled ? getAvailableCount(categoryId, "easy") : 0;
+  const hardAvail = hardEnabled ? getAvailableCount(categoryId, "hard") : 0;
+  const easyTotal = easyEnabled ? getTotalCount(categoryId, "easy") : 0;
+  const hardTotal = hardEnabled ? getTotalCount(categoryId, "hard") : 0;
+  const available = easyAvail + hardAvail;
+  const total = easyTotal + hardTotal;
+  if (total === 0) return null;
+  const pct = Math.round((available / total) * 100);
+  const color = available > Math.floor(total * 0.25) ? "#4ade80" : "#f59e0b";
+
+  return (
+    <div style={poolBarWrapStyle}>
+      <div style={poolBarRowStyle}>
+        <span style={{ fontSize: 11, color: "#a1a1aa" }}>
+          Dostępne:{" "}
+          <strong style={{ color }}>{available}</strong>
+          <span style={{ color: "#52525b" }}> / {total}</span>
+        </span>
+        <button
+          type="button"
+          style={poolResetBtnStyle}
+          title="Reset puli haseł"
+          onClick={() => onReset(categoryId)}
+        >
+          <span className="material-symbols-outlined" style={{ fontSize: 13 }}>refresh</span>
+          Reset
+        </button>
+      </div>
+      <div style={poolBarTrackStyle}>
+        <div style={{ ...poolBarFillStyle, width: `${pct}%`, background: color }} />
+      </div>
+    </div>
+  );
+}
+
+const poolBarWrapStyle: CSSProperties = {
+  marginTop: 6,
+  width: "100%",
+};
+
+const poolBarRowStyle: CSSProperties = {
+  display: "flex",
+  justifyContent: "space-between",
+  alignItems: "center",
+  marginBottom: 4,
+};
+
+const poolResetBtnStyle: CSSProperties = {
+  display: "inline-flex",
+  alignItems: "center",
+  gap: 3,
+  background: "none",
+  border: "none",
+  color: "#71717a",
+  fontSize: 11,
+  cursor: "pointer",
+  padding: "2px 4px",
+  borderRadius: 4,
+};
+
+const poolBarTrackStyle: CSSProperties = {
+  height: 4,
+  borderRadius: 99,
+  background: "rgba(255,255,255,0.08)",
+  overflow: "hidden",
+};
+
+const poolBarFillStyle: CSSProperties = {
+  height: "100%",
+  borderRadius: 99,
+  transition: "width 0.3s ease",
 };

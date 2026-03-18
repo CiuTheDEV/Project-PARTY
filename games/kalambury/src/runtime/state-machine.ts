@@ -1,3 +1,6 @@
+import { phraseCatalog } from "./phrase-catalog";
+import { drawPhrase } from "../shared/phrase-pool";
+
 export type KalamburySetupPayload = {
   gameSlug: string;
   mode: "classic" | "team";
@@ -85,201 +88,6 @@ export type KalamburyPlayState = {
   phraseChangeRemainingByPlayerId: Record<string, number | "infinite">;
 };
 
-import { phraseCatalog } from "./phrase-catalog";
-import { drawPhrase } from "../shared/phrase-pool";
-
-// Legacy inline catalog kept for reference — actual data lives in phrase-catalog.ts
-const _unusedPhraseCatalogInline: Record<string, { easy: string[]; hard: string[] }> = {
-  klasyczne: {
-    easy: [
-      "Krzesło", "Okulary", "Telefon", "Samolot", "Wiatrak", "Łóżko", "Stół", "Lampka",
-      "Kubek", "Butelka", "Talerz", "Widelec", "Łyżka", "Nóż", "Garnek", "Patelnia",
-      "Książka", "Zeszyt", "Długopis", "Ołówek", "Gumka", "Nożyczki", "Plecak", "Portfel",
-      "Klucze", "Drzwi", "Okno", "Dywan", "Poduszka", "Koc", "Ręcznik", "Mydło",
-      "Szczotka", "Grzebień", "Czapka", "Buty", "Skarpetki", "Kurtka", "Koszulka", "Spodnie",
-      "Komputer", "Telewizor", "Pilot", "Ładowarka", "Zegar", "Kalendarz", "Wazon", "Roślina",
-      "Świeczka", "Balon",
-    ],
-    hard: [
-      "Szachy", "Młotek", "Wulkan", "Parasol", "Lustro", "Kalejdoskop", "Korkociąg", "Mikroskop",
-      "Gaśnica", "Odkurzacz", "Lornetka", "Teleskop", "Kompas", "Kostka Rubika", "Klepsydra", "Wahadło",
-      "Barometr", "Termometr", "Higrometr", "Detektor dymu", "Wkrętarka", "Śrubokręt", "Szczypce", "Imadło",
-      "Lutownica", "Dziurkacz", "Zszywacz", "Segregator", "Przybornik", "Tarka", "Cedzak", "Sito",
-      "Młynek do kawy", "Ekspres do kawy", "Zmywarka", "Zamrażarka", "Wentylator sufitowy", "Panel słoneczny", "Bateria", "Powerbank",
-      "Taśma miernicza", "Poziomnica", "Kask ochronny", "Kamizelka odblaskowa", "Apteczka", "Magnes neodymowy", "Szkło powiększające", "Zamek szyfrowy",
-      "Przedłużacz", "Gilotyna do papieru",
-    ],
-  },
-  "filmy-i-seriale": {
-    easy: [
-      "Titanic", "Matrix", "Shrek", "Avatar", "Incepcja", "Harry Potter", "Władca Pierścieni", "Król Lew",
-      "Kraina lodu", "Toy Story", "Madagaskar", "Minionki", "Auta", "Coco", "Vaiana", "Potwory i spółka",
-      "Gdzie jest Nemo", "Zaplątani", "Mulan", "Herkules", "Piękna i Bestia", "Księga dżungli", "Aladyn", "Ratatuj",
-      "Kung Fu Panda", "Jak wytresować smoka", "Jumanji", "Jurassic Park", "Park Jurajski", "Piraci z Karaibów", "Kevin sam w domu", "Sami swoi",
-      "Chłopaki nie płaczą", "Kiler", "Listy do M.", "007: Skyfall", "Rocky", "Rambo", "Terminator", "Obcy",
-      "Predator", "E.T.", "Powrót do przyszłości", "Gremliny", "Faceci w czerni", "Spider-Man", "Batman", "Superman",
-      "Avengers", "Kac Vegas",
-    ],
-    hard: [
-      "Ojciec chrzestny", "Forrest Gump", "Lot nad kukułczym gniazdem", "Gladiator", "Gwiezdne Wojny", "Skazani na Shawshank", "Pulp Fiction", "Zielona mila",
-      "Siedem", "Podziemny krąg", "Blade Runner", "Mechaniczna pomarańcza", "Czas Apokalipsy", "Łowca jeleni", "Taxi Driver", "No Country for Old Men",
-      "To nie jest kraj dla starych ludzi", "Amadeusz", "Piękny umysł", "Wyspa tajemnic", "Interstellar", "2001: Odyseja kosmiczna", "Dr Strangelove", "Zawrót głowy",
-      "Obywatel Kane", "Truman Show", "Memento", "Requiem dla snu", "Labirynt fauna", "Życie jest piękne", "Stowarzyszenie Umarłych Poetów", "Człowiek z marmuru",
-      "Człowiek z żelaza", "Kanał", "Ida", "Zimna wojna", "Wesele", "Dzień świra", "Pianista", "Miasto 44",
-      "Zwierzęta nocy", "Zodiak", "Mulholland Drive", "Tamte dni, tamte noce", "Parasite", "Whiplash", "Wielki Gatsby", "Zabić drozda",
-      "Infiltracja", "Siedem dusz",
-    ],
-  },
-  muzyka: {
-    easy: [
-      "Gitara", "Pianino", "Perkusja", "Mikrofon", "Koncert", "Skrzypce", "Saksofon", "Trąbka",
-      "Flet", "Bęben", "Piosenka", "Radio", "Słuchawki", "Głośnik", "Wzmacniacz", "DJ",
-      "Karaoke", "Taniec", "Nuta", "Refren", "Zwrotka", "Rytm", "Melodia", "Wokal",
-      "Chór", "Orkiestra", "Płyta", "Kaseta", "MP3", "Playlista", "Klaskanie", "Brawa",
-      "Gwizdanie", "Takt", "Tempo", "Pauza", "Gama", "Akord", "Bas", "Solo",
-      "Teledysk", "Scena", "Bilet", "Festiwal", "Próba", "Klawisze", "Tamburyn", "Harmonijka",
-      "Ukulele", "Ksylofon",
-    ],
-    hard: [
-      "Chopin", "Beethoven", "Rock'n'roll", "Improwizacja", "Opera", "Dyrygent", "Kontrabas", "Altówka",
-      "Wiolonczela", "Obój", "Klawesyn", "Syntezator", "Sampler", "Miksowanie", "Mastering", "Synkopa",
-      "Polifonia", "Harmonia", "Aranżacja", "Partytura", "Symfonia", "Sonata", "Fuga", "Aria",
-      "Balet", "Muzyka filmowa", "Muzyka klasyczna", "Jazz", "Blues", "Metal progresywny", "Hip-hop", "Reggae",
-      "Elektronika", "House", "Techno", "Bossa nova", "Flamenco", "Muzyka ludowa", "Beatbox", "Scat",
-      "Improwizacja jazzowa", "Skala pentatoniczna", "Słuch absolutny", "Chór gospel", "Koncert kameralny", "Próba dźwięku", "Występ na bis", "Instrumenty dęte",
-      "Sekcja rytmiczna", "Metrum",
-    ],
-  },
-  sport: {
-    easy: [
-      "Piłka nożna", "Koszykówka", "Tenis", "Siatkówka", "Bieganie", "Pływanie", "Rower", "Narciarstwo",
-      "Łyżwiarstwo", "Ping-pong", "Boks", "Gimnastyka", "Skakanka", "Hula-hop", "Kibic", "Bramka",
-      "Piłka", "Trener", "Sędzia", "Stadion", "Rzut karny", "Rzut wolny", "Podanie", "Strzał",
-      "Gol", "Maraton", "Sprint", "Rozgrzewka", "Stretching", "Mecz", "Turniej", "Medal",
-      "Puchar", "Flaga", "Gwizdek", "Zawodnik", "Drużyna", "Ławka rezerwowych", "Dogrywka", "Remis",
-      "Rzut rożny", "Spalony", "Serwis", "As", "Punkt", "Set", "Gem", "Runda",
-      "Finał", "Zwycięstwo",
-    ],
-    hard: [
-      "Triathlon", "Wspinaczka sportowa", "Skoki narciarskie", "Boks tajski", "Żeglarstwo", "Szermierka", "Łucznictwo", "Kolarstwo torowe",
-      "Biathlon", "Snowboard", "Kajakarstwo górskie", "Wioślarstwo", "Piłka ręczna", "Hokej na lodzie", "Rugby", "Baseball",
-      "Cricket", "Badminton", "Squash", "Golf", "Judo", "Karate", "Taekwondo", "Zapasy",
-      "Podnoszenie ciężarów", "Gimnastyka artystyczna", "Łyżwiarstwo figurowe", "Skoki do wody", "Pływanie synchroniczne", "Bobsleje", "Saneczkarstwo", "Biegi narciarskie",
-      "Nordic walking", "Parkour", "Crossfit", "Windsurfing", "Kitesurfing", "Nurkowanie", "Orientacja sportowa", "Wielobój",
-      "Rzut oszczepem", "Rzut dyskiem", "Pchnięcie kulą", "Skok wzwyż", "Skok w dal", "Pięciobój nowoczesny", "Formuła 1", "Rajd samochodowy",
-      "Wspinaczka wysokogórska", "Slackline",
-    ],
-  },
-  zawody: {
-    easy: [
-      "Lekarz", "Strażak", "Policjant", "Nauczyciel", "Kucharz", "Fryzjer", "Kasjer", "Kierowca",
-      "Sprzedawca", "Piekarz", "Pielęgniarka", "Mechanik", "Hydraulik", "Elektryk", "Stolarz", "Murarz",
-      "Ogrodnik", "Rolnik", "Listonosz", "Kelner", "Barista", "Szatniarz", "Portier", "Recepcjonista",
-      "Taksówkarz", "Kurier", "Magazynier", "Sprzątacz", "Ochroniarz", "Trener", "Wychowawca", "Bibliotekarz",
-      "Weterynarz", "Dentysta", "Farmaceuta", "Pilot", "Stewardesa", "Fotograf", "Krawiec", "Malarz",
-      "Księgowy", "Programista", "Grafik", "Muzyk", "Piosenkarz", "Aktor", "Tancerz", "Kominiarz",
-      "Zegarmistrz", "Ratownik",
-    ],
-    hard: [
-      "Astronauta", "Neurochirurg", "Archeolog", "Detektyw", "Aktor dubbingowy", "Kontroler lotów", "Geodeta", "Analityk danych",
-      "Tłumacz symultaniczny", "Inżynier budowlany", "Architekt", "Audytor", "Biegły rewident", "Prokurator", "Notariusz", "Sędzia",
-      "Kurator sądowy", "Broker ubezpieczeniowy", "Makler giełdowy", "Aktuariusz", "Specjalista ds. SEO", "Administrator sieci", "Tester oprogramowania", "DevOps",
-      "Data scientist", "Chemik analityk", "Biotechnolog", "Fizyk medyczny", "Radiolog", "Anestezjolog", "Logopeda", "Fizjoterapeuta",
-      "Terapeuta zajęciowy", "Psychoterapeuta", "Neonatolog", "Rzeczoznawca majątkowy", "Kierownik produkcji", "Operator CNC", "Kontroler jakości", "Projektant UX",
-      "Scenograf", "Reżyser dźwięku", "Producent filmowy", "Montażysta", "Lektor", "Korespondent wojenny", "Kapitan statku", "Pilot drona",
-      "Konserwator zabytków", "Kryptolog",
-    ],
-  },
-  jedzenie: {
-    easy: [
-      "Pizza", "Hamburger", "Lody", "Spaghetti", "Sałatka", "Zupa pomidorowa", "Rosół", "Naleśniki",
-      "Pączek", "Kanapka", "Pierogi", "Bigos", "Kopytka", "Placki ziemniaczane", "Frytki", "Hot dog",
-      "Tost", "Jajecznica", "Omlet", "Gofry", "Kiełbasa", "Kotlet schabowy", "Kurczak", "Ryż",
-      "Makaron", "Kasza", "Ziemniaki", "Marchewka", "Ogórek", "Pomidor", "Jabłko", "Banan",
-      "Truskawki", "Winogrona", "Czekolada", "Baton", "Ciastko", "Sernik", "Keks", "Babka",
-      "Herbata", "Kawa", "Sok pomarańczowy", "Woda", "Lemoniada", "Popcorn", "Orzeszki", "Chipsy",
-      "Ketchup", "Majonez",
-    ],
-    hard: [
-      "Sushi", "Tiramisu", "Ratatouille", "Carpaccio", "Krewetki w tempurze", "Ramen", "Pho", "Paella",
-      "Boeuf bourguignon", "Risotto", "Gulasz węgierski", "Pad thai", "Tacos", "Burrito", "Nachos", "Focaccia",
-      "Bruschetta", "Quiche", "Ceviche", "Moussaka", "Falafel", "Hummus", "Shakshuka", "Tabbouleh",
-      "Baklava", "Panna cotta", "Crème brûlée", "Soufflé", "Gazpacho", "Bouillabaisse", "Pierś z kaczki", "Polędwica Wellington",
-      "Stek z antrykotu", "Tatar wołowy", "Kluski śląskie", "Żurek", "Barszcz czerwony", "Gołąbki", "Babka ziemniaczana", "Kaszanka",
-      "Pasztet", "Śledź w śmietanie", "Smalec z cebulką", "Kaczka po pekińsku", "Kimchi", "Tempura", "Sos béarnaise", "Sos holenderski",
-      "Salsa verde", "Sałatka nicejska",
-    ],
-  },
-  miejsca: {
-    easy: [
-      "Szkoła", "Kino", "Plaża", "Las", "Restauracja", "Dom", "Mieszkanie", "Sklep",
-      "Supermarket", "Plac zabaw", "Park", "ZOO", "Basen", "Siłownia", "Boisko", "Biblioteka",
-      "Poczta", "Apteka", "Szpital", "Przychodnia", "Kościół", "Ratusz", "Rynek", "Dworzec",
-      "Lotnisko", "Przystanek", "Ulica", "Most", "Tunel", "Stacja benzynowa", "Hotel", "Kawiarnia",
-      "Piekarnia", "Centrum handlowe", "Muzeum", "Teatr", "Galeria", "Stadion", "Sala koncertowa", "Kemping",
-      "Góry", "Jezioro", "Rzeka", "Wyspa", "Wioska", "Miasto", "Wieś", "Ogród",
-      "Piwnica", "Strych",
-    ],
-    hard: [
-      "Louvre", "Wielki Mur Chiński", "Wieża Eiffla", "Koloseum", "Machu Picchu", "Statua Wolności", "Big Ben", "Opera w Sydney",
-      "Tadż Mahal", "Sagrada Família", "Pałac Buckingham", "Kreml", "Akropol", "Petra", "Angkor Wat", "Mount Everest",
-      "Wielki Kanion", "Niagara", "Wodospad Iguazu", "Sahara", "Amazonia", "Wenecja", "Dubaj", "Singapur",
-      "Hongkong", "Pola Elizejskie", "Times Square", "Złota Brama", "Alcatraz", "Las Vegas Strip", "Stare Miasto w Krakowie", "Wawel",
-      "Morskie Oko", "Kopalnia Soli w Wieliczce", "Białowieża", "Gdańska Starówka", "Zakopane", "Hel", "Malbork", "Jasna Góra",
-      "Pomnik Chrystusa w Rio", "Stonehenge", "Piramidy w Gizie", "Cappadocia", "Borobudur", "Wyspa Wielkanocna", "Przylądek Dobrej Nadziei", "Morze Martwe",
-      "Wyspa Santorini", "Czarnobyl",
-    ],
-  },
-  zwierzeta: {
-    easy: [
-      "Pies", "Kot", "Słoń", "Żyrafa", "Pingwin", "Królik", "Chomik", "Papuga",
-      "Kanarek", "Żółw", "Koń", "Krowa", "Świnia", "Owca", "Koza", "Kura",
-      "Kogut", "Kaczka", "Gęś", "Indyk", "Ryba", "Rekin", "Delfin", "Wieloryb",
-      "Foka", "Niedźwiedź", "Lis", "Wilk", "Jeż", "Wiewiórka", "Bóbr", "Mysz",
-      "Szczur", "Zając", "Sarna", "Jeleń", "Łoś", "Dziki", "Kret", "Nietoperz",
-      "Pszczoła", "Mrówka", "Biedronka", "Motyl", "Pająk", "Żaba", "Ropucha", "Wąż",
-      "Jaszczurka", "Gołąb",
-    ],
-    hard: [
-      "Ornitorenk", "Kameleon", "Jeżozwierz", "Mrówkojad", "Ośmiornica", "Alpaka", "Lemur", "Manat",
-      "Okapi", "Tarantula", "Waran z Komodo", "Axolotl", "Narwal", "Płaszczka", "Waran", "Legwan",
-      "Kapibara", "Pangolin", "Tapir", "Wombat", "Koala", "Puma", "Jaguar", "Ocelot",
-      "Ryś", "Borsuk", "Rosomak", "Fretka", "Suseł", "Piżmak", "Muflon", "Guanako",
-      "Hiena", "Szakal", "Surykatka", "Mangusta", "Szop pracz", "Kakadu", "Koliber", "Tukan",
-      "Struś", "Emu", "Kondor", "Żółw skórzasty", "Salamandra", "Traszka", "Mątwa", "Kałamarnica",
-      "Meduza", "Palczak madagaskarski",
-    ],
-  },
-  przyslowia: {
-    easy: [
-      "Bez pracy nie ma kołaczy", "Czas leczy rany", "Co nagle, to po diable", "Głodnemu chleb na myśli", "Jak sobie pościelesz, tak się wyśpisz", "Lepszy wróbel w garści niż gołąb na dachu", "Nie chwal dnia przed zachodem słońca", "Darowanemu koniowi w zęby się nie zagląda",
-      "Kto późno przychodzi, sam sobie szkodzi", "Gdzie kucharek sześć, tam nie ma co jeść", "Nie ma róży bez kolców", "Jak Kuba Bogu, tak Bóg Kubie", "Kto pod kim dołki kopie, ten sam w nie wpada", "Nie wszystko złoto, co się świeci", "Cicha woda brzegi rwie", "Co ma wisieć, nie utonie",
-      "Nie wywołuj wilka z lasu", "Diabeł tkwi w szczegółach", "Lepiej zapobiegać niż leczyć", "Co dwie głowy, to nie jedna", "Polak potrafi", "Zgoda buduje, niezgoda rujnuje", "Nie ma dymu bez ognia", "Ucz się na błędach",
-      "Apetyt rośnie w miarę jedzenia", "Nie taki diabeł straszny", "Lepszy rydz niż nic", "Jak trwoga, to do Boga", "Gość w dom, Bóg w dom", "Przez żołądek do serca", "Stara miłość nie rdzewieje", "Co z oczu, to z serca",
-      "Nie mów hop, póki nie przeskoczysz", "Kto pierwszy, ten lepszy", "Słowo się rzekło", "Mądry Polak po szkodzie", "Grosz do grosza", "Do trzech razy sztuka", "Gdzie jest wola, tam jest droga",
-      "Kto nie ryzykuje, nie pije szampana", "Złapać byka za rogi", "Wszystko ma swój czas", "Człowiek człowiekowi wilkiem", "Każdy kij ma dwa końce", "Jaki pan, taki kram", "Kto sieje wiatr, zbiera burzę",
-      "Dzieci i ryby głosu nie mają", "Nie ma tego złego, co by na dobre nie wyszło",
-    ],
-    hard: [
-      "Nie od razu Kraków zbudowano", "Leje jak z cebra", "Siedzieć jak na szpilkach", "Rzucać grochem o ścianę", "Szukać igły w stogu siana", "Wpaść z deszczu pod rynnę", "Wyjść jak Zabłocki na mydle", "Nie dla psa kiełbasa",
-      "Trafiła kosa na kamień", "Nosił wilk razy kilka, ponieśli i wilka", "Bujać w obłokach", "Rzucać słowa na wiatr", "Wziąć nogi za pas", "Zrobić z igły widły", "Palnąć jak filip z konopi", "Robić dobrą minę do złej gry",
-      "Być między młotem a kowadłem", "Iść po trupach do celu", "Mieć muchy w nosie", "Być w siódmym niebie", "Trzymać język za zębami", "Wyjść na prostą", "Kupić kota w worku", "Spuścić z tonu",
-      "Rzucić wszystko i wyjechać w Bieszczady", "Zjeść na czymś zęby", "Nie dać sobie w kaszę dmuchać", "Mieć ręce pełne roboty", "Pójść na całość", "Zacisnąć zęby", "Wyszedł szydło z worka", "Wpaść jak śliwka w kompot",
-      "Wystawić kogoś do wiatru", "Dać komuś kosza", "Zrobić komuś wodę z mózgu", "Obrócić kota ogonem", "Patrzeć przez różowe okulary", "Postawić kropkę nad i", "Złapać drugi oddech", "Mieć dwie lewe ręce",
-      "Sypać jak z rękawa", "Wyjść przed szereg", "Dla świętego spokoju", "Wziąć sprawy w swoje ręce", "Iść na żywioł", "Zbić kogoś z tropu", "Wypić piwo, które się nawarzyło", "Zamienić się w słup soli",
-      "Zrobić coś na ostatnią chwilę", "Zakochać się po uszy",
-    ],
-  },
-  dev: {
-    easy: [
-      "Mała konstantynopolitańczykowianeczka tańczy na moście nad Bosforem", "TEST", "TEST1", "TEST2", "TEST3",
-    ],
-    hard: [
-      "TEST4", "TEST5", "TEST6", "TEST7", "TEST8",
-    ],
-  },
-};
-
 function getPhrasesForCategory(
   category: KalamburySetupPayload["categories"][number],
 ): string[] {
@@ -351,10 +159,19 @@ function getPhraseForTurn(
   const category =
     categories[(roundNumber - 1 + turnInRound) % categories.length] ??
     fallbackCategory;
-  const phrases = getPhrasesForCategory(category);
-  const phraseIndex =
-    (roundNumber - 1) * Math.max(payload.players.length, 1) + turnInRound;
-  const phrase = phrases[phraseIndex % phrases.length] ?? "Kalambury";
+
+  // Determine which difficulties are active for this category
+  const difficulties: Array<"easy" | "hard"> = [];
+  if (category.easyEnabled) difficulties.push("easy");
+  if (category.hardEnabled) difficulties.push("hard");
+  if (difficulties.length === 0) {
+    difficulties.push("easy");
+    difficulties.push("hard");
+  }
+
+  // Pick difficulty round-robin across turns
+  const difficulty = difficulties[(roundNumber - 1 + turnInRound) % difficulties.length] ?? "easy";
+  const { phrase } = drawPhrase(category.id, difficulty);
 
   return {
     phraseCategoryId: category.id,
@@ -649,10 +466,15 @@ export function rerollKalamburyPhrase(
     return state;
   }
 
-  const nextPhrase = getNextPhraseInCategory(
-    nextCategory,
-    shouldChangeCategory ? "" : state.phrase,
-  );
+  const rerollDifficulties: Array<"easy" | "hard"> = [];
+  if (nextCategory.easyEnabled) rerollDifficulties.push("easy");
+  if (nextCategory.hardEnabled) rerollDifficulties.push("hard");
+  if (rerollDifficulties.length === 0) {
+    rerollDifficulties.push("easy");
+    rerollDifficulties.push("hard");
+  }
+  const rerollDifficulty = rerollDifficulties[Math.floor(Math.random() * rerollDifficulties.length)] ?? "easy";
+  const { phrase: nextPhrase } = drawPhrase(nextCategory.id, rerollDifficulty);
   const nextRemainingByPlayerId = {
     ...state.phraseChangeRemainingByPlayerId,
   };
