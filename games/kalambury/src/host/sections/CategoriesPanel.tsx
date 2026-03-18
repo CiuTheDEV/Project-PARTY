@@ -126,7 +126,7 @@ export function KalamburyCategoriesPanel({
                       >
                         Łatwe{" "}
                         {category.easyEnabled
-                          ? <span style={diffCountStyle(_resetTick, easyAvail, easyTotal)}>{easyAvail}/{easyTotal}</span>
+                          ? <span style={diffCountStyle(resetTick, easyAvail, easyTotal)}>{easyAvail}/{easyTotal}</span>
                           : <span style={{ opacity: 0.5 }}>{easyTotal}</span>
                         }
                       </button>
@@ -142,7 +142,7 @@ export function KalamburyCategoriesPanel({
                       >
                         Trudne{" "}
                         {category.hardEnabled
-                          ? <span style={diffCountStyle(_resetTick, hardAvail, hardTotal)}>{hardAvail}/{hardTotal}</span>
+                          ? <span style={diffCountStyle(resetTick, hardAvail, hardTotal)}>{hardAvail}/{hardTotal}</span>
                           : <span style={{ opacity: 0.5 }}>{hardTotal}</span>
                         }
                       </button>
@@ -393,10 +393,12 @@ const accordionBodyStyle: CSSProperties = {
 
 const poolIconBtnStyle: CSSProperties = {
   position: "absolute",
-  top: 4,
-  right: 4,
-  display: "grid",
-  placeItems: "center",
+  top: "50%",
+  right: 6,
+  transform: "translateY(-50%)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   width: 20,
   height: 20,
   borderRadius: 5,
@@ -405,6 +407,8 @@ const poolIconBtnStyle: CSSProperties = {
   color: "#a1a1aa",
   cursor: "pointer",
   backdropFilter: "blur(4px)",
+  lineHeight: 1,
+  padding: 0,
 };
 
 // Modal styles
